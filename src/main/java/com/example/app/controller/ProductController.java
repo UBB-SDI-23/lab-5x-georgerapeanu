@@ -1,6 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.Product;
+import com.example.app.model.dto.ProductDTO;
 import com.example.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,28 +14,28 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping(path="/products")
-    public @ResponseBody Iterable<Product> getProducts(){
+    public @ResponseBody Iterable<ProductDTO> getProducts(){
         return productService.getAllProducts();
     }
 
     @GetMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<Product> getProduct(@PathVariable("id") Integer id) {
-        Product product = productService.getProductById(id);
-        if(product == null){
+    public @ResponseBody ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Integer id) {
+        ProductDTO productDTO = productService.getProductById(id);
+        if(productDTO == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            return new ResponseEntity<>(productDTO, HttpStatus.OK);
         }
     }
 
     @PostMapping(path="/products", produces = "application/json")
-    public void createProduct(@RequestBody Product product ) {
-        productService.createProduct(product);
+    public void createProduct(@RequestBody ProductDTO productDTO ) {
+        productService.createProduct(productDTO);
     }
 
     @PatchMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody void updateProduct(@PathVariable("id") Integer id, @RequestBody Product product ) {
-        productService.updateProductWithId(id, product);
+    public @ResponseBody void updateProduct(@PathVariable("id") Integer id, @RequestBody ProductDTO productDTO ) {
+        productService.updateProductWithId(id, productDTO);
     }
 
     @DeleteMapping(path="/products/{id}", produces = "application/json")
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/weight-filter", produces = "application/json")
-    public @ResponseBody Iterable<Product> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
+    public @ResponseBody Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
         return productService.getAllProductsWithWeightBiggerThan(weight);
     }
 }

@@ -1,12 +1,12 @@
 package com.example.app.service;
 
-import com.example.app.model.Product;
+import com.example.app.model.dto.ProductDTO;
 
 public interface IProductService {
-    Iterable<Product> getAllProducts();
-    Product getProductById(Integer id);
-    void createProduct(Product product);
-    void updateProductWithId(Integer id, Product user );
+    Iterable<ProductDTO> getAllProducts();
+    ProductDTO getProductById(Integer id);
+    void createProduct(ProductDTO productDTO);
+    void updateProductWithId(Integer id, ProductDTO productDTO);
     void deleteProductWithId(Integer id);
-    public Iterable<Product> getAllProductsWithWeightBiggerThan(Integer weight);
+    public Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight);
 }

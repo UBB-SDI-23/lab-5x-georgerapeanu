@@ -1,11 +1,14 @@
-package com.example.app.model;
+package com.example.app.model.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.sql.Date;
 
 @Entity
-public class Product {
+public class ProductDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -14,18 +17,28 @@ public class Product {
     private Date publishDate;
     private Double price;
     private Integer weight;
+    private Integer manufacturerId;
 
-    public Manufacturer getManufacturer() {
-        return manufacturer;
+    public ProductDTO(Integer id, String name, String description, Date publishDate, Double price, Integer weight, Integer manufacturer_id) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.publishDate = publishDate;
+        this.price = price;
+        this.weight = weight;
+        this.manufacturerId = manufacturer_id;
     }
 
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
+    public ProductDTO() {
     }
 
-    @ManyToOne
-    @JoinColumn(name = "manufacturer_id", nullable = false)
-    private Manufacturer manufacturer;
+    public Integer getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(Integer manufacturer_id) {
+        this.manufacturerId = manufacturer_id;
+    }
 
     public Integer getId() {
         return id;
@@ -75,3 +88,4 @@ public class Product {
         this.weight = weight;
     }
 }
+
