@@ -1,11 +1,9 @@
 package com.example.app.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 public class Manufacturer {
@@ -15,6 +13,8 @@ public class Manufacturer {
     private String name;
     private String description;
     private Date registerDate;
+    @OneToMany(mappedBy="manufacturer", fetch=FetchType.LAZY)
+    List<Product> products;
 
     public Integer getId() {
         return id;
@@ -46,5 +46,13 @@ public class Manufacturer {
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

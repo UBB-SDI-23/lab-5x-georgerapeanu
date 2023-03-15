@@ -1,6 +1,8 @@
 package com.example.app.controller;
 
+import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import com.example.app.model.dto.ManufacturerDTO;
 import com.example.app.model.dto.ProductDTO;
 import com.example.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping(path="/products/{id}/manufacturer", produces = "application/json")
+    public @ResponseBody ResponseEntity<ManufacturerDTO> getProductManufacturer(@PathVariable("id") Integer id) {
+        ManufacturerDTO manufacturerDTO = productService.getManufacturerByProductId(id);
+        if(manufacturerDTO == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
+        }
+    }
+
     @PostMapping(path="/products", produces = "application/json")
     public void createProduct(@RequestBody ProductDTO productDTO ) {
         productService.createProduct(productDTO);
@@ -47,4 +59,6 @@ public class ProductController {
     public @ResponseBody Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
         return productService.getAllProductsWithWeightBiggerThan(weight);
     }
+
+
 }

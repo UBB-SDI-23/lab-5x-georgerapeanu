@@ -1,5 +1,7 @@
 package com.example.app.model.dto;
 
+import com.example.app.model.Manufacturer;
+import com.example.app.model.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -86,6 +88,29 @@ public class ProductDTO {
 
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    public static ProductDTO fromProduct(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPublishDate(),
+                product.getPrice(),
+                product.getWeight(),
+                product.getManufacturer().getId()
+        );
+    }
+
+    public static Product toProduct(ProductDTO productDTO, Manufacturer manufacturer) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPublishDate(productDTO.getPublishDate());
+        product.setPrice(productDTO.getPrice());
+        product.setWeight(productDTO.getWeight());
+        product.setManufacturer(manufacturer);
+        return product;
     }
 }
 

@@ -1,6 +1,8 @@
 package com.example.app.service;
 
+import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import com.example.app.model.dto.ManufacturerDTO;
 import com.example.app.model.dto.ProductDTO;
 import com.example.app.repository.IManufacturerRepository;
 import com.example.app.repository.IProductRepository;
@@ -18,17 +20,7 @@ public class ProductService implements  IProductService{
 
     public Iterable<ProductDTO> getAllProducts(){
         return productRepository.findAll().stream()
-                .map(product -> {
-                    return new ProductDTO(
-                      product.getId(),
-                      product.getName(),
-                      product.getDescription(),
-                      product.getPublishDate(),
-                      product.getPrice(),
-                      product.getWeight(),
-                      product.getManufacturer().getId()
-                    );
-                }).collect(Collectors.toList());
+                .map(ProductDTO::fromProduct).collect(Collectors.toList());
     }
 
     public ProductDTO getProductById(Integer id) {
@@ -36,37 +28,16 @@ public class ProductService implements  IProductService{
         if(product == null){
             return null;
         }
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getPublishDate(),
-                product.getPrice(),
-                product.getWeight(),
-                product.getManufacturer().getId()
-        );
+        return ProductDTO.fromProduct(product);
     }
 
     public void createProduct(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPublishDate(productDTO.getPublishDate());
-        product.setPrice(productDTO.getPrice());
-        product.setWeight(productDTO.getWeight());
-        product.setManufacturer(manufacturerRepository.findById(productDTO.getManufacturerId()).get());
-        productRepository.save(product);
+        productRepository.save(ProductDTO.toProduct(productDTO, manufacturerRepository.findById(productDTO.getManufacturerId()).get()));
     }
 
     public void updateProductWithId(Integer id, ProductDTO productDTO ) {
         Product repoProduct = productRepository.findById(id).get();
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPublishDate(productDTO.getPublishDate());
-        product.setPrice(productDTO.getPrice());
-        product.setWeight(productDTO.getWeight());
-        product.setManufacturer(manufacturerRepository.findById(productDTO.getManufacturerId()).get());
+        Product product = ProductDTO.toProduct(productDTO, manufacturerRepository.findById(productDTO.getManufacturerId()).get());
         product.setId(repoProduct.getId());
         productRepository.save(product);
     }
@@ -77,17 +48,16 @@ public class ProductService implements  IProductService{
 
     public Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight){
         return productRepository.findProductsWithWeightBiggerThan(weight).stream()
-                .map(product -> {
-                    return new ProductDTO(
-                            product.getId(),
-                            product.getName(),
-                            product.getDescription(),
-                            product.getPublishDate(),
-                            product.getPrice(),
-                            product.getWeight(),
-                            product.getManufacturer().getId()
-                    );
-                }).collect(Collectors.toList());
+                .map(ProductDTO::fromProduct).collect(Collectors.toList());
+    }
+
+    @Override
+    public ManufacturerDTO getManufacturerByProductId(Integer id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if(product == null){
+            return null;
+        }
+        return ManufacturerDTO.fromManufacturer(product.getManufacturer());
     }
 
 }
