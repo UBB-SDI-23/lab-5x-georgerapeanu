@@ -1,16 +1,14 @@
 package com.example.app.model.dto;
 
 import com.example.app.model.Product;
+import com.example.app.model.Review;
 import com.example.app.model.User;
-import jakarta.persistence.*;
 
 import java.sql.Date;
 
 public class ReviewDTO {
     private Integer id;
-
     private Integer userId;
-
     private Integer productId;
     private Integer score;
     private String comment;
@@ -71,5 +69,31 @@ public class ReviewDTO {
 
     public void setPostedDate(Date postedDate) {
         this.postedDate = postedDate;
+    }
+
+    public static ReviewDTO fromReview(Review review) {
+        Integer userId = null;
+        if(review.getUser() != null) {
+            userId = review.getUser().getId();
+        }
+        return new ReviewDTO(
+                review.getId(),
+                userId,
+                review.getProduct().getId(),
+                review.getScore(),
+                review.getComment(),
+                review.getPostedDate()
+        );
+    }
+
+    public static Review toReview(ReviewDTO reviewDTO, User user, Product product) {
+        Review review = new Review();
+        review.setId(reviewDTO.getId());
+        review.setUser(user);
+        review.setProduct(product);
+        review.setScore(reviewDTO.getScore());
+        review.setComment(reviewDTO.getComment());
+        review.setPostedDate(reviewDTO.getPostedDate());
+        return review;
     }
 }

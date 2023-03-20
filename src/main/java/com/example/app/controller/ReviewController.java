@@ -1,6 +1,5 @@
 package com.example.app.controller;
 
-import com.example.app.model.Review;
 import com.example.app.model.dto.ReviewDTO;
 import com.example.app.service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

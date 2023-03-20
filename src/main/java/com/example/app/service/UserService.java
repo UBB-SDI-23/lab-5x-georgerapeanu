@@ -1,31 +1,38 @@
 package com.example.app.service;
 
 import com.example.app.model.User;
+import com.example.app.model.dto.UserDTO;
 import com.example.app.repository.IUserRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements  IUserService{
     @Autowired
     IUserRepository userRepository;
 
-    public Iterable<User> getAllUsers(){
-        return userRepository.findAll();
+    public Iterable<UserDTO> getAllUsers(){
+        return userRepository.findAll().stream().map(UserDTO::fromUser).collect(Collectors.toList());
     }
 
-    public User getUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO getUserById(Integer id) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null){
+            return null;
+        }
+        return UserDTO.fromUser(user);
     }
 
-    public void createUser(User user) {
-        userRepository.save(user);
+    public void createUser(UserDTO userDTO) {
+        userRepository.save(UserDTO.toUser(userDTO));
     }
 
-    public void updateUserWithId(Integer id, User user ) {
-        User repoUser = userRepository.findById(id).get();
-        user.setId(repoUser.getId());
+    public void updateUserWithId(Integer id, UserDTO userDTO ) {
+        User user = UserDTO.toUser(userDTO);
+        user.setId(id);
         userRepository.save(user);
     }
 

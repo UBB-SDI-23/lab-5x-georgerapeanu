@@ -1,6 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.model.User;
+import com.example.app.model.dto.UserDTO;
 import com.example.app.repository.IUserRepository;
 import com.example.app.service.IUserService;
 import jakarta.annotation.PostConstruct;
@@ -25,28 +26,28 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping(path="/users")
-    public @ResponseBody Iterable<User> getUsers(){
+    public @ResponseBody Iterable<UserDTO> getUsers(){
         return userService.getAllUsers();
     }
 
     @GetMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
-        User user = userService.getUserById(id);
-        if(user == null){
+    public @ResponseBody ResponseEntity<UserDTO> getUser(@PathVariable("id") Integer id) {
+        UserDTO userDTO = userService.getUserById(id);
+        if(userDTO == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
     }
 
     @PostMapping(path="/users", produces = "application/json")
-    public void createUser(@RequestBody User user ) {
-        userService.createUser(user);
+    public void createUser(@RequestBody UserDTO userDTO ) {
+        userService.createUser(userDTO);
     }
 
     @PatchMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody void updateUser(@PathVariable("id") Integer id, @RequestBody User user ) {
-        userService.updateUserWithId(id, user);
+    public @ResponseBody void updateUser(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO ) {
+        userService.updateUserWithId(id, userDTO);
     }
 
     @DeleteMapping(path="/users/{id}", produces = "application/json")

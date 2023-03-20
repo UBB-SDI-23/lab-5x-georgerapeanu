@@ -21,21 +21,7 @@ public class ReviewService implements  IReviewService{
     IProductRepository productRepository;
 
     public Iterable<ReviewDTO> getAllReviews(){
-        return reviewRepository.findAll().stream().map(review -> {
-            Integer user_id = -1;
-            User user = review.getUser();
-            if(user != null){
-                user_id = user.getId();
-            }
-            return new ReviewDTO(
-                    review.getId(),
-                    user_id,
-                    review.getProduct().getId(),
-                    review.getScore(),
-                    review.getComment(),
-                    review.getPostedDate()
-            );
-        }).collect(Collectors.toList());
+        return reviewRepository.findAll().stream().map(ReviewDTO::fromReview).collect(Collectors.toList());
     }
 
     public ReviewDTO getReviewById(Integer id) {
@@ -43,41 +29,17 @@ public class ReviewService implements  IReviewService{
         if(review == null){
             return null;
         }
-        Integer user_id = -1;
-        User user = review.getUser();
-        if(user != null){
-            user_id = user.getId();
-        }
-        return new ReviewDTO(
-                review.getId(),
-                user_id,
-                review.getProduct().getId(),
-                review.getScore(),
-                review.getComment(),
-                review.getPostedDate()
-        );
+        return ReviewDTO.fromReview(review);
     }
 
     public void createReview(ReviewDTO reviewDTO) {
-        Review review = new Review();
-        review.setUser(userRepository.findById(reviewDTO.getUserId()).get());
-        review.setProduct(productRepository.findById(reviewDTO.getProductId()).get());
-        review.setScore(reviewDTO.getScore());
-        review.setComment(reviewDTO.getComment());
-        review.setPostedDate(reviewDTO.getPostedDate());
-        reviewRepository.save(review);
+        reviewRepository.save(ReviewDTO.toReview(reviewDTO, userRepository.findById(reviewDTO.getUserId()).get(), productRepository.findById(reviewDTO.getProductId()).get()));
     }
 
     public void updateReviewWithId(Integer id, ReviewDTO reviewDTO ) {
         Review repoReview = reviewRepository.findById(id).get();
-        Review review = new Review();
-        review.setUser(userRepository.findById(reviewDTO.getUserId()).get());
-        review.setProduct(productRepository.findById(reviewDTO.getProductId()).get());
-        review.setScore(reviewDTO.getScore());
-        review.setComment(reviewDTO.getComment());
-        review.setPostedDate(reviewDTO.getPostedDate());
-        review.setId(repoReview.getId());
-        reviewRepository.save(review);
+        Review updatedReview = ReviewDTO.toReview(reviewDTO, repoReview.getUser(), repoReview.getProduct());
+        reviewRepository.save(updatedReview);
     }
 
     public void deleteReviewWithId(Integer id) {
