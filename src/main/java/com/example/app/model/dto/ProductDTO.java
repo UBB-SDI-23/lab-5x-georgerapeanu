@@ -2,17 +2,10 @@ package com.example.app.model.dto;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 import java.sql.Date;
 
-@Entity
 public class ProductDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private String description;
