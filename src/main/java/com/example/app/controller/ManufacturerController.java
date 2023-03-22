@@ -1,8 +1,10 @@
 package com.example.app.controller;
 
+import com.example.app.dto.ManufacturerProductCountDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.service.IManufacturerService;
+import com.example.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,17 @@ import java.util.List;
 public class ManufacturerController {
     @Autowired
     private IManufacturerService manufacturerService;
+    @Autowired
+    private IProductService productService;
 
     @GetMapping(path="/manufacturers")
     public @ResponseBody Iterable<ManufacturerDTO> getManufacturers(){
         return manufacturerService.getAllManufacturers();
+    }
+
+    @GetMapping(path="/manufacturers/sorted-by-products")
+    public @ResponseBody Iterable<ManufacturerProductCountDTO> getManufacturersSortedByProducts(){
+        return productService.getManufacturersSortedByProducts();
     }
 
     @GetMapping(path="/manufacturers/{id}", produces = "application/json")

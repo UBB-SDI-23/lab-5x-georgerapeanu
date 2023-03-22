@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import com.example.app.dto.ManufacturerProductCountDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 
@@ -11,4 +12,6 @@ public interface IProductService {
     void deleteProductWithId(Integer id);
     public Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight);
     public ManufacturerDTO getManufacturerByProductId(Integer id);
+
+    public Iterable<ManufacturerProductCountDTO> getManufacturersSortedByProducts();
 }
