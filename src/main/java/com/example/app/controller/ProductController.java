@@ -4,7 +4,9 @@ import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.model.dto.ManufacturerDTO;
 import com.example.app.model.dto.ProductDTO;
+import com.example.app.model.dto.ProductScoreDTO;
 import com.example.app.service.IProductService;
+import com.example.app.service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     @Autowired
     private IProductService productService;
-
+    @Autowired
+    private IReviewService reviewService;
     @GetMapping(path="/products")
     public @ResponseBody Iterable<ProductDTO> getProducts(){
         return productService.getAllProducts();
@@ -60,5 +63,9 @@ public class ProductController {
         return productService.getAllProductsWithWeightBiggerThan(weight);
     }
 
+    @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
+    public @ResponseBody Iterable<ProductScoreDTO> getAllProductsSortedByReviews(){
+        return reviewService.getProductsSortedByScore();
+    }
 
 }
