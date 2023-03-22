@@ -1,4 +1,4 @@
-package com.example.app.model.dto;
+package com.example.app.dto.model;
 
 import com.example.app.model.User;
 

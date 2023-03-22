@@ -1,10 +1,12 @@
 package com.example.app.service;
 
+import com.example.app.model.Ids.ReviewId;
+import com.example.app.model.Product;
 import com.example.app.model.Review;
+import com.example.app.dto.model.ProductDTO;
+import com.example.app.dto.ProductScoreDTO;
+import com.example.app.dto.model.ReviewDTO;
 import com.example.app.model.User;
-import com.example.app.model.dto.ProductDTO;
-import com.example.app.model.dto.ProductScoreDTO;
-import com.example.app.model.dto.ReviewDTO;
 import com.example.app.repository.IProductRepository;
 import com.example.app.repository.IReviewRepository;
 import com.example.app.repository.IUserRepository;
@@ -24,32 +26,6 @@ public class ReviewService implements  IReviewService{
     IUserRepository userRepository;
     @Autowired
     IProductRepository productRepository;
-
-    public Iterable<ReviewDTO> getAllReviews(){
-        return reviewRepository.findAll().stream().map(ReviewDTO::fromReview).collect(Collectors.toList());
-    }
-
-    public ReviewDTO getReviewById(Integer id) {
-        Review review = reviewRepository.findById(id).orElse(null);
-        if(review == null){
-            return null;
-        }
-        return ReviewDTO.fromReview(review);
-    }
-
-    public void createReview(ReviewDTO reviewDTO) {
-        reviewRepository.save(ReviewDTO.toReview(reviewDTO, userRepository.findById(reviewDTO.getUserId()).get(), productRepository.findById(reviewDTO.getProductId()).get()));
-    }
-
-    public void updateReviewWithId(Integer id, ReviewDTO reviewDTO ) {
-        Review repoReview = reviewRepository.findById(id).get();
-        Review updatedReview = ReviewDTO.toReview(reviewDTO, repoReview.getUser(), repoReview.getProduct());
-        reviewRepository.save(updatedReview);
-    }
-
-    public void deleteReviewWithId(Integer id) {
-        reviewRepository.deleteById(id);
-    }
 
     @Override
     public Iterable<ProductScoreDTO> getProductsSortedByScore() {
@@ -78,6 +54,45 @@ public class ReviewService implements  IReviewService{
             return 0;
         });
         return resultList;
+    }
+
+    @Override
+    public Iterable<ReviewDTO> getReviewsForUser(Integer id) {
+        return reviewRepository.findAll().stream().filter(x -> {
+            User user = x.getUser();
+            if(user == null) {
+                return false;
+            }
+            return Objects.equals(user.getId(), id);
+        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
+    }
+
+    @Override
+    public Iterable<ReviewDTO> getReviewsForProduct(Integer id) {
+        return reviewRepository.findAll().stream().filter(x -> {
+            Product product = x.getProduct();
+            if(product == null) {
+                return false;
+            }
+            return Objects.equals(product.getId(), id);
+        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO) {
+        reviewRepository.save(ReviewDTO.toReview(reviewDTO, userRepository.findById(userId).get(), productRepository.findById(productId).get()));
+    }
+
+    @Override
+    public void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO) {
+        Review review = ReviewDTO.toReview(reviewDTO, userRepository.findById(userId).get(), productRepository.findById(productId).get());
+        review.setId(new ReviewId(userId, productId));
+        reviewRepository.save(review);
+    }
+
+    @Override
+    public void deleteReview(Integer userId, Integer productId) {
+        reviewRepository.deleteById(new ReviewId(userId, productId));
     }
 
 }

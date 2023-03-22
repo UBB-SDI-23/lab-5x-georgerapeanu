@@ -1,17 +1,20 @@
 package com.example.app.model;
 
+import com.example.app.model.Ids.ReviewId;
 import jakarta.persistence.*;
 
 import java.sql.Date;
 
 @Entity
 public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+
+    @EmbeddedId
+    ReviewId id = new ReviewId();
+    @MapsId("userId")
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=true)
     private User user;
+
+    @MapsId("productId")
     @ManyToOne
     @JoinColumn(name="product_id", nullable=false)
     private Product product;
@@ -19,13 +22,6 @@ public class Review {
     private String comment;
     private Date postedDate;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;
@@ -65,5 +61,13 @@ public class Review {
 
     public void setPostedDate(Date postedDate) {
         this.postedDate = postedDate;
+    }
+
+    public ReviewId getId() {
+        return id;
+    }
+
+    public void setId(ReviewId id) {
+        this.id = id;
     }
 }

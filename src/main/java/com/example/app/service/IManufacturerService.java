@@ -1,7 +1,7 @@
 package com.example.app.service;
 
-import com.example.app.model.dto.ManufacturerDTO;
-import com.example.app.model.dto.ProductDTO;
+import com.example.app.dto.model.ManufacturerDTO;
+import com.example.app.dto.model.ProductDTO;
 
 import java.util.List;
 

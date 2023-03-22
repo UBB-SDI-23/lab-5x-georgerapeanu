@@ -1,7 +1,6 @@
 package com.example.app.service;
 
-import com.example.app.model.User;
-import com.example.app.model.dto.UserDTO;
+import com.example.app.dto.model.UserDTO;
 
 public interface IUserService {
     Iterable<UserDTO> getAllUsers();

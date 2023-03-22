@@ -1,4 +1,4 @@
-package com.example.app.model.dto;
+package com.example.app.dto.model;
 
 import com.example.app.model.Product;
 import com.example.app.model.Review;
@@ -7,28 +7,18 @@ import com.example.app.model.User;
 import java.sql.Date;
 
 public class ReviewDTO {
-    private Integer id;
     private Integer userId;
     private Integer productId;
     private Integer score;
     private String comment;
     private Date postedDate;
 
-    public ReviewDTO(Integer id, Integer userId, Integer productId, Integer score, String comment, Date postedDate) {
-        this.id = id;
+    public ReviewDTO(Integer userId, Integer productId, Integer score, String comment, Date postedDate) {
         this.userId = userId;
         this.productId = productId;
         this.score = score;
         this.comment = comment;
         this.postedDate = postedDate;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getUserId() {
@@ -77,7 +67,6 @@ public class ReviewDTO {
             userId = review.getUser().getId();
         }
         return new ReviewDTO(
-                review.getId(),
                 userId,
                 review.getProduct().getId(),
                 review.getScore(),
@@ -88,7 +77,6 @@ public class ReviewDTO {
 
     public static Review toReview(ReviewDTO reviewDTO, User user, Product product) {
         Review review = new Review();
-        review.setId(reviewDTO.getId());
         review.setUser(user);
         review.setProduct(product);
         review.setScore(reviewDTO.getScore());

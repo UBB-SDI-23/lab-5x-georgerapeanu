@@ -1,13 +1,14 @@
 package com.example.app.service;
 
-import com.example.app.model.dto.ProductScoreDTO;
-import com.example.app.model.dto.ReviewDTO;
+import com.example.app.dto.ProductScoreDTO;
+import com.example.app.dto.model.ReviewDTO;
 
 public interface IReviewService {
-    Iterable<ReviewDTO> getAllReviews();
-    ReviewDTO getReviewById(Integer id);
-    void createReview(ReviewDTO reviewDTO);
-    void updateReviewWithId(Integer id, ReviewDTO reviewDTO );
-    void deleteReviewWithId(Integer id);
     Iterable<ProductScoreDTO> getProductsSortedByScore();
+
+    Iterable<ReviewDTO> getReviewsForUser(Integer id);
+    Iterable<ReviewDTO> getReviewsForProduct(Integer id);
+    void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO);
+    void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO);
+    void deleteReview(Integer userId, Integer productId);
 }

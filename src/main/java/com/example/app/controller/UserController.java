@@ -1,29 +1,21 @@
 package com.example.app.controller;
 
-import com.example.app.model.User;
-import com.example.app.model.dto.UserDTO;
-import com.example.app.repository.IUserRepository;
+import com.example.app.dto.model.ReviewDTO;
+import com.example.app.dto.model.UserDTO;
+import com.example.app.service.IReviewService;
 import com.example.app.service.IUserService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.util.ArrayUtils;
-
-import javax.xml.crypto.Data;
-import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UserController {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IReviewService reviewService;
 
     @GetMapping(path="/users")
     public @ResponseBody Iterable<UserDTO> getUsers(){
@@ -53,5 +45,22 @@ public class UserController {
     @DeleteMapping(path="/users/{id}", produces = "application/json")
     public @ResponseBody void deleteUser(@PathVariable("id") Integer id) {
         userService.deleteUserWithId(id);
+    }
+
+    @GetMapping(path="/users/{id}/reviews", produces = "application/json")
+    public @ResponseBody Iterable<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
+        return reviewService.getReviewsForUser(id);
+    }
+    @PostMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
+    public void createReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
+        reviewService.createReview(id, product_id, reviewDTO);
+    }
+    @PatchMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
+    public void updateReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
+        reviewService.updateReview(id, product_id, reviewDTO);
+    }
+    @DeleteMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
+    public void deleteReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id) {
+        reviewService.deleteReview(id, product_id);
     }
 }

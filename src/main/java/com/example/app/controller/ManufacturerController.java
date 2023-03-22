@@ -1,9 +1,7 @@
 package com.example.app.controller;
 
-import com.example.app.model.Manufacturer;
-import com.example.app.model.Product;
-import com.example.app.model.dto.ManufacturerDTO;
-import com.example.app.model.dto.ProductDTO;
+import com.example.app.dto.model.ManufacturerDTO;
+import com.example.app.dto.model.ProductDTO;
 import com.example.app.service.IManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

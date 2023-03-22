@@ -1,11 +1,7 @@
-package com.example.app.model.dto;
+package com.example.app.dto.model;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 import java.sql.Date;
 import java.util.List;

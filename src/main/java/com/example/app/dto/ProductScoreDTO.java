@@ -1,6 +1,6 @@
-package com.example.app.model.dto;
+package com.example.app.dto;
 
-import java.sql.Date;
+import com.example.app.dto.model.ProductDTO;
 
 public class ProductScoreDTO{
     private ProductDTO productDTO;

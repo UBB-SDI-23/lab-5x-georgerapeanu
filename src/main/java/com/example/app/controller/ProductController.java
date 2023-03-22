@@ -1,10 +1,9 @@
 package com.example.app.controller;
 
-import com.example.app.model.Manufacturer;
-import com.example.app.model.Product;
-import com.example.app.model.dto.ManufacturerDTO;
-import com.example.app.model.dto.ProductDTO;
-import com.example.app.model.dto.ProductScoreDTO;
+import com.example.app.dto.model.ManufacturerDTO;
+import com.example.app.dto.model.ProductDTO;
+import com.example.app.dto.ProductScoreDTO;
+import com.example.app.dto.model.ReviewDTO;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,4 +67,20 @@ public class ProductController {
         return reviewService.getProductsSortedByScore();
     }
 
+    @GetMapping(path="/products/{id}/reviews", produces = "application/json")
+    public @ResponseBody Iterable<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
+        return reviewService.getReviewsForProduct(id);
+    }
+    @PostMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
+    public void createReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
+        reviewService.createReview(user_id, id, reviewDTO);
+    }
+    @PatchMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
+    public void updateReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
+        reviewService.updateReview(user_id, id, reviewDTO);
+    }
+    @DeleteMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
+    public void deleteReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id) {
+        reviewService.deleteReview(user_id, id);
+    }
 }
