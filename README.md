@@ -39,6 +39,17 @@ Suggestions:
 
 **Last chance deadline and penalties**: Week 5, -0.3 points / week delayed
 
+----
+
+Continue working on the application from the previous assignment. Push your project to this repository.
+
+You will need to:
+- Add at least 2 more entities with at least `5` attributes each: you should have at least `3` entities in total.
+- Add a **1 to many** relation between two of your entities. Some of the entities can be unrelated, but be prepared to also add a many to many relation soon. Choose your entities accordingly.
+- Add storage to a database if you don't already have it: any database type is allowed. Rerunning the application should keep previously existing data. It's ok if changes to the data model drops and recreates the database (you do not need migrations yet).
+- Implement CRUD for at least one more entity and filtering on a numeric field for at least one entity. The filtering should return all entities with the numeric field higher than a given value.
+- Have a REST API usable in Postman.
+
 # Lab 3 assignment
 
 **Points**: 2
@@ -46,14 +57,6 @@ Suggestions:
 **Deadline**: Week 4
 
 **Last chance deadline and penalties**: Week 6, -0.5 points / week delayed
-
-# Lab 4 assignment
-
-**Points**: 1
-
-**Deadline**: Week 5
-
-**Last chance deadline and penalties**: Week 7, -0.3 points / week delayed
 
 ----
 
@@ -64,10 +67,21 @@ Continue working on the application from the previous assignment. Push your proj
 - Add CRUD for all entities.
 - Add at least `10` realistic-looking records for each of your models / tables.
 - Use Trello or ClickUp and set up a Kanban board (with at least `Todo`, `Doing`, `Done` or equivalent lists). You will need to update this for all functionalities you do from now on. Your lab instructor will give you feedback on how to improve its setup.
-- Create a UML diagram for your application and a database diagram for your database. 
+- Create a UML diagram for your application and a database diagram for your database.
 - Add a statistical report involving two entities. For example: show all movies ordered by the average age of their actors. Such reports **need** to show the computed field: the average age of the actors in this case. You probably want to use a `DTO` class for this.
 
 For this and all future assignments, unless otherwise specified, you are not allowed to write any raw SQL queries: it must all be done through an ORM.
+
+
+# Lab 4 assignment
+
+**Points**: 1
+
+**Deadline**: Week 5
+
+**Last chance deadline and penalties**: Week 7, -0.3 points / week delayed
+
+----
 
 You will need to:
 - Add unit tests for the two non-CRUD functionalities from the previous assignments. You might want to google for a "mocking library" in your language and framework of choice. This is usually how it's done, but if you can't find anything relevant, then search for how to do unit testing in your framework.  
