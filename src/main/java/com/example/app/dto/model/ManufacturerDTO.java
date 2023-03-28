@@ -5,6 +5,7 @@ import com.example.app.model.Product;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ManufacturerDTO {
@@ -83,5 +84,29 @@ public class ManufacturerDTO {
         manufacturer.setName(manufacturerDTO.getName());
         manufacturer.setRegisterDate(manufacturerDTO.getRegisterDate());
         return manufacturer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ManufacturerDTO that = (ManufacturerDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(registerDate, that.registerDate) && Objects.equals(product_ids, that.product_ids);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, registerDate, product_ids);
+    }
+
+    @Override
+    public String toString() {
+        return "ManufacturerDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", registerDate=" + registerDate +
+                ", product_ids=" + product_ids +
+                '}';
     }
 }

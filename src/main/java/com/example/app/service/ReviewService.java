@@ -10,6 +10,8 @@ import com.example.app.model.User;
 import com.example.app.repository.IProductRepository;
 import com.example.app.repository.IReviewRepository;
 import com.example.app.repository.IUserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Service
 public class ReviewService implements  IReviewService{
     @Autowired

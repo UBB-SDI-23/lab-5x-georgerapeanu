@@ -2,9 +2,14 @@ package com.example.app.dto.model;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.Objects;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDTO {
     private Integer id;
     private String name;
@@ -13,19 +18,6 @@ public class ProductDTO {
     private Double price;
     private Integer weight;
     private Integer manufacturerId;
-
-    public ProductDTO(Integer id, String name, String description, Date publishDate, Double price, Integer weight, Integer manufacturer_id) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.publishDate = publishDate;
-        this.price = price;
-        this.weight = weight;
-        this.manufacturerId = manufacturer_id;
-    }
-
-    public ProductDTO() {
-    }
 
     public Integer getManufacturerId() {
         return manufacturerId;
@@ -104,6 +96,28 @@ public class ProductDTO {
         product.setWeight(productDTO.getWeight());
         product.setManufacturer(manufacturer);
         return product;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", publishDate=" + publishDate +
+                ", price=" + price +
+                ", weight=" + weight +
+                ", manufacturerId=" + manufacturerId +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO that = (ProductDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(publishDate, that.publishDate) && Objects.equals(price, that.price) && Objects.equals(weight, that.weight) && Objects.equals(manufacturerId, that.manufacturerId);
     }
 }
 

@@ -6,6 +6,8 @@ import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.repository.IManufacturerRepository;
 import com.example.app.repository.IProductRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Service
 public class ProductService implements  IProductService{
     @Autowired

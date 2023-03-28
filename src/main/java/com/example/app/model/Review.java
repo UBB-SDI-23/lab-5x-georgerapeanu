@@ -2,9 +2,13 @@ package com.example.app.model;
 
 import com.example.app.model.Ids.ReviewId;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Review {
 

@@ -1,10 +1,14 @@
 package com.example.app.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Manufacturer {
     @Id

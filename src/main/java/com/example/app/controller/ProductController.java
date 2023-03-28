@@ -6,17 +6,22 @@ import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @RestController
 public class ProductController {
     @Autowired
     private IProductService productService;
     @Autowired
     private IReviewService reviewService;
+
     @GetMapping(path="/products")
     public @ResponseBody Iterable<ProductDTO> getProducts(){
         return productService.getAllProducts();
