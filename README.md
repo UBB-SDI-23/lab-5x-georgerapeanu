@@ -1,3 +1,5 @@
+Dynamic ip is used, so a trial link can only be provided on request.
+
 # Lab 1 assignment
 
 **Points**: 1
