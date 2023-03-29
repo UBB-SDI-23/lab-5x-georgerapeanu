@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
     @Autowired
@@ -33,12 +35,12 @@ public class UserController {
     }
 
     @PostMapping(path="/users", produces = "application/json")
-    public void createUser(@RequestBody UserDTO userDTO ) {
+    public void createUser(@Valid @RequestBody UserDTO userDTO ) {
         userService.createUser(userDTO);
     }
 
     @PatchMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody void updateUser(@PathVariable("id") Integer id, @RequestBody UserDTO userDTO ) {
+    public @ResponseBody void updateUser(@PathVariable("id") Integer id, @Valid @RequestBody UserDTO userDTO ) {
         userService.updateUserWithId(id, userDTO);
     }
 

@@ -2,6 +2,7 @@ package com.example.app.dto.model;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import jakarta.validation.constraints.NotBlank;
 
 import java.sql.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class ManufacturerDTO {
     private Integer id;
+    @NotBlank
     private String name;
     private String description;
 

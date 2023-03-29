@@ -5,6 +5,7 @@ import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.service.IManufacturerService;
 import com.example.app.service.IProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +46,12 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
-    public void createManufacturer(@RequestBody ManufacturerDTO manufacturerDTO ) {
+    public void createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
         manufacturerService.createManufacturer(manufacturerDTO);
     }
 
     @PatchMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody void updateManufacturer(@PathVariable("id") Integer id, @RequestBody ManufacturerDTO manufacturerDTO ) {
+    public @ResponseBody void updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
         manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
     }
 

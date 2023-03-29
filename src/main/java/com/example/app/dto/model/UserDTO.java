@@ -1,11 +1,13 @@
 package com.example.app.dto.model;
 
 import com.example.app.model.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.sql.Date;
 
 public class UserDTO {
     private Integer id;
+    @NotBlank
     private String name;
     private String handle;
     private String email;

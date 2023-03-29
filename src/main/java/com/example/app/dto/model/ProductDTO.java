@@ -2,6 +2,7 @@ package com.example.app.dto.model;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class ProductDTO {
     private Integer id;
+    @NotBlank
     private String name;
     private String description;
     private Date publishDate;

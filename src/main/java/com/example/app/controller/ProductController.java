@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @RestController
@@ -48,12 +50,12 @@ public class ProductController {
     }
 
     @PostMapping(path="/products", produces = "application/json")
-    public void createProduct(@RequestBody ProductDTO productDTO ) {
+    public void createProduct(@Valid @RequestBody ProductDTO productDTO ) {
         productService.createProduct(productDTO);
     }
 
     @PatchMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody void updateProduct(@PathVariable("id") Integer id, @RequestBody ProductDTO productDTO ) {
+    public @ResponseBody void updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDTO productDTO ) {
         productService.updateProductWithId(id, productDTO);
     }
 

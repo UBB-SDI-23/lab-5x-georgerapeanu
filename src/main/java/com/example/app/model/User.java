@@ -4,7 +4,7 @@ package com.example.app.model;
 
 import jakarta.persistence.*;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.sql.Date;
 
 @Entity
