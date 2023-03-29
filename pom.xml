@@ -66,6 +66,16 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.13.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-postgresql</artifactId>
+            <version>4.20.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,6 +83,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.20.0</version>
+                <configuration>
+                    <!--set values for Liquibase properties and settings
+                    for example, the location of a properties file to use-->
+                    <propertyFile>liquibase.properties</propertyFile>
+                </configuration>
             </plugin>
         </plugins>
     </build>

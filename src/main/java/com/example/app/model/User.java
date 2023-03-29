@@ -4,6 +4,7 @@ package com.example.app.model;
 
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 
 @Entity
@@ -13,6 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @NotBlank(message = "User name is mandatory")
     private String name;
     private String handle;
     private String email;
