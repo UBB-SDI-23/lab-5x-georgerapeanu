@@ -59,4 +59,13 @@ public class ManufacturerController {
     public @ResponseBody void deleteManufacturer(@PathVariable("id") Integer id) {
         manufacturerService.deleteManufacturerWithId(id);
     }
+
+    @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
+    public void createManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody List<Integer> product_ids) {
+        product_ids.forEach(product_id -> {
+            ProductDTO productDTO = productService.getProductById(product_id);
+            productDTO.setManufacturerId(id);
+            productService.updateProductWithId(product_id, productDTO);
+        });
+    }
 }
