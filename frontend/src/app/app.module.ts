@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserCreateComponent } from './components/users/user-create/user-create.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UsersOverviewComponent,
     UserDetailsComponent,
     UserEditComponent,
+    UserCreateComponent,
   ],
   imports: [
     BrowserModule,

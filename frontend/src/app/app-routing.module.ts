@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { UsersOverviewComponent } from './components/users/users-overview/users-overview.component';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
+import { UserCreateComponent } from './components/users/user-create/user-create.component';
 
 const routes: Routes = [
   {
@@ -15,13 +16,17 @@ const routes: Routes = [
     component: UsersOverviewComponent
   },
   {
+    path:"users/create",
+    component: UserCreateComponent
+  },
+  {
     path:"users/:id",
     component: UserDetailsComponent
   },
   {
     path:"users/:id/edit",
     component: UserEditComponent
-  }
+  },
 ];
 
 @NgModule({

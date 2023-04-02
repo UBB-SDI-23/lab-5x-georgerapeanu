@@ -7,11 +7,11 @@ import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.css']
+  selector: 'app-user-create',
+  templateUrl: './user-create.component.html',
+  styleUrls: ['./user-create.component.css']
 })
-export class UserEditComponent {
+export class UserCreateComponent {
   user: UserDTO = {
     id: 0,
     name: "",
@@ -20,9 +20,8 @@ export class UserEditComponent {
     birthday: new Date(),
     registeredAt: new Date(),
   };
-  editForm = this.formBuilder.group(
+  createForm = this.formBuilder.group(
     {
-      id: [{value: '', disabled: true}],
       name: ['', Validators.required],
       handle: ['', Validators.required],
       email: ['', Validators.required],
@@ -50,8 +49,8 @@ export class UserEditComponent {
   }
 
   onSubmit(): void {
-    if(this.editForm.valid) {
-      this.userService.editUser(this.user).subscribe({
+    if(this.createForm.valid) {
+      this.userService.createUser(this.user).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },

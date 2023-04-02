@@ -22,4 +22,8 @@ export class UserService {
   editUser(user: UserDTO): Observable<any>{
     return this.http.patch(environment.apiURL + "/users/" + user.id.toString(), user);
   }
+
+  createUser(user: UserDTO): Observable<any>{
+    return this.http.post(environment.apiURL + "/users", user);
+  }
 }
