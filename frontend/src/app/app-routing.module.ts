@@ -5,6 +5,7 @@ import { UsersOverviewComponent } from './components/users/users-overview/users-
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { UserCreateComponent } from './components/users/user-create/user-create.component';
+import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path:"users/:id/edit",
     component: UserEditComponent
+  },
+  {
+    path:"products/sorted-by-score",
+    component: ProductsScoreStatisticComponent
   },
 ];
 

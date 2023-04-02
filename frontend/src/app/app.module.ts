@@ -10,6 +10,7 @@ import { UserDetailsComponent } from './components/users/user-details/user-detai
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserCreateComponent } from './components/users/user-create/user-create.component';
+import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UserCreateComponent } from './components/users/user-create/user-create.
     UserDetailsComponent,
     UserEditComponent,
     UserCreateComponent,
+    ProductsScoreStatisticComponent,
   ],
   imports: [
     BrowserModule,
