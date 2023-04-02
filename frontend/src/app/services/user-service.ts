@@ -26,4 +26,9 @@ export class UserService {
   createUser(user: UserDTO): Observable<any>{
     return this.http.post(environment.apiURL + "/users", user);
   }
+
+  deleteUser(id: number): Observable<any> {
+    console.log(environment.apiURL + "/users/" + id.toString());
+    return this.http.delete(environment.apiURL + "/users/" + id.toString());
+  }
 }
