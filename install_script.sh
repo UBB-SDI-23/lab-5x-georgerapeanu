@@ -10,7 +10,7 @@ docker create -d \
   -p 5432:5432 \
   -v sdi-volume:/var/lib/postgresql/data \
   sdi-postgres;
-curl -O https://go.dev/dl/go1.20.2.linux-amd64.tar.gz;
+curl -L -O https://go.dev/dl/go1.20.2.linux-amd64.tar.gz;
 rm -rf /usr/local/go;
 tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz;
 rm go1.20.2.linux-amd64.tar.gz;
