@@ -15,6 +15,6 @@ rm -rf /usr/local/go;
 tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz;
 rm go1.20.2.linux-amd64.tar.gz;
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile;
-/usr/local/go/bin install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest;
+sudo /usr/local/go/bin install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest;
 npm install http-server -g;
 echo 'Logout to complete installation';
