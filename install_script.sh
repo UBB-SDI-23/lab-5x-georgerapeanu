@@ -10,8 +10,8 @@ docker create -d \
   -p 5432:5432 \
   -v sdi-volume:/var/lib/postgresql/data \
   sdi-postgres;
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz;
 curl -O https://go.dev/dl/go1.20.2.linux-amd64.tar.gz;
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.20.2.linux-amd64.tar.gz && rm go1.20.2.linux-amd64.tar.gz;
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile;
 /usr/local/go/bin install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest;
 npm install http-server -g;
