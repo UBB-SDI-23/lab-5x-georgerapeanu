@@ -1,3 +1,4 @@
+docker stop sdi-postgres;
 cd /home/ubuntu/lab-5x-georgerapeanu/;
 git pull
 
@@ -20,9 +21,9 @@ cd ..;
 
 sleep 5;
 cd backend;
-java -jar ./target/*.jar &;
+java -jar ./target/*.jar &
 sleep 5;
 cd ../frontend;
 cd dist/frontend;
-sudo http-server -p 80 -o&;
+sudo http-server -p 80 -o &
 
