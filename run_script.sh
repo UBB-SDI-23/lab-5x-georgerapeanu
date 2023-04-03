@@ -2,6 +2,7 @@ cd /home/ubuntu/lab-5x-georgerapeanu/;
 git pull
 
 cd frontend;
+npm install;
 IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4);
 API_URL="http://$IP:8080";
 
