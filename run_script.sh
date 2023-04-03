@@ -10,7 +10,7 @@ echo "export const environment = {
     apiURL: '$API_URL'
 };
 " > ./src/environments/environment.production.ts
-ng build --prod --configuration=production;
+ng build --configuration=production;
 
 docker start sdi-postgres;
 cd ../;
@@ -20,7 +20,7 @@ cd ..;
 
 sleep 5;
 cd backend;
-java -jar ./target/*.jar&;
+java -jar ./target/*.jar &;
 sleep 5;
 cd ../frontend;
 cd dist/frontend;
