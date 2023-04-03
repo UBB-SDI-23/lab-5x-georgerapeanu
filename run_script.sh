@@ -4,7 +4,13 @@ cd backend
 ./mvnw clean package;
 cd ../frontend;
 IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4);
-API_URL="http://$IP:8080" gomplate -f "./src/environments/environment.production.ts.tmpl" -o "./src/environments/environment.production.ts";
+API_URL="http://$IP:8080";
+
+echo "export const environment = {
+    apiURL: '$API_URL'
+};
+" > ./src/environments/environment.production.ts
+
 ng build --prod --configuration=production;
 cd ..;
 docker start sdi-postgres;
