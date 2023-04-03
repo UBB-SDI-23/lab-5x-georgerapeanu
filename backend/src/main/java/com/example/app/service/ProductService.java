@@ -25,7 +25,7 @@ public class ProductService implements  IProductService{
     @Autowired
     IManufacturerRepository manufacturerRepository;
 
-    public Iterable<ProductDTO> getAllProducts(){
+    public List<ProductDTO> getAllProducts(){
         return productRepository.findAll().stream()
                 .map(ProductDTO::fromProduct).collect(Collectors.toList());
     }
@@ -53,7 +53,7 @@ public class ProductService implements  IProductService{
         productRepository.deleteById(id);
     }
 
-    public Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight){
+    public List<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight){
         return productRepository.findProductsWithWeightBiggerThan(weight).stream()
                 .map(ProductDTO::fromProduct).collect(Collectors.toList());
     }
@@ -68,7 +68,7 @@ public class ProductService implements  IProductService{
     }
 
     @Override
-    public Iterable<ManufacturerProductCountDTO> getManufacturersSortedByProducts() {
+    public List<ManufacturerProductCountDTO> getManufacturersSortedByProducts() {
         HashMap<Integer, Integer> total_count = new HashMap<>();
 
         productRepository.findAll().stream().forEach(product -> {

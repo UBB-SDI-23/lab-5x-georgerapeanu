@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ManufacturerService implements IManufacturerService{
     @Autowired
     IManufacturerRepository manufacturerRepository;
-    public Iterable<ManufacturerDTO> getAllManufacturers(){
+    public List<ManufacturerDTO> getAllManufacturers(){
         return manufacturerRepository.findAll().stream()
                 .map(ManufacturerDTO::fromManufacturer).collect(Collectors.toList());
     }

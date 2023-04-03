@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @RestController
@@ -26,7 +28,7 @@ public class ProductController {
     private IReviewService reviewService;
 
     @GetMapping(path="/products")
-    public @ResponseBody Iterable<ProductDTO> getProducts(){
+    public @ResponseBody List<ProductDTO> getProducts(){
         return productService.getAllProducts();
     }
 
@@ -66,17 +68,17 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/weight-filter", produces = "application/json")
-    public @ResponseBody Iterable<ProductDTO> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
+    public @ResponseBody List<ProductDTO> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
         return productService.getAllProductsWithWeightBiggerThan(weight);
     }
 
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
-    public @ResponseBody Iterable<ProductScoreDTO> getAllProductsSortedByReviews(){
+    public @ResponseBody List<ProductScoreDTO> getAllProductsSortedByReviews(){
         return reviewService.getProductsSortedByScore();
     }
 
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")
-    public @ResponseBody Iterable<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
+    public @ResponseBody List<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
         return reviewService.getReviewsForProduct(id);
     }
     @PostMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")

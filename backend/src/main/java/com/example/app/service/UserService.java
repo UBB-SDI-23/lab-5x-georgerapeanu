@@ -6,6 +6,7 @@ import com.example.app.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -13,7 +14,7 @@ public class UserService implements  IUserService{
     @Autowired
     IUserRepository userRepository;
 
-    public Iterable<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return userRepository.findAll().stream().map(UserDTO::fromUser).collect(Collectors.toList());
     }
 

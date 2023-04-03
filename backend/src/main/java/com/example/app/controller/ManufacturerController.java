@@ -22,12 +22,12 @@ public class ManufacturerController {
     private IProductService productService;
 
     @GetMapping(path="/manufacturers")
-    public @ResponseBody Iterable<ManufacturerDTO> getManufacturers(){
+    public @ResponseBody List<ManufacturerDTO> getManufacturers(){
         return manufacturerService.getAllManufacturers();
     }
 
     @GetMapping(path="/manufacturers/sorted-by-products")
-    public @ResponseBody Iterable<ManufacturerProductCountDTO> getManufacturersSortedByProducts(){
+    public @ResponseBody List<ManufacturerProductCountDTO> getManufacturersSortedByProducts(){
         return productService.getManufacturersSortedByProducts();
     }
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class UserController {
@@ -21,7 +23,7 @@ public class UserController {
     private IReviewService reviewService;
 
     @GetMapping(path="/users")
-    public @ResponseBody Iterable<UserDTO> getUsers(){
+    public @ResponseBody List<UserDTO> getUsers(){
         return userService.getAllUsers();
     }
 
@@ -51,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping(path="/users/{id}/reviews", produces = "application/json")
-    public @ResponseBody Iterable<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
+    public @ResponseBody List<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
         return reviewService.getReviewsForUser(id);
     }
     @PostMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")

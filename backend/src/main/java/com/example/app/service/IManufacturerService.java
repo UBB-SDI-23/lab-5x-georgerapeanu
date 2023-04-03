@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface IManufacturerService {
-    Iterable<ManufacturerDTO> getAllManufacturers();
+    List<ManufacturerDTO> getAllManufacturers();
     ManufacturerDTO getManufacturerById(Integer id);
     void createManufacturer(ManufacturerDTO manufacturer);
     void updateManufacturerWithId(Integer id, ManufacturerDTO user );

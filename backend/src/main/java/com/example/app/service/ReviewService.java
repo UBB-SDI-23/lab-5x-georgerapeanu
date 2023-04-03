@@ -32,7 +32,7 @@ public class ReviewService implements  IReviewService{
     IProductRepository productRepository;
 
     @Override
-    public Iterable<ProductScoreDTO> getProductsSortedByScore() {
+    public List<ProductScoreDTO> getProductsSortedByScore() {
         HashMap<Integer, Integer> total_score = new HashMap<>();
         HashMap<Integer, Integer> review_count = new HashMap<>();
         reviewRepository.findAll().stream().forEach(review -> {
@@ -61,7 +61,7 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public Iterable<ReviewDTO> getReviewsForUser(Integer id) {
+    public List<ReviewDTO> getReviewsForUser(Integer id) {
         return reviewRepository.findAll().stream().filter(x -> {
             User user = x.getUser();
             if(user == null) {
@@ -72,7 +72,7 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public Iterable<ReviewDTO> getReviewsForProduct(Integer id) {
+    public List<ReviewDTO> getReviewsForProduct(Integer id) {
         return reviewRepository.findAll().stream().filter(x -> {
             Product product = x.getProduct();
             if(product == null) {
