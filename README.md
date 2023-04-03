@@ -1,4 +1,7 @@
-Dynamic ip is used, so a trial link can only be provided on request.
+Site can be checked out at https://main--lab-5x-georgerapeanu.netlify.app/products/sorted-by-score.
+In order to work, you need to disable protection of the site(uses HTTP to talk to backend).
+The backend is not running 100% of the time.
+
 
 # Lab 1 assignment
 
