@@ -1,3 +1,3 @@
 export const environment = {
-    apiURL: process.env.API_URL
+    apiURL: {{.Env.API_URL}},
 };
