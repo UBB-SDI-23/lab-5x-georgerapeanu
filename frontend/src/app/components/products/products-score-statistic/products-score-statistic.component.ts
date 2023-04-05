@@ -18,4 +18,8 @@ export class ProductsScoreStatisticComponent {
       this.productScores = result;
     });
   }
+
+  sortByScore(): void {
+    this.productScores.reverse();
+  }
 }
