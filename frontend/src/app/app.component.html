@@ -1,8 +1,10 @@
-<nav class="flex gap-6 bg-blue-600 text-2xl font-sans text-white align-middle px-10 font-medium">
+<nav class="h-12 items-center px-6 flex gap-9 bg-blue-600 text-2xl text-white align-middle border-b-slate-400 border-b-2">
   <a routerLink="">E-Store</a>
   <a routerLink="users">Users</a>
   <a [routerLink]="['products', 'sorted-by-score']">Products score statistic</a>
 </nav>
-<div class="bg-blue-100 h-full w-full absolute">
-<router-outlet></router-outlet>
-</div>
+<main class="h-full w-full absolute">
+  <div class="w-4/5 m-auto py-4">
+    <router-outlet></router-outlet>
+  </div>
+</main>
