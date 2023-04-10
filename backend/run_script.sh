@@ -3,7 +3,7 @@ if [ -f .env ] ; then
 fi;
 
 if [ -z $WEBHOOK_URL ] ; then
-  echo `$WEBHOOK_URL should be set!`
+  echo '$WEBHOOK_URL should be set!'
   exit 1;
 fi;
 
