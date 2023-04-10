@@ -1,4 +1,4 @@
-Site can be checked out at https://main--lab-5x-georgerapeanu.netlify.app/products/sorted-by-score.
+Site can be checked out at https://main--lab-5x-georgerapeanu.netlify.app.
 In order to work, you need to disable protection of the site(uses HTTP to talk to backend).
 The backend is not running 100% of the time.
 
