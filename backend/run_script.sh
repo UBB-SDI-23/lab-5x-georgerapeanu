@@ -18,4 +18,4 @@ cd backend
 ./mvnw clean package;
 java -jar ./target/*.jar &
 
-curl-X POST -d "http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):8080" $WEBHOOK_URL
+curl -X POST -d "http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):8080" $WEBHOOK_URL
