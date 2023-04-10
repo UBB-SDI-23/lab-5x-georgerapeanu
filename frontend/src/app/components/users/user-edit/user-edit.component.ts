@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserDTO } from 'src/app/models/UserDTO';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
@@ -36,7 +36,8 @@ export class UserEditComponent {
     private route: ActivatedRoute,
     private userService: UserService, 
     private formBuilder: FormBuilder,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,4 +66,9 @@ export class UserEditComponent {
   goBack(): void {
     this.location.back();
   }
+
+  goToUsers(): void {
+    this.router.navigate(["/users"]);
+  }
+
 }
