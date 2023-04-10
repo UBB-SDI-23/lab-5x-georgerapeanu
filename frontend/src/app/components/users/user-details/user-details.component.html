@@ -1,36 +1,36 @@
-<button type="button" (click)="goBack()" class="flex gap-1">
-    <svg class="mt-1" fill="#000000" width="16px" height="16px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M222.927 580.115l301.354 328.512c24.354 28.708 20.825 71.724-7.883 96.078s-71.724 20.825-96.078-7.883L19.576 559.963a67.846 67.846 0 01-13.784-20.022 68.03 68.03 0 01-5.977-29.488l.001-.063a68.343 68.343 0 017.265-29.134 68.28 68.28 0 011.384-2.6 67.59 67.59 0 0110.102-13.687L429.966 21.113c25.592-27.611 68.721-29.247 96.331-3.656s29.247 68.721 3.656 96.331L224.088 443.784h730.46c37.647 0 68.166 30.519 68.166 68.166s-30.519 68.166-68.166 68.166H222.927z"/></svg>
-    Back
-</button>
-<form action="javascript:void(0);" class="grid grid-cols-2 gap-y-1 w-1/3 mt-5">
-        <label for="id" >Id: </label>
-        <input type="text" name="id" class="bg-gray-300" value={{user?.id}} readonly>
-        <label for="name">Name: </label>
-        <input type="text" name="name" class="bg-gray-300" value={{user?.name}} readonly>
-        <label for="handle">Handle: </label>
-        <input type="text" name="handle" class="bg-gray-300" value={{user?.handle}} readonly>
-        <label for="email">Email: </label>
-        <input type="text" name="email" class="bg-gray-300" value={{user?.email}} readonly>
-        <label for="birthday">Birthday: </label>
-        <input type="text" name="birthday" class="bg-gray-300" value={{user?.birthday}} readonly>
-        <label for="registeredAt">Registered at:</label>
-        <input type="text" name="registeredAt" class="bg-gray-300" value={{user?.registeredAt}} readonly>
-        <button [routerLink]="['edit']" class="flex justify-center">
-            <svg class="mt-1" width="16px" height="16px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2319.000000)" fill="#000000">
-                        <g id="icons" transform="translate(56.000000, 160.000000)">
-                            <path d="M86.4570767,2175.58276 L99.6296259,2161.94876 L101.053522,2163.42214 L87.8809728,2177.05714 L86.4570767,2175.58276 Z M99.8259906,2159 L84,2175.58276 L84,2179 L87.8809728,2179 L104,2162.91969 L99.8259906,2159 Z" id="pen-[#1320]"></path>
+<div class="rounded-lg border-2 border-gray-300 px-4 pt-4">
+        <button type="button" (click)="goBack()" class="flex gap-1">
+            <svg class="mt-1" fill="#000000" width="16px" height="16px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M222.927 580.115l301.354 328.512c24.354 28.708 20.825 71.724-7.883 96.078s-71.724 20.825-96.078-7.883L19.576 559.963a67.846 67.846 0 01-13.784-20.022 68.03 68.03 0 01-5.977-29.488l.001-.063a68.343 68.343 0 017.265-29.134 68.28 68.28 0 011.384-2.6 67.59 67.59 0 0110.102-13.687L429.966 21.113c25.592-27.611 68.721-29.247 96.331-3.656s29.247 68.721 3.656 96.331L224.088 443.784h730.46c37.647 0 68.166 30.519 68.166 68.166s-30.519 68.166-68.166 68.166H222.927z"/></svg>
+            Back
+        </button>
+        <h1 class="font-bold text-3xl py-5">
+            User Details
+        </h1>
+        <ul>
+            <li class="my-2">Name: {{user?.name}}</li>
+            <li class="my-2">Handle: {{user?.handle}}</li>
+            <li class="my-2">Email: {{user?.email}}</li>
+            <li class="my-2">Date of birth: {{user?.birthday}}</li>
+            <li class="my-2">Registered at: {{user?.registeredAt}}</li>
+        </ul>
+        <div class="flex gap-9 my-4">
+            <button [routerLink]="['edit']" class="flex justify-center">
+                <svg class="mt-1 mx-2" width="16px" height="16px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2319.000000)" fill="#000000">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                                <path d="M86.4570767,2175.58276 L99.6296259,2161.94876 L101.053522,2163.42214 L87.8809728,2177.05714 L86.4570767,2175.58276 Z M99.8259906,2159 L84,2175.58276 L84,2179 L87.8809728,2179 L104,2162.91969 L99.8259906,2159 Z" id="pen-[#1320]"></path>
+                            </g>
                         </g>
                     </g>
-                </g>
-            </svg>
-            Edit
-        </button>
-        <button type="button" (click)="deleteUser(user?.id)"  class="flex justify-center">
-            <svg class="mt-1" fill="#000000" width="16px" height="16px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 26c0 1.656 1.343 3 3 3h10c1.656 0 3-1.344 3-3l2-16h-20l2 16zM19 13h2v13h-2v-13zM15 13h2v13h-2v-13zM11 13h2v13h-2v-13zM25.5 6h-6.5c0 0-0.448-2-1-2h-4c-0.553 0-1 2-1 2h-6.5c-0.829 0-1.5 0.671-1.5 1.5s0 1.5 0 1.5h22c0 0 0-0.671 0-1.5s-0.672-1.5-1.5-1.5z"></path>
-            </svg>
-            Delete
-        </button>
-</form>
+                </svg>
+                Edit
+            </button>
+            <button type="button" (click)="deleteUser(user?.id)"  class="flex justify-center">
+                <svg class="mt-1 mx-1" fill="#000000" width="16px" height="16px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 26c0 1.656 1.343 3 3 3h10c1.656 0 3-1.344 3-3l2-16h-20l2 16zM19 13h2v13h-2v-13zM15 13h2v13h-2v-13zM11 13h2v13h-2v-13zM25.5 6h-6.5c0 0-0.448-2-1-2h-4c-0.553 0-1 2-1 2h-6.5c-0.829 0-1.5 0.671-1.5 1.5s0 1.5 0 1.5h22c0 0 0-0.671 0-1.5s-0.672-1.5-1.5-1.5z"></path>
+                </svg>
+                Delete
+            </button>
+        </div>
+    </div>
