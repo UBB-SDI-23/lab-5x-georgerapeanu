@@ -20,22 +20,4 @@ export class UsersOverviewComponent {
       this.users = result;
     });
   }
-
-  deleteUser(id: number | undefined): void {
-    if(id == undefined){
-      return;
-    }
-    this.userService.deleteUser(id).subscribe({
-      next: (response) => {
-        this.userService.getAllUsers().subscribe(result => {
-          this.users = result;
-        });
-      },
-      error: (error) => {
-        this.userService.getAllUsers().subscribe(result => {
-          this.users = result;
-        });
-      }
-    });
-  }
 }

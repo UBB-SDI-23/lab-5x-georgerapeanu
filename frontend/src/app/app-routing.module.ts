@@ -6,6 +6,7 @@ import { UserDetailsComponent } from './components/users/user-details/user-detai
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { UserCreateComponent } from './components/users/user-create/user-create.component';
 import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
+import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path:"users/:id/edit",
     component: UserEditComponent
+  },
+  {
+    path:"users/:id/delete",
+    component: UserDeleteComponent
   },
   {
     path:"products/sorted-by-score",
