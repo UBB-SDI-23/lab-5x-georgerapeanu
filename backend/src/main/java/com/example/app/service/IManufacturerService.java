@@ -7,10 +7,10 @@ import java.util.List;
 
 
 public interface IManufacturerService {
-    List<ManufacturerDTO> getAllManufacturers();
+    List<ManufacturerDTO> getAllManufacturers(Integer pageNumber, Integer pageSize);
     ManufacturerDTO getManufacturerById(Integer id);
     void createManufacturer(ManufacturerDTO manufacturer);
     void updateManufacturerWithId(Integer id, ManufacturerDTO user );
     void deleteManufacturerWithId(Integer id);
-    List<ProductDTO> getProductsByManufacturerId(Integer id);
+    List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize);
 }

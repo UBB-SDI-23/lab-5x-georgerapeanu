@@ -6,14 +6,18 @@ import com.example.app.dto.model.ProductDTO;
 import com.example.app.service.IManufacturerService;
 import com.example.app.service.IProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @CrossOrigin(origins = "*")
 public class ManufacturerController {
     @Autowired
@@ -22,8 +26,15 @@ public class ManufacturerController {
     private IProductService productService;
 
     @GetMapping(path="/manufacturers")
-    public @ResponseBody List<ManufacturerDTO> getManufacturers(){
-        return manufacturerService.getAllManufacturers();
+    public @ResponseBody List<ManufacturerDTO> getManufacturers(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageCount should be at least 4")
+            @Max(value=10, message = "pageCount should be at most 10")
+            Integer pageCount
+    ){
+        return manufacturerService.getAllManufacturers(pageNumber, pageCount);
     }
 
     @GetMapping(path="/manufacturers/sorted-by-products")
@@ -42,8 +53,16 @@ public class ManufacturerController {
     }
 
     @GetMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public @ResponseBody ResponseEntity<List<ProductDTO>> getManufacturerProducts(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(manufacturerService.getProductsByManufacturerId(id), HttpStatus.OK);
+    public @ResponseBody ResponseEntity<List<ProductDTO>> getManufacturerProducts(
+            @PathVariable("id") Integer id,
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageCount should be at least 4")
+            @Max(value=10, message = "pageCount should be at most 10")
+            Integer pageCount
+    ) {
+        return new ResponseEntity<>(manufacturerService.getProductsByManufacturerId(id, pageNumber, pageCount), HttpStatus.OK);
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
@@ -62,7 +81,10 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public void createManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody List<Integer> product_ids) {
+    public void createManufacturer(
+            @PathVariable("id") Integer id,
+            @Valid @RequestBody List<Integer> product_ids
+    ) {
         product_ids.forEach(product_id -> {
             ProductDTO productDTO = productService.getProductById(product_id);
             productDTO.setManufacturerId(id);

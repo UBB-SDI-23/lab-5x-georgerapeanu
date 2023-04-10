@@ -4,7 +4,9 @@ import com.example.app.model.Manufacturer;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.repository.IManufacturerRepository;
+import com.example.app.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,8 +17,11 @@ import java.util.stream.Collectors;
 public class ManufacturerService implements IManufacturerService{
     @Autowired
     IManufacturerRepository manufacturerRepository;
-    public List<ManufacturerDTO> getAllManufacturers(){
-        return manufacturerRepository.findAll().stream()
+    @Autowired
+    IProductRepository productRepository;
+    public List<ManufacturerDTO> getAllManufacturers(Integer pageNumber, Integer pageSize){
+        return manufacturerRepository.findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
                 .map(ManufacturerDTO::fromManufacturer).collect(Collectors.toList());
     }
 
@@ -44,12 +49,16 @@ public class ManufacturerService implements IManufacturerService{
     }
 
     @Override
-    public List<ProductDTO> getProductsByManufacturerId(Integer id) {
+    public List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) {
         Manufacturer manufacturer = manufacturerRepository.findById(id).orElse(null);
         if(manufacturer == null){
             return new ArrayList<>();
         }
-        return manufacturer.getProducts().stream().map(ProductDTO::fromProduct).collect(Collectors.toList());
+        return productRepository
+                .findAllByManufacturer(manufacturer, PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ProductDTO::fromProduct)
+                .collect(Collectors.toList());
     }
 
 }
