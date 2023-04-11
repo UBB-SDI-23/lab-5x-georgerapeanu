@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserDTO } from '../models/UserDTO';
+import { UserDTO } from '../dto/UserDTO';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { GenericPageDTO } from '../dto/GenericPageDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>(environment.apiURL + "/users");
+  getAllUsers(pageNumber: number, pageSize: number): Observable<GenericPageDTO<UserDTO>> {
+    return this.http.get<GenericPageDTO<UserDTO>>(environment.apiURL + "/users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getUserById(id: number): Observable<UserDTO> {

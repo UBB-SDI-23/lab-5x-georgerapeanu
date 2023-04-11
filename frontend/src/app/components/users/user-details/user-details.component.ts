@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
-import { UserDTO } from 'src/app/models/UserDTO';
+import { UserDTO } from 'src/app/dto/UserDTO';
 import { Location } from '@angular/common';
 
 @Component({
