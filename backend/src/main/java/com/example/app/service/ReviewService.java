@@ -13,12 +13,11 @@ import com.example.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.HashMap;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,25 +31,29 @@ public class ReviewService implements  IReviewService{
     ProductRepository productRepository;
 
     @Override
-    public List<ReviewDTO> getReviewsForUser(Integer id) {
-        return reviewRepository.findAll().stream().filter(x -> {
-            User user = x.getUser();
-            if(user == null) {
-                return false;
-            }
-            return Objects.equals(user.getId(), id);
-        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
+    public List<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            return new ArrayList<>();
+        }
+        return reviewRepository
+                .findAllByUser(user.get(), PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ReviewDTO::fromReview)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ReviewDTO> getReviewsForProduct(Integer id) {
-        return reviewRepository.findAll().stream().filter(x -> {
-            Product product = x.getProduct();
-            if(product == null) {
-                return false;
-            }
-            return Objects.equals(product.getId(), id);
-        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
+    public List<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+            return new ArrayList<>();
+        }
+        return reviewRepository
+                .findAllByProduct(product.get(), PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ReviewDTO::fromReview)
+                .collect(Collectors.toList());
     }
 
     @Override

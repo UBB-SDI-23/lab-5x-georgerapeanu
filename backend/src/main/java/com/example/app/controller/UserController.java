@@ -62,8 +62,16 @@ public class UserController {
     }
 
     @GetMapping(path="/users/{id}/reviews", produces = "application/json")
-    public @ResponseBody List<ReviewDTO> getReviews(@PathVariable("id") Integer id) {
-        return reviewService.getReviewsForUser(id);
+    public @ResponseBody List<ReviewDTO> getReviews(
+            @PathVariable("id") Integer id,
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ) {
+        return reviewService.getReviewsForUser(id, pageNumber, pageSize);
     }
     @PostMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
     public void createReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
