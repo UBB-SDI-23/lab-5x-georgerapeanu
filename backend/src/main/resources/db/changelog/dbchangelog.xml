@@ -77,4 +77,36 @@
     <changeSet author="georgerapeanu (generated)" id="1680067598531-13">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
+    <changeSet id="1680067598532-1" author="georgerapeanu">
+        <dropSequence sequenceName="manufacturer_seq"/>
+        <dropSequence sequenceName="product_seq"/>
+        <dropSequence sequenceName="productdto_seq"/>
+        <dropSequence sequenceName="review_seq"/>
+        <dropSequence sequenceName="reviews_seq"/>
+        <dropSequence sequenceName="user_seq"/>
+    </changeSet>
+    <changeSet id="1680067598532-2" author="georgerapeanu">
+        <addAutoIncrement tableName="manufacturer" columnName="id"/>
+        <addAutoIncrement tableName="product" columnName="id"/>
+        <addAutoIncrement tableName="user" columnName="id"/>
+    </changeSet>
+    <changeSet id="1680067598533-1" author="georgerapeanu">
+        <dropForeignKeyConstraint baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j"/>
+        <dropForeignKeyConstraint baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh"/>
+        <dropForeignKeyConstraint baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8"/>
+
+        <dropPrimaryKey tableName="manufacturer"/>
+        <dropNotNullConstraint tableName="manufacturer" columnName="id"/>
+
+        <dropPrimaryKey tableName="product"/>
+        <dropNotNullConstraint tableName="product" columnName="id"/>
+        <dropNotNullConstraint tableName="product" columnName="manufacturer_id"/>
+
+        <dropPrimaryKey tableName="review"/>
+        <dropNotNullConstraint tableName="review" columnName="user_id"/>
+        <dropNotNullConstraint tableName="review" columnName="product_id"/>
+
+        <dropPrimaryKey tableName="user"/>
+        <dropNotNullConstraint tableName="user" columnName="id"/>
+    </changeSet>
 </databaseChangeLog>

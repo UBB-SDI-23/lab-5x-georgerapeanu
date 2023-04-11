@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 public class Manufacturer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank(message = "Manufacturer name is mandatory")
     private String name;
