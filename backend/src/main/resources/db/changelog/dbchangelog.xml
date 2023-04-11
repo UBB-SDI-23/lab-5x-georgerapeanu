@@ -109,4 +109,23 @@
         <dropPrimaryKey tableName="user"/>
         <dropNotNullConstraint tableName="user" columnName="id"/>
     </changeSet>
+    <changeSet id="1680067598533-2" author="georgerapeanu">
+        <addNotNullConstraint tableName="manufacturer" columnName="id"/>
+        <addPrimaryKey tableName="manufacturer" columnNames="id"/>
+
+        <addNotNullConstraint tableName="product" columnName="manufacturer_id"/>
+        <addNotNullConstraint tableName="product" columnName="id"/>
+        <addPrimaryKey tableName="product" columnNames="id"/>
+
+        <addNotNullConstraint tableName="review" columnName="product_id"/>
+        <addNotNullConstraint tableName="review" columnName="user_id"/>
+        <addPrimaryKey tableName="review" columnNames="user_id,product_id"/>
+
+        <addNotNullConstraint tableName="user" columnName="id"/>
+        <addPrimaryKey tableName="user" columnNames="id"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="manufacturer_id" baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="manufacturer" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="product" validate="true"/>
+    </changeSet>
 </databaseChangeLog>
