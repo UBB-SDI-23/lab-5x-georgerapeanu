@@ -28,7 +28,7 @@
     </thead>
     <tbody class="text-gray-600 text-sm font-light">
       <tr *ngFor="let user of users; index as i" [routerLink]="[user.id]" class="border-b border-gray-200 hover:bg-gray-100">
-        <td class="py-3 px-6 text-left"><a>{{ i + 1 }}</a></td>
+        <td class="py-3 px-6 text-left"><a>{{ i + 1 + pageNumber * pageSize}}</a></td>
         <td class="py-3 px-6 text-left">{{ user.name }}</td>
         <td class="py-3 px-6 text-left">{{ user.handle }}</td>
         <td class="py-3 px-6 text-left">{{ user.email }}</td>
@@ -54,5 +54,25 @@
         </td>
       </tr>
     </tbody>
-  </table>
+</table>
   
+<div class="flex gap-2 mt-6 w-full justify-center">
+  <button (click)="setPageNumber(0)" class="h-8 w-8 rounded-full justify-center items-center flex">
+      <<
+  </button>
+  <button (click)="setPageNumber(this.pageNumber - 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
+      <
+  </button>
+  <div *ngFor="let page of [this.pageNumber - 2, this.pageNumber - 1, this.pageNumber, this.pageNumber + 1, this.pageNumber + 2, ]">
+    <button (click)="setPageNumber(page)" *ngIf="page >= 0 && page < totalPages" class="h-8 w-8 rounded-full justify-center items-center flex" [ngClass]="{'bg-blue-600': page==this.pageNumber}">
+      {{ page }}
+    </button>
+  </div>
+  <button (click)="setPageNumber(this.pageNumber + 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
+    >
+  </button>
+  <button (click)="setPageNumber(this.totalPages - 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
+    >>
+  </button>
+  <input type="text" class="h-8 w-8 border-2 border-slate-400 text-center" [(ngModel)]="desiredPage" (keydown.enter)="setPageNumber(desiredPage)">
+</div>

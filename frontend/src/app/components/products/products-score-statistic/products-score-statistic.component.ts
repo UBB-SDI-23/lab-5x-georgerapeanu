@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ProductScoreDTO } from 'src/app/models/PoductScoreDTO';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductScoreDTO } from 'src/app/dto/PoductScoreDTO';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -8,18 +9,51 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./products-score-statistic.component.css']
 })
 export class ProductsScoreStatisticComponent {
+  pageSize: number = 10;
+  pageNumber: number = 0;
+  totalPages: number = 0;
+  desiredPage: number = 0;
   productScores: ProductScoreDTO[] = [];
-  constructor(private productService: ProductService) {
+  constructor(
+    private productService: ProductService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
 
   }
 
   ngOnInit(): void {
-    this.productService.getProductScoreStatistic().subscribe((result) => {
-      this.productScores = result;
-    });
+    this.activatedRoute.queryParams
+      .subscribe(
+        params => {
+          if('pageSize' in params) {
+            this.pageSize = parseInt(params['pageSize']);
+          }
+          if('pageNumber' in params) {
+            this.pageNumber = parseInt(params['pageNumber']);
+          }
+          this.desiredPage = this.pageNumber;
+          this.productService.getProductScoreStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
+            this.productScores = result.content;
+            this.totalPages = result.totalPages;
+          });
+        }
+      );
   }
 
   sortByScore(): void {
     this.productScores.reverse();
+  }
+
+  setPageNumber(pageNumber: number): void {
+    pageNumber = Math.max(pageNumber, 0);
+    pageNumber = Math.min(pageNumber, this.totalPages - 1);
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber}
+      }
+    )
   }
 }

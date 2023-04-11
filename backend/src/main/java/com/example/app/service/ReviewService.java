@@ -7,79 +7,53 @@ import com.example.app.dto.model.ProductDTO;
 import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.model.User;
-import com.example.app.repository.IProductRepository;
-import com.example.app.repository.IReviewRepository;
-import com.example.app.repository.IUserRepository;
+import com.example.app.repository.ProductRepository;
+import com.example.app.repository.ReviewRepository;
+import com.example.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.HashMap;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Service
 public class ReviewService implements  IReviewService{
     @Autowired
-    IReviewRepository reviewRepository;
+    ReviewRepository reviewRepository;
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
-    IProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Override
-    public List<ProductScoreDTO> getProductsSortedByScore() {
-        HashMap<Integer, Integer> total_score = new HashMap<>();
-        HashMap<Integer, Integer> review_count = new HashMap<>();
-        reviewRepository.findAll().stream().forEach(review -> {
-            total_score.put(review.getProduct().getId(), total_score.getOrDefault(review.getProduct().getId(), 0) + review.getScore());
-            review_count.put(review.getProduct().getId(), review_count.getOrDefault(review.getProduct().getId(), 0) + 1);
-        });
-        List<ProductScoreDTO> resultList = productRepository.findAll().stream().map(product -> {
-            ProductScoreDTO result = new ProductScoreDTO();
-            result.setProductDTO(ProductDTO.fromProduct(product));
-            Double score = (double) 0;
-
-            if(total_score.containsKey(product.getId())) {
-                score = ((double)total_score.get(product.getId())) / ((double)review_count.get(product.getId()));
-            }
-
-            result.setScore(score);
-            return result;
-        }).collect(Collectors.toList());
-        resultList.sort((x, y) -> {
-            if(!Objects.equals(x.getScore(), y.getScore())) {
-                return x.getScore() > y.getScore() ? -1:1;
-            }
-            return 0;
-        });
-        return resultList;
+    public List<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            return new ArrayList<>();
+        }
+        return reviewRepository
+                .findAllByUser(user.get(), PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ReviewDTO::fromReview)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ReviewDTO> getReviewsForUser(Integer id) {
-        return reviewRepository.findAll().stream().filter(x -> {
-            User user = x.getUser();
-            if(user == null) {
-                return false;
-            }
-            return Objects.equals(user.getId(), id);
-        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ReviewDTO> getReviewsForProduct(Integer id) {
-        return reviewRepository.findAll().stream().filter(x -> {
-            Product product = x.getProduct();
-            if(product == null) {
-                return false;
-            }
-            return Objects.equals(product.getId(), id);
-        }).map(ReviewDTO::fromReview).collect(Collectors.toList());
+    public List<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+            return new ArrayList<>();
+        }
+        return reviewRepository
+                .findAllByProduct(product.get(), PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ReviewDTO::fromReview)
+                .collect(Collectors.toList());
     }
 
     @Override

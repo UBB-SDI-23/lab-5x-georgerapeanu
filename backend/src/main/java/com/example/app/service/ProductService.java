@@ -1,19 +1,21 @@
 package com.example.app.service;
 
-import com.example.app.dto.ManufacturerProductCountDTO;
+import com.example.app.dto.ProductScoreDTO;
+import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
-import com.example.app.repository.IManufacturerRepository;
-import com.example.app.repository.IProductRepository;
+import com.example.app.repository.ManufacturerRepository;
+import com.example.app.repository.ProductRepository;
+import com.example.app.repository.specification.ProductSpecifications;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -21,13 +23,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService implements  IProductService{
     @Autowired
-    IProductRepository productRepository;
+    ProductRepository productRepository;
     @Autowired
-    IManufacturerRepository manufacturerRepository;
+    ManufacturerRepository manufacturerRepository;
 
-    public List<ProductDTO> getAllProducts(){
-        return productRepository.findAll().stream()
-                .map(ProductDTO::fromProduct).collect(Collectors.toList());
+    public List<ProductDTO> getAllProducts(Integer pageNumber, Integer pageSize){
+        return productRepository
+                .findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ProductDTO::fromProduct)
+                .collect(Collectors.toList());
     }
 
     public ProductDTO getProductById(Integer id) {
@@ -53,9 +58,12 @@ public class ProductService implements  IProductService{
         productRepository.deleteById(id);
     }
 
-    public List<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight){
-        return productRepository.findProductsWithWeightBiggerThan(weight).stream()
-                .map(ProductDTO::fromProduct).collect(Collectors.toList());
+    public List<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight, Integer pageNumber, Integer pageSize){
+        return productRepository
+                .findAll(ProductSpecifications.weightBiggerThan(weight), PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ProductDTO::fromProduct)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -68,24 +76,23 @@ public class ProductService implements  IProductService{
     }
 
     @Override
-    public List<ManufacturerProductCountDTO> getManufacturersSortedByProducts() {
-        HashMap<Integer, Integer> total_count = new HashMap<>();
-
-        productRepository.findAll().stream().forEach(product -> {
-            total_count.put(product.getManufacturer().getId(), total_count.getOrDefault(product.getManufacturer().getId(), 0) + 1);
-        });
-        List<ManufacturerProductCountDTO> result = manufacturerRepository.findAll().stream().map(manufacturer -> {
-            return new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturer), total_count.getOrDefault(manufacturer.getId(), 0));
-        }).collect(Collectors.toList());
-        result.sort((x, y) -> {
-            if(!Objects.equals(x.getProductCount(), y.getProductCount())){
-                return x.getProductCount() > y.getProductCount() ? -1:1;
-            }
-            return 0;
-        });
-        return result;
+    public List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) {
+        Manufacturer manufacturer = manufacturerRepository.findById(id).orElse(null);
+        if(manufacturer == null){
+            return new ArrayList<>();
+        }
+        return productRepository
+                .findAllByManufacturer(manufacturer, PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(ProductDTO::fromProduct)
+                .collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize) {
+        return productRepository
+                .getProductsSortedByAverageScore(PageRequest.of(pageNumber, pageSize))
+                .toList();
+    }
 }
 

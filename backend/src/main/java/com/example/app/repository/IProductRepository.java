@@ -1,14 +1,9 @@
 package com.example.app.repository;
 
-import com.example.app.model.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import com.example.app.dto.ProductScoreDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
-@Repository
-public interface IProductRepository extends JpaRepository<Product, Integer> {
-    @Query("SELECT p from Product p WHERE p.weight > ?1")
-    List<Product> findProductsWithWeightBiggerThan(Integer weight);
+public interface IProductRepository {
+    Page<ProductScoreDTO> getProductsSortedByAverageScore(Pageable pageable);
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -20,6 +21,9 @@ public class User {
     private String email;
     private Date birthday;
     private Date registeredAt;
+
+    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY)
+    List<Review> reviews;
 
     public User(){
         ;

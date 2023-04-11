@@ -2,7 +2,8 @@ package com.example.app.service;
 
 import com.example.app.model.User;
 import com.example.app.dto.model.UserDTO;
-import com.example.app.repository.IUserRepository;
+import com.example.app.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,10 +13,14 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements  IUserService{
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
 
-    public List<UserDTO> getAllUsers(){
-        return userRepository.findAll().stream().map(UserDTO::fromUser).collect(Collectors.toList());
+    public List<UserDTO> getAllUsers(Integer pageNumber, Integer pageSize){
+        return userRepository
+                .findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(UserDTO::fromUser)
+                .collect(Collectors.toList());
     }
 
     public UserDTO getUserById(Integer id) {

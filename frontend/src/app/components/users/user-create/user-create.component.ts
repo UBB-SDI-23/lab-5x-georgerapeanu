@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserDTO } from 'src/app/models/UserDTO';
+import { UserDTO } from 'src/app/dto/UserDTO';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
 import { FormBuilder } from '@angular/forms';
