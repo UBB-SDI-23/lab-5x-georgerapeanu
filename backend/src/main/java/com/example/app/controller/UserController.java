@@ -4,6 +4,8 @@ import com.example.app.dto.model.ReviewDTO;
 import com.example.app.dto.model.UserDTO;
 import com.example.app.service.IReviewService;
 import com.example.app.service.IUserService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,15 @@ public class UserController {
     private IReviewService reviewService;
 
     @GetMapping(path="/users")
-    public @ResponseBody List<UserDTO> getUsers(){
-        return userService.getAllUsers();
+    public @ResponseBody List<UserDTO> getUsers(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return userService.getAllUsers(pageNumber, pageSize);
     }
 
     @GetMapping(path="/users/{id}", produces = "application/json")
