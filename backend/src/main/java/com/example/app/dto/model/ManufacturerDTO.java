@@ -14,7 +14,7 @@ public class ManufacturerDTO {
     @NotBlank
     private String name;
     private String description;
-
+    private Date registerDate;
     public ManufacturerDTO() {
     }
 
@@ -23,11 +23,7 @@ public class ManufacturerDTO {
         this.name = name;
         this.description = description;
         this.registerDate = registerDate;
-        this.product_ids = product_ids;
     }
-
-    private Date registerDate;
-    List<Integer> product_ids;
 
     public Integer getId() {
         return id;
@@ -61,14 +57,6 @@ public class ManufacturerDTO {
         this.registerDate = registerDate;
     }
 
-    public List<Integer> getProduct_ids() {
-        return product_ids;
-    }
-
-    public void setProduct_ids(List<Integer> product_ids) {
-        this.product_ids = product_ids;
-    }
-
     public static ManufacturerDTO fromManufacturer(Manufacturer manufacturer){
         return new ManufacturerDTO(
                 manufacturer.getId(),
@@ -93,12 +81,12 @@ public class ManufacturerDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ManufacturerDTO that = (ManufacturerDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(registerDate, that.registerDate) && Objects.equals(product_ids, that.product_ids);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(registerDate, that.registerDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, registerDate, product_ids);
+        return Objects.hash(id, name, description, registerDate);
     }
 
     @Override
@@ -108,7 +96,6 @@ public class ManufacturerDTO {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", registerDate=" + registerDate +
-                ", product_ids=" + product_ids +
                 '}';
     }
 }
