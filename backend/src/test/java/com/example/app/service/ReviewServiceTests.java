@@ -6,8 +6,8 @@ import com.example.app.model.Ids.ReviewId;
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.model.Review;
-import com.example.app.repository.IProductRepository;
-import com.example.app.repository.IReviewRepository;
+import com.example.app.repository.ProductRepository;
+import com.example.app.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTests {
     @Mock
-    private IReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
     @Mock
-    private IProductRepository productRepository;
+    private ProductRepository productRepository;
     private IReviewService reviewService;
     private List<Product> products;
 

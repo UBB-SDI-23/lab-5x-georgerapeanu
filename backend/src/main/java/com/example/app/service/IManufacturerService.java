@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import com.example.app.dto.ManufacturerProductCountDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 
@@ -12,5 +13,5 @@ public interface IManufacturerService {
     void createManufacturer(ManufacturerDTO manufacturer);
     void updateManufacturerWithId(Integer id, ManufacturerDTO user );
     void deleteManufacturerWithId(Integer id);
-    List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize);
+    public List<ManufacturerProductCountDTO> getManufacturersSortedByProducts(Integer pageNumber, Integer pageSize);
 }

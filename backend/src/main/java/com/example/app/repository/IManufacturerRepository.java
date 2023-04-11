@@ -1,10 +1,12 @@
 package com.example.app.repository;
 
-import com.example.app.model.Manufacturer;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.example.app.dto.ManufacturerProductCountDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
-@Repository
-public interface IManufacturerRepository extends JpaRepository<Manufacturer, Integer> {
+import java.util.List;
 
+public interface IManufacturerRepository {
+    public Page<ManufacturerProductCountDTO> getManufacturersSortedByProductCount(Pageable pageable);
 }

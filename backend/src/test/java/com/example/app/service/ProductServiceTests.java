@@ -2,15 +2,11 @@ package com.example.app.service;
 
 
 import com.example.app.dto.ManufacturerProductCountDTO;
-import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ManufacturerDTO;
-import com.example.app.dto.model.ProductDTO;
-import com.example.app.model.Ids.ReviewId;
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
-import com.example.app.model.Review;
-import com.example.app.repository.IManufacturerRepository;
-import com.example.app.repository.IProductRepository;
+import com.example.app.repository.ManufacturerRepository;
+import com.example.app.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +24,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTests {
     @Mock
-    private IManufacturerRepository manufacturerRepository;
+    private ManufacturerRepository manufacturerRepository;
     @Mock
-    private IProductRepository productRepository;
+    private ProductRepository productRepository;
     private IProductService productService;
     private List<Product> products;
     private List<Manufacturer> manufacturers;

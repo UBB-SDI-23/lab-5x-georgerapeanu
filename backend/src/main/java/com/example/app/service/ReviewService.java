@@ -7,9 +7,9 @@ import com.example.app.dto.model.ProductDTO;
 import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.model.User;
-import com.example.app.repository.IProductRepository;
-import com.example.app.repository.IReviewRepository;
-import com.example.app.repository.IUserRepository;
+import com.example.app.repository.ProductRepository;
+import com.example.app.repository.ReviewRepository;
+import com.example.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ import java.util.HashMap;
 @Service
 public class ReviewService implements  IReviewService{
     @Autowired
-    IReviewRepository reviewRepository;
+    ReviewRepository reviewRepository;
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
-    IProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Override
     public List<ProductScoreDTO> getProductsSortedByScore() {

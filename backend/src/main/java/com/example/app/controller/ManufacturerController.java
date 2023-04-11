@@ -30,16 +30,23 @@ public class ManufacturerController {
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageCount should be at least 4")
-            @Max(value=10, message = "pageCount should be at most 10")
-            Integer pageCount
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
     ){
-        return manufacturerService.getAllManufacturers(pageNumber, pageCount);
+        return manufacturerService.getAllManufacturers(pageNumber, pageSize);
     }
 
     @GetMapping(path="/manufacturers/sorted-by-products")
-    public @ResponseBody List<ManufacturerProductCountDTO> getManufacturersSortedByProducts(){
-        return productService.getManufacturersSortedByProducts();
+    public @ResponseBody List<ManufacturerProductCountDTO> getManufacturersSortedByProducts(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return manufacturerService.getManufacturersSortedByProducts(pageNumber, pageSize);
     }
 
     @GetMapping(path="/manufacturers/{id}", produces = "application/json")
@@ -58,11 +65,11 @@ public class ManufacturerController {
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageCount should be at least 4")
-            @Max(value=10, message = "pageCount should be at most 10")
-            Integer pageCount
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
     ) {
-        return new ResponseEntity<>(manufacturerService.getProductsByManufacturerId(id, pageNumber, pageCount), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getProductsByManufacturerId(id, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")

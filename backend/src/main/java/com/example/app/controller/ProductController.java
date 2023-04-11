@@ -6,6 +6,8 @@ import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,15 @@ public class ProductController {
     private IReviewService reviewService;
 
     @GetMapping(path="/products")
-    public @ResponseBody List<ProductDTO> getProducts(){
-        return productService.getAllProducts();
+    public @ResponseBody List<ProductDTO> getProducts(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return productService.getAllProducts( pageNumber, pageSize);
     }
 
     @GetMapping(path="/products/{id}", produces = "application/json")
@@ -68,8 +77,16 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/weight-filter", produces = "application/json")
-    public @ResponseBody List<ProductDTO> getAllProductsWithWeightBiggerThan(@RequestParam Integer weight) {
-        return productService.getAllProductsWithWeightBiggerThan(weight);
+    public @ResponseBody List<ProductDTO> getAllProductsWithWeightBiggerThan(
+            @RequestParam Integer weight,
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ) {
+        return productService.getAllProductsWithWeightBiggerThan(weight, pageNumber, pageSize);
     }
 
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
