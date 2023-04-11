@@ -7,8 +7,10 @@ import com.example.app.service.IUserService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@Validated
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -25,7 +28,7 @@ public class UserController {
     private IReviewService reviewService;
 
     @GetMapping(path="/users")
-    public @ResponseBody List<UserDTO> getUsers(
+    public @ResponseBody Page<UserDTO> getUsers(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -62,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping(path="/users/{id}/reviews", produces = "application/json")
-    public @ResponseBody List<ReviewDTO> getReviews(
+    public @ResponseBody Page<ReviewDTO> getReviews(
             @PathVariable("id") Integer id,
             @RequestParam
             Integer pageNumber,
