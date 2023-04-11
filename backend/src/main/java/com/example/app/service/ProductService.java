@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import com.example.app.dto.ProductScoreDTO;
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.dto.model.ManufacturerDTO;
@@ -85,6 +86,13 @@ public class ProductService implements  IProductService{
                 .stream()
                 .map(ProductDTO::fromProduct)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize) {
+        return productRepository
+                .getProductsSortedByAverageScore(PageRequest.of(pageNumber, pageSize))
+                .toList();
     }
 }
 

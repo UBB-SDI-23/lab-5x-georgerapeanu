@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotBlank;
 import java.sql.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +22,13 @@ public class Product {
     private Double price;
     private Integer weight;
 
+    @OneToMany(mappedBy = "product", fetch=FetchType.LAZY)
+    List<Review> reviews;
+
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_id", nullable = false)
+    private Manufacturer manufacturer;
+
     public Manufacturer getManufacturer() {
         return manufacturer;
     }
@@ -28,10 +36,6 @@ public class Product {
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "manufacturer_id", nullable = false)
-    private Manufacturer manufacturer;
 
     public Integer getId() {
         return id;

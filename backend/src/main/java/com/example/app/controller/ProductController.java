@@ -90,8 +90,15 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
-    public @ResponseBody List<ProductScoreDTO> getAllProductsSortedByReviews(){
-        return reviewService.getProductsSortedByScore();
+    public @ResponseBody List<ProductScoreDTO> getAllProductsSortedByReviews(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return productService.getProductsSortedByScore(pageNumber, pageSize);
     }
 
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")

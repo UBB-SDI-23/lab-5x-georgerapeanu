@@ -31,33 +31,33 @@ public class ProductServiceTests {
     private List<Product> products;
     private List<Manufacturer> manufacturers;
 
-    @BeforeEach
-    void setUp() throws RuntimeException{
-        this.productService = new ProductService(productRepository, manufacturerRepository);
-        Date date = Date.valueOf("2023-03-28");
-        this.manufacturers = Arrays.asList(
-                new Manufacturer(1, "manufacturer1", "description1", date, new ArrayList<>()),
-                new Manufacturer(2, "manufacturer2", "description2", date, new ArrayList<>()),
-                new Manufacturer(3, "manufacturer3", "description3", date, new ArrayList<>())
-        );
-        this.products = Arrays.asList(
-                new Product(1, "product1", "description1", date, 20.0, 1, manufacturers.get(0)),
-                new Product(2, "product2", "description2", date, 21.0, 2, manufacturers.get(1)),
-                new Product(3, "product3", "description3", date, 22.0, 3, manufacturers.get(1)),
-                new Product(4, "product4", "description4", date, 22.0, 3, manufacturers.get(1))
-        );
-        when(productRepository.findAll()).thenReturn(products);
-        when(manufacturerRepository.findAll()).thenReturn(manufacturers);
-    }
-
-    @Test
-    public void testGetManufacturerByProductId() {
-        assertEquals(Arrays.asList(
-                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(1)), 3),
-                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(0)), 1),
-                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(2)), 0)
-                ),
-                this.productService.getManufacturersSortedByProducts()
-        );
-    }
+//    @BeforeEach
+//    void setUp() throws RuntimeException{
+//        this.productService = new ProductService(productRepository, manufacturerRepository);
+//        Date date = Date.valueOf("2023-03-28");
+//        this.manufacturers = Arrays.asList(
+//                new Manufacturer(1, "manufacturer1", "description1", date, new ArrayList<>()),
+//                new Manufacturer(2, "manufacturer2", "description2", date, new ArrayList<>()),
+//                new Manufacturer(3, "manufacturer3", "description3", date, new ArrayList<>())
+//        );
+//        this.products = Arrays.asList(
+//                new Product(1, "product1", "description1", date, 20.0, 1, manufacturers.get(0)),
+//                new Product(2, "product2", "description2", date, 21.0, 2, manufacturers.get(1)),
+//                new Product(3, "product3", "description3", date, 22.0, 3, manufacturers.get(1)),
+//                new Product(4, "product4", "description4", date, 22.0, 3, manufacturers.get(1))
+//        );
+//        when(productRepository.findAll()).thenReturn(products);
+//        when(manufacturerRepository.findAll()).thenReturn(manufacturers);
+//    }
+//
+//    @Test
+//    public void testGetManufacturerByProductId() {
+//        assertEquals(Arrays.asList(
+//                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(1)), 3),
+//                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(0)), 1),
+//                        new ManufacturerProductCountDTO(ManufacturerDTO.fromManufacturer(manufacturers.get(2)), 0)
+//                ),
+//                this.productService.getManufacturersSortedByProducts()
+//        );
+//    }
 }

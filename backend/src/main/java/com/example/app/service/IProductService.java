@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import com.example.app.dto.ManufacturerProductCountDTO;
+import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 
@@ -16,4 +17,7 @@ public interface IProductService {
     public ManufacturerDTO getManufacturerByProductId(Integer id);
 
     List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize);
+
+    List<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize);
+
 }

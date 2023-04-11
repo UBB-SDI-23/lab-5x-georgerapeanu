@@ -32,35 +32,6 @@ public class ReviewService implements  IReviewService{
     ProductRepository productRepository;
 
     @Override
-    public List<ProductScoreDTO> getProductsSortedByScore() {
-        HashMap<Integer, Integer> total_score = new HashMap<>();
-        HashMap<Integer, Integer> review_count = new HashMap<>();
-        reviewRepository.findAll().stream().forEach(review -> {
-            total_score.put(review.getProduct().getId(), total_score.getOrDefault(review.getProduct().getId(), 0) + review.getScore());
-            review_count.put(review.getProduct().getId(), review_count.getOrDefault(review.getProduct().getId(), 0) + 1);
-        });
-        List<ProductScoreDTO> resultList = productRepository.findAll().stream().map(product -> {
-            ProductScoreDTO result = new ProductScoreDTO();
-            result.setProductDTO(ProductDTO.fromProduct(product));
-            Double score = (double) 0;
-
-            if(total_score.containsKey(product.getId())) {
-                score = ((double)total_score.get(product.getId())) / ((double)review_count.get(product.getId()));
-            }
-
-            result.setScore(score);
-            return result;
-        }).collect(Collectors.toList());
-        resultList.sort((x, y) -> {
-            if(!Objects.equals(x.getScore(), y.getScore())) {
-                return x.getScore() > y.getScore() ? -1:1;
-            }
-            return 0;
-        });
-        return resultList;
-    }
-
-    @Override
     public List<ReviewDTO> getReviewsForUser(Integer id) {
         return reviewRepository.findAll().stream().filter(x -> {
             User user = x.getUser();

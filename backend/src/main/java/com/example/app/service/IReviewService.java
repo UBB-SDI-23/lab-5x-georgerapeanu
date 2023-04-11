@@ -6,8 +6,6 @@ import com.example.app.dto.model.ReviewDTO;
 import java.util.List;
 
 public interface IReviewService {
-    List<ProductScoreDTO> getProductsSortedByScore();
-
     List<ReviewDTO> getReviewsForUser(Integer id);
     List<ReviewDTO> getReviewsForProduct(Integer id);
     void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO);
