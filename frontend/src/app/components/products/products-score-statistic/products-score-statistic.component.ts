@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductScoreDTO } from 'src/app/dto/PoductScoreDTO';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -12,10 +12,12 @@ export class ProductsScoreStatisticComponent {
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
+  desiredPage: number = 0;
   productScores: ProductScoreDTO[] = [];
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
 
   }
@@ -30,6 +32,7 @@ export class ProductsScoreStatisticComponent {
           if('pageNumber' in params) {
             this.pageNumber = parseInt(params['pageNumber']);
           }
+          this.desiredPage = this.pageNumber;
           this.productService.getProductScoreStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
             this.productScores = result.content;
             this.totalPages = result.totalPages;
@@ -45,6 +48,12 @@ export class ProductsScoreStatisticComponent {
   setPageNumber(pageNumber: number): void {
     pageNumber = Math.max(pageNumber, 0);
     pageNumber = Math.min(pageNumber, this.totalPages - 1);
-    this.pageNumber = pageNumber;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber}
+      }
+    )
   }
 }
