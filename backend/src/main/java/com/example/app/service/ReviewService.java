@@ -13,6 +13,7 @@ import com.example.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -31,29 +32,25 @@ public class ReviewService implements  IReviewService{
     ProductRepository productRepository;
 
     @Override
-    public List<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-            return new ArrayList<>();
+            return null;
         }
         return reviewRepository
                 .findAllByUser(user.get(), PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(ReviewDTO::fromReview)
-                .collect(Collectors.toList());
+                .map(ReviewDTO::fromReview);
     }
 
     @Override
-    public List<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) {
         Optional<Product> product = productRepository.findById(id);
         if(product.isEmpty()){
-            return new ArrayList<>();
+            return null;
         }
         return reviewRepository
                 .findAllByProduct(product.get(), PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(ReviewDTO::fromReview)
-                .collect(Collectors.toList());
+                .map(ReviewDTO::fromReview);
     }
 
     @Override

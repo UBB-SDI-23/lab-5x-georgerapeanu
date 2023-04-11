@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ public class ManufacturerController {
     private IProductService productService;
 
     @GetMapping(path="/manufacturers")
-    public @ResponseBody List<ManufacturerDTO> getManufacturers(
+    public @ResponseBody Page<ManufacturerDTO> getManufacturers(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -38,7 +39,7 @@ public class ManufacturerController {
     }
 
     @GetMapping(path="/manufacturers/sorted-by-products")
-    public @ResponseBody List<ManufacturerProductCountDTO> getManufacturersSortedByProducts(
+    public @ResponseBody Page<ManufacturerProductCountDTO> getManufacturersSortedByProducts(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -60,7 +61,7 @@ public class ManufacturerController {
     }
 
     @GetMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public @ResponseBody ResponseEntity<List<ProductDTO>> getManufacturerProducts(
+    public @ResponseBody ResponseEntity<Page<ProductDTO>> getManufacturerProducts(
             @PathVariable("id") Integer id,
             @RequestParam
             Integer pageNumber,
@@ -90,7 +91,7 @@ public class ManufacturerController {
     @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
     public void createManufacturer(
             @PathVariable("id") Integer id,
-            @Valid @RequestBody List<Integer> product_ids
+            @Valid @RequestBody Page<Integer> product_ids
     ) {
         product_ids.forEach(product_id -> {
             ProductDTO productDTO = productService.getProductById(product_id);

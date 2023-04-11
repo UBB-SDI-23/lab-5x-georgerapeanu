@@ -2,6 +2,7 @@ package com.example.app.repository;
 
 import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ProductDTO;
+import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.model.Review;
 import jakarta.persistence.EntityManager;
@@ -43,6 +44,10 @@ public class ProductRepositoryImpl implements IProductRepository{
                 })
                 .toList();
 
-        return new PageImpl<>(results);
+        CriteriaQuery<Long> count_cq = cb.createQuery(Long.class);
+        count_cq.select(cb.count(count_cq.from(Product.class)));
+        long total = em.createQuery(count_cq).getSingleResult();
+
+        return new PageImpl<>(results, pageable, total);
     }
 }

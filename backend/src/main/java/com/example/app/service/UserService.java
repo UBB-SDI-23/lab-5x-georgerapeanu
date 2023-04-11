@@ -3,6 +3,7 @@ package com.example.app.service;
 import com.example.app.model.User;
 import com.example.app.dto.model.UserDTO;
 import com.example.app.repository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,10 @@ public class UserService implements  IUserService{
     @Autowired
     UserRepository userRepository;
 
-    public List<UserDTO> getAllUsers(Integer pageNumber, Integer pageSize){
+    public Page<UserDTO> getAllUsers(Integer pageNumber, Integer pageSize){
         return userRepository
                 .findAll(PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(UserDTO::fromUser)
-                .collect(Collectors.toList());
+                .map(UserDTO::fromUser);
     }
 
     public UserDTO getUserById(Integer id) {

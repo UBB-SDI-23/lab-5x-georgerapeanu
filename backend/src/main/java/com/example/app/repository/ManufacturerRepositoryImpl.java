@@ -47,6 +47,10 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 })
                 .toList();
 
-        return new PageImpl<>(results);
+        CriteriaQuery<Long> count_cq = cb.createQuery(Long.class);
+        count_cq.select(cb.count(count_cq.from(Manufacturer.class)));;
+        long total = em.createQuery(count_cq).getSingleResult();
+
+        return new PageImpl<>(results, pageable, total);
     }
 }

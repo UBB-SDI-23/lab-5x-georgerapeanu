@@ -11,8 +11,10 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -23,6 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
+@Validated
 public class ProductController {
     @Autowired
     private IProductService productService;
@@ -30,7 +33,7 @@ public class ProductController {
     private IReviewService reviewService;
 
     @GetMapping(path="/products")
-    public @ResponseBody List<ProductDTO> getProducts(
+    public @ResponseBody Page<ProductDTO> getProducts(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -77,7 +80,7 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/weight-filter", produces = "application/json")
-    public @ResponseBody List<ProductDTO> getAllProductsWithWeightBiggerThan(
+    public @ResponseBody Page<ProductDTO> getAllProductsWithWeightBiggerThan(
             @RequestParam Integer weight,
             @RequestParam
             Integer pageNumber,
@@ -90,7 +93,7 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
-    public @ResponseBody List<ProductScoreDTO> getAllProductsSortedByReviews(
+    public @ResponseBody Page<ProductScoreDTO> getAllProductsSortedByReviews(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -102,7 +105,7 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")
-    public @ResponseBody List<ReviewDTO> getReviews(
+    public @ResponseBody Page<ReviewDTO> getReviews(
             @PathVariable("id") Integer id,
             @RequestParam
             Integer pageNumber,

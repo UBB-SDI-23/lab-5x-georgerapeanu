@@ -11,6 +11,7 @@ import com.example.app.repository.specification.ProductSpecifications;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +28,10 @@ public class ProductService implements  IProductService{
     @Autowired
     ManufacturerRepository manufacturerRepository;
 
-    public List<ProductDTO> getAllProducts(Integer pageNumber, Integer pageSize){
+    public Page<ProductDTO> getAllProducts(Integer pageNumber, Integer pageSize){
         return productRepository
                 .findAll(PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(ProductDTO::fromProduct)
-                .collect(Collectors.toList());
+                .map(ProductDTO::fromProduct);
     }
 
     public ProductDTO getProductById(Integer id) {
@@ -58,12 +57,10 @@ public class ProductService implements  IProductService{
         productRepository.deleteById(id);
     }
 
-    public List<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight, Integer pageNumber, Integer pageSize){
+    public Page<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight, Integer pageNumber, Integer pageSize){
         return productRepository
                 .findAll(ProductSpecifications.weightBiggerThan(weight), PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(ProductDTO::fromProduct)
-                .collect(Collectors.toList());
+                .map(ProductDTO::fromProduct);
     }
 
     @Override
@@ -76,23 +73,20 @@ public class ProductService implements  IProductService{
     }
 
     @Override
-    public List<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) {
         Manufacturer manufacturer = manufacturerRepository.findById(id).orElse(null);
         if(manufacturer == null){
-            return new ArrayList<>();
+            return null;
         }
         return productRepository
                 .findAllByManufacturer(manufacturer, PageRequest.of(pageNumber, pageSize))
-                .stream()
-                .map(ProductDTO::fromProduct)
-                .collect(Collectors.toList());
+                .map(ProductDTO::fromProduct);
     }
 
     @Override
-    public List<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize) {
+    public Page<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize) {
         return productRepository
-                .getProductsSortedByAverageScore(PageRequest.of(pageNumber, pageSize))
-                .toList();
+                .getProductsSortedByAverageScore(PageRequest.of(pageNumber, pageSize));
     }
 }
 
