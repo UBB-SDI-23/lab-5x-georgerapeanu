@@ -23,7 +23,7 @@
         <
     </button>
     <div *ngFor="let page of [this.pageNumber - 2, this.pageNumber - 1, this.pageNumber, this.pageNumber + 1, this.pageNumber + 2, ]">
-      <button (click)="setPageNumber(page)" *ngIf="page >= 0 && page < totalPages" class="h-8 w-8 rounded-full justify-center items-center flex" [ngClass]="{'bg-blue-600': page==this.pageNumber}">
+      <button (click)="setPageNumber(page)" *ngIf="page >= 0 && page < totalPages" class="h-8 w-8 rounded-full justify-center items-center flex" [ngClass]="{'bg-blue-600': page==this.currentPage}">
         {{ page }}
       </button>
     </div>
