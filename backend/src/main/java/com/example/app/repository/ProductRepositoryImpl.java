@@ -55,7 +55,8 @@ public class ProductRepositoryImpl implements IProductRepository{
                 .toList();
 
         CriteriaQuery<Long> count_cq = cb.createQuery(Long.class);
-        count_cq.select(cb.count(count_cq.from(Product.class)));
+        Root<Review> review_count = count_cq.from(Review.class);
+        count_cq.select(cb.countDistinct(review_count.get("product").get("id")));
         long total = em.createQuery(count_cq).getSingleResult();
 
         return new PageImpl<>(results, pageable, total);
