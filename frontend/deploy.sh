@@ -10,6 +10,6 @@ for i in ./src/environments/*.tmpl;do
     cat $i | envsubst > ${i%.*};
 done; 
 
-cat _redirects.tmpl | envsubst > _redirects
+cat ./src/_redirects.tmpl | envsubst > ./src/_redirects
 
 ng build --configuration=production;
