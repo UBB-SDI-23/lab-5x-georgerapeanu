@@ -128,4 +128,9 @@
         <addForeignKeyConstraint baseColumnNames="manufacturer_id" baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="manufacturer" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
+    <changeSet id="1680067598534-1" author="georgerapeanu">
+        <createIndex tableName="review" indexName="REVIEW_PRODUCT_ID_INDEX">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
