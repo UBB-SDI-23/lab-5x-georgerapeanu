@@ -7,6 +7,7 @@ import com.example.app.model.Product;
 import com.example.app.model.Review;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductRepositoryImpl implements IProductRepository{
     @PersistenceContext
@@ -22,26 +24,34 @@ public class ProductRepositoryImpl implements IProductRepository{
     @Override
     public Page<ProductScoreDTO> getProductsSortedByAverageScore(Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
-        Root<Product> product = cq.from(Product.class);
-        Join<Product, Review> productReviewJoin = product.join("reviews", JoinType.LEFT);
-        cq
-                .multiselect(product, cb.avg(cb.coalesce(productReviewJoin.get("score"), 0)))
-                .groupBy(product)
-                .orderBy(cb.desc(cb.avg(cb.coalesce(productReviewJoin.get("score"), 0))));
 
-        TypedQuery<Object[]> typedQuery = em.createQuery(cq);
+        CriteriaQuery<Tuple> review_scores_cq = cb.createQuery(Tuple.class);
+        Root<Review> review = review_scores_cq.from(Review.class);
+        review_scores_cq
+                .multiselect(review.get("product").get("id").alias("product_id"), cb.avg(cb.coalesce(review.get("score"), 0)).alias("score"))
+                .groupBy(review.get("product").get("id"))
+                .orderBy(cb.desc(cb.avg(cb.coalesce(review.get("score"), 0))));
+
+        TypedQuery<Tuple> typedQuery = em.createQuery(review_scores_cq);
 
         List<ProductScoreDTO> results = typedQuery
                 .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
                 .setMaxResults(pageable.getPageSize())
-                .getResultStream()
-                .map(row -> {
-                    return new ProductScoreDTO(
-                            ProductDTO.fromProduct((Product) row[0]),
-                            (Double)row[1]
-                    );
-                })
+                .getResultList()
+                .stream()
+                .map( row -> {
+                        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+                        Root<Product> product = cq.from(Product.class);
+                        cq
+                                .select(product)
+                                .where(cb.equal(product.get("id"), row.get("product_id")));
+
+                        return new ProductScoreDTO(
+                                ProductDTO.fromProduct(em.createQuery(cq).getSingleResult()),
+                                (Double)row.get("score")
+                        );
+                    }
+                )
                 .toList();
 
         CriteriaQuery<Long> count_cq = cb.createQuery(Long.class);
