@@ -20,6 +20,7 @@ public class ProductDTO {
     private Double price;
     private Integer weight;
     private Integer manufacturerId;
+    private String color;
 
     public Integer getManufacturerId() {
         return manufacturerId;
@@ -65,6 +66,14 @@ public class ProductDTO {
         return price;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return this.color;
+    }
+
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -85,7 +94,8 @@ public class ProductDTO {
                 product.getPublishDate(),
                 product.getPrice(),
                 product.getWeight(),
-                product.getManufacturer().getId()
+                product.getManufacturer().getId(),
+                product.getColor()
         );
     }
 
@@ -97,6 +107,7 @@ public class ProductDTO {
         product.setPrice(productDTO.getPrice());
         product.setWeight(productDTO.getWeight());
         product.setManufacturer(manufacturer);
+        product.setColor(productDTO.getColor());
         return product;
     }
 
@@ -111,15 +122,22 @@ public class ProductDTO {
                 ", price=" + price +
                 ", weight=" + weight +
                 ", manufacturerId=" + manufacturerId +
+                ", color='" + color + "'" +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductDTO that = (ProductDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(publishDate, that.publishDate) && Objects.equals(price, that.price) && Objects.equals(weight, that.weight) && Objects.equals(manufacturerId, that.manufacturerId);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(publishDate, that.publishDate) && Objects.equals(price, that.price) && Objects.equals(weight, that.weight) && Objects.equals(manufacturerId, that.manufacturerId) && Objects.equals(color, that.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, publishDate, price, weight, manufacturerId, color);
     }
 }
 

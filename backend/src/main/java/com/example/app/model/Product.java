@@ -21,6 +21,15 @@ public class Product {
     private Date publishDate;
     private Double price;
     private Integer weight;
+    private String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     @OneToMany(mappedBy = "product", fetch=FetchType.LAZY)
     List<Review> reviews;

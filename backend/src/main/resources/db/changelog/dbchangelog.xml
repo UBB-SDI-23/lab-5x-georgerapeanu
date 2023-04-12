@@ -133,4 +133,28 @@
             <column name="product_id"/>
         </createIndex>
     </changeSet>
+    <changeSet id="1680067598535-1" author="georgerapeanu">
+        <dropForeignKeyConstraint baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j"/>
+        <dropForeignKeyConstraint baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh"/>
+        <dropForeignKeyConstraint baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8"/>
+
+        <dropPrimaryKey tableName="manufacturer"/>
+        <dropNotNullConstraint tableName="manufacturer" columnName="id"/>
+
+        <dropPrimaryKey tableName="product"/>
+        <dropNotNullConstraint tableName="product" columnName="id"/>
+        <dropNotNullConstraint tableName="product" columnName="manufacturer_id"/>
+
+        <dropPrimaryKey tableName="review"/>
+        <dropNotNullConstraint tableName="review" columnName="user_id"/>
+        <dropNotNullConstraint tableName="review" columnName="product_id"/>
+
+        <dropPrimaryKey tableName="user"/>
+        <dropNotNullConstraint tableName="user" columnName="id"/>
+    </changeSet>
+    <changeSet id="1680067598535-2" author="georgerapeanu">
+        <addColumn tableName="product">
+            <column name="color" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
