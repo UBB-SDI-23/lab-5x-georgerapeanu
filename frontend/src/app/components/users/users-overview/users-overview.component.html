@@ -28,7 +28,7 @@
     </thead>
     <tbody class="text-gray-600 text-sm font-light">
       <tr *ngFor="let user of users; index as i" [routerLink]="[user.id]" class="border-b border-gray-200 hover:bg-gray-100">
-        <td class="py-3 px-6 text-left"><a>{{ i + 1 + pageNumber * pageSize}}</a></td>
+        <td class="py-3 px-6 text-left"><a>{{ i + 1 + currentPage * currentSize}}</a></td>
         <td class="py-3 px-6 text-left">{{ user.name }}</td>
         <td class="py-3 px-6 text-left">{{ user.handle }}</td>
         <td class="py-3 px-6 text-left">{{ user.email }}</td>

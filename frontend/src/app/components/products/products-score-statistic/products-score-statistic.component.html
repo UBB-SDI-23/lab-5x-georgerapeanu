@@ -8,7 +8,7 @@
     </thead>
     <tbody class="text-gray-600 text-sm font-light">
       <tr *ngFor="let productScore of productScores; index as i" class="border-b border-gray-200 hover:bg-gray-100">
-        <td class="py-3 px-6 text-left">{{ i + 1 + pageNumber * pageSize}}</td>
+        <td class="py-3 px-6 text-left">{{ i + 1 + currentPage * currentSize}}</td>
         <td class="py-3 px-6 text-left">{{ productScore.productDTO.name }}</td>
         <td class="py-3 px-6 text-left">{{ productScore.score }}</td>
       </tr>

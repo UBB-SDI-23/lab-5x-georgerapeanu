@@ -14,6 +14,8 @@ export class ProductsScoreStatisticComponent {
   totalPages: number = 0;
   desiredPage: number = 0;
   productScores: ProductScoreDTO[] = [];
+  currentPage: number = this.pageNumber;
+  currentSize: number = this.pageSize;
   constructor(
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
@@ -36,6 +38,8 @@ export class ProductsScoreStatisticComponent {
           this.productService.getProductScoreStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
             this.productScores = result.content;
             this.totalPages = result.totalPages;
+            this.currentPage = this.pageNumber;
+            this.currentSize = this.pageSize;
           });
         }
       );

@@ -13,6 +13,8 @@ export class UsersOverviewComponent {
   pageNumber: number = 0;
   totalPages: number = 0;
   desiredPage: number = 0;
+  currentPage: number = this.pageNumber;
+  currentSize: number = this.pageSize;
   users: UserDTO[] = [];
   constructor(
     private userService: UserService,
@@ -34,6 +36,8 @@ export class UsersOverviewComponent {
           this.userService.getAllUsers(this.pageNumber, this.pageSize).subscribe(result => {
             this.users = result.content;
             this.totalPages = result.totalPages;
+            this.currentPage = this.pageNumber;
+            this.currentSize = this.pageSize;
           });
         }
       );
