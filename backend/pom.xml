@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>sdi</artifactId>
     <packaging>war</packaging>
-    <version>0.0.1</version>
+    <version>latest</version>
     <name>sdi</name>
     <description>sdi</description>
     <properties>
