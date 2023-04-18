@@ -48,7 +48,7 @@ services:
       - spring.sql.init.platform=${DATABASE_PLATFORM}
       - spring.datasource.url=${DATABASE_DRIVER}://database:5432/main
     volumes:
-      - ./target/${APP_NAME}-${APP_VERSION}.war:/usr/local/tomcat/webapps/ROOT.war
+      - ./target/${APP_NAME}.war:/usr/local/tomcat/webapps/ROOT.war
 
 volumes:
   sdi-postgres:
