@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ubuntu/lab-5x-georgerapeanu/
+cd /home/ubuntu/lab-5x-georgerapeanu/backend
 
 if [ -f .env ] ; then
   source .env;
@@ -11,8 +11,6 @@ if [ -z $WEBHOOK_URL ] ; then
 fi;
 
 git pull
-
-cd backend
 mkdir target
 
 RELEASE_URL=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/UBB-SDI-23/lab-5x-georgerapeanu/releases/latest)
