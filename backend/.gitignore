@@ -34,3 +34,6 @@ build/
 .env
 
 src/main/resources/applcation-prod.properties
+
+*.crt
+*.key
