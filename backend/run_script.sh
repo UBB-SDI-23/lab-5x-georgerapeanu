@@ -1,3 +1,4 @@
+#!/bin/bash
 cd /home/ubuntu/lab-5x-georgerapeanu/
 
 if [ -f .env ] ; then
