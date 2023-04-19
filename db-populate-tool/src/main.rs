@@ -6,7 +6,8 @@ use std::fs::File;
 use std::io::Write;
 
 const BATCH_SIZE: u32 = 1000;
-const BASE_UNIT: u32 = 1000000;
+//const BASE_UNIT: u32 = 1000000;
+const BASE_UNIT: u32 = 1000;
 
 const MANUFACTURER_COUNT: u32 = BASE_UNIT;
 const PRODUCT_COUNT: u32 = BASE_UNIT;
@@ -69,9 +70,19 @@ impl Product {
     pub fn fake() -> Self {
 
         let color: String = (&vec![String::from("RED"), String::from("BLUE"), String::from("GREEN")])[(0..=2).fake::<usize>()].to_string();
+        let name: String = (&vec![String::from("watch"), 
+                                  String::from("car"), 
+                                  String::from("book"),
+                                  String::from("table"),
+                                  String::from("crayon"),
+                                  String::from("rose"),
+                                  String::from("glasses"),
+                                  String::from("glass"),
+                                  String::from("cheese"),
+                                  String::from("milk")])[(0..=9).fake::<usize>()].to_string();
         let mut result = Self {
             description: fake::faker::lorem::en::Sentence(1..5).fake(),
-            name: fake::faker::name::en::Name().fake(),
+            name,
             price: (100..100000).fake::<u32>() as f32 / 100 as f32,
             publish_date: Into::<DateTime<Utc>>::into(SystemTime::UNIX_EPOCH + Duration::from_secs((1681000000..1681239961).fake::<u64>())).format("%Y-%m-%d").to_string(),
             weight: (10..100).fake::<u32>(),
@@ -223,10 +234,10 @@ impl IntoFileQuery for Review {
 fn main() {
     let mut file = File::create("./schema.sql").expect("failure creating file");
 
-    writeln!(file, "TRUNCATE TABLE \"review\" RESTART IDENTITY;").expect("failure writing");
-    writeln!(file, "TRUNCATE TABLE \"user\" RESTART IDENTITY;").expect("failure writing");
-    writeln!(file, "TRUNCATE TABLE \"product\" RESTART IDENTITY;").expect("failure writing");
-    writeln!(file, "TRUNCATE TABLE \"manufacturer\" RESTART IDENTITY;").expect("failure writing");
+    writeln!(file, "TRUNCATE TABLE \"review\" RESTART IDENTITY CASCADE;").expect("failure writing");
+    writeln!(file, "TRUNCATE TABLE \"user\" RESTART IDENTITY CASCADE;").expect("failure writing");
+    writeln!(file, "TRUNCATE TABLE \"product\" RESTART IDENTITY CASCADE;").expect("failure writing");
+    writeln!(file, "TRUNCATE TABLE \"manufacturer\" RESTART IDENTITY CASCADE;").expect("failure writing");
 
     for i in 0..MANUFACTURER_COUNT / BATCH_SIZE {
         Manufacturer::to_query(BATCH_SIZE, &mut file);

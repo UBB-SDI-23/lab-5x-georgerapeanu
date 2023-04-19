@@ -1,3 +1,5 @@
+cd /home/ubuntu/lab-5x-georgerapeanu/
+
 if [ -f .env ] ; then
   source .env;
 fi;
@@ -7,7 +9,6 @@ if [ -z $WEBHOOK_URL ] ; then
   exit 1;
 fi;
 
-cd /home/ubuntu/lab-5x-georgerapeanu/
 git pull
 
 cd backend
