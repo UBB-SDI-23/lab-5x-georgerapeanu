@@ -11,7 +11,10 @@ if [ -z $WEBHOOK_URL ] ; then
 fi;
 
 git pull
-mkdir target
+if [ -d target ]; then
+else
+  mkdir target
+fi
 
 RELEASE_URL=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/UBB-SDI-23/lab-5x-georgerapeanu/releases/latest)
 PACKAGE_URL=$(echo $RELEASE_URL | sed -E "s/(\/tag)(\/[^/]*)$/\/download\2/")
