@@ -19,4 +19,4 @@ curl -sL --output ./target/sdi.war $PACKAGE_URL/sdi.war
 
 sudo docker-compose up&
 
-curl -X POST -d "http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):8080" $WEBHOOK_URL
+curl -X POST -d "http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):80" $WEBHOOK_URL
