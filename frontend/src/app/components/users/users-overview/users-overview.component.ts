@@ -32,6 +32,12 @@ export class UsersOverviewComponent {
           if('pageNumber' in params) {
             this.pageNumber = parseInt(params['pageNumber']);
           }
+          if(this.pageSize < 4) {
+            this.pageSize = 4;
+          }
+          if(this.pageSize > 10) {
+            this.pageSize = 10;
+          }
           this.desiredPage = this.pageNumber;
           this.userService.getAllUsers(this.pageNumber, this.pageSize).subscribe(result => {
             this.users = result.content;

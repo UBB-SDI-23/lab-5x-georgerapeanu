@@ -34,6 +34,12 @@ export class ProductsScoreStatisticComponent {
           if('pageNumber' in params) {
             this.pageNumber = parseInt(params['pageNumber']);
           }
+          if(this.pageSize < 4) {
+            this.pageSize = 4;
+          }
+          if(this.pageSize > 10) {
+            this.pageSize = 10;
+          }
           this.desiredPage = this.pageNumber;
           this.productService.getProductScoreStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
             this.productScores = result.content;
