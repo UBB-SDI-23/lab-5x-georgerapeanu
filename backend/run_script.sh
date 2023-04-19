@@ -19,4 +19,5 @@ curl -sL --output ./target/sdi.war $PACKAGE_URL/sdi.war
 
 sudo docker-compose up&
 
-curl -X POST -d "http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):80" $WEBHOOK_URL
+curl -X POST -d "http://$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google"
+):80" $WEBHOOK_URL
