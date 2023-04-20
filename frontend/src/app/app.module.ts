@@ -18,6 +18,7 @@ import { ManufacturerCreateComponent } from './components/manufacturers/manufact
 import { ManufacturerDetailsComponent } from './components/manufacturers/manufacturer-details/manufacturer-details.component';
 import { ManufacturerEditComponent } from './components/manufacturers/manufacturer-edit/manufacturer-edit.component';
 import { ManufacturerDeleteComponent } from './components/manufacturers/manufacturer-delete/manufacturer-delete.component';
+import { ProductsOverviewComponent } from './components/products/products-overview/products-overview.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ManufacturerDeleteComponent } from './components/manufacturers/manufact
     ManufacturerDetailsComponent,
     ManufacturerEditComponent,
     ManufacturerDeleteComponent,
+    ProductsOverviewComponent,
   ],
   imports: [
     BrowserModule,

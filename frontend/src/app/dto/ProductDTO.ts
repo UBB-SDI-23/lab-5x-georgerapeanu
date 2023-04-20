@@ -5,5 +5,6 @@ export interface ProductDTO{
     publishDate: Date,
     price: number,
     weight: number,
-    manufacturerId: number   
+    manufacturerId: number,
+    color: string
 }

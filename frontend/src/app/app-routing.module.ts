@@ -12,6 +12,7 @@ import { ManufacturerCreateComponent } from './components/manufacturers/manufact
 import { ManufacturerDetailsComponent } from './components/manufacturers/manufacturer-details/manufacturer-details.component';
 import { ManufacturerEditComponent } from './components/manufacturers/manufacturer-edit/manufacturer-edit.component';
 import { ManufacturerDeleteComponent } from './components/manufacturers/manufacturer-delete/manufacturer-delete.component';
+import { ProductsOverviewComponent } from './components/products/products-overview/products-overview.component';
 
 const routes: Routes = [
   {
@@ -57,9 +58,14 @@ const routes: Routes = [
   {
     path:"manufacturers/:id/edit",
     component: ManufacturerEditComponent
-  },  {
+  },  
+  {
     path:"manufacturers/:id/delete",
     component: ManufacturerDeleteComponent
+  },
+  {
+    path:"products",
+    component: ProductsOverviewComponent
   },
 ];
 
