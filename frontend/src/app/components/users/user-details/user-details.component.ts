@@ -32,18 +32,4 @@ export class UserDetailsComponent {
   goBack(): void {
     this.location.back();
   }
-
-  deleteUser(id: number | undefined): void {
-    if(id == undefined){
-      return;
-    }
-    this.userService.deleteUser(id).subscribe({
-      next: (response) => {
-        this.router.navigate(["/users"]);
-      },
-      error: (error) => {
-        this.router.navigate(["/users"]);
-      }
-    });
-  }
 }

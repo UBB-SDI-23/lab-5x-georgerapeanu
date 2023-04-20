@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { UserService } from 'src/app/services/user-service';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { ManufacturerService } from 'src/app/services/manufacturer.service';
+import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-overview',
-  templateUrl: './users-overview.component.html',
-  styleUrls: ['./users-overview.component.css']
+  templateUrl: './manufacturers-overview.component.html',
+  styleUrls: ['./manufacturers-overview.component.css']
 })
-export class UsersOverviewComponent {
+export class ManufacturersOverviewComponent {
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  users: UserDTO[] = [];
+  manufacturers: ManufacturerDTO[] = [];
   constructor(
-    private userService: UserService,
+    private manufacturerService: ManufacturerService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -37,8 +37,8 @@ export class UsersOverviewComponent {
           if(this.pageSize > 10) {
             this.pageSize = 10;
           }
-          this.userService.getAllUsers(this.pageNumber, this.pageSize).subscribe(result => {
-            this.users = result.content;
+          this.manufacturerService.getAllManufacturers(this.pageNumber, this.pageSize).subscribe(result => {
+            this.manufacturers = result.content;
             this.totalPages = result.totalPages;
             this.currentPage = this.pageNumber;
             this.currentSize = this.pageSize;

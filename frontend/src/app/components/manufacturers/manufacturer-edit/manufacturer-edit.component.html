@@ -4,18 +4,15 @@
         Back
     </button>
     <h1 class="font-bold text-3xl py-5">
-        Edit User
+        Edit Manufacturer
     </h1>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="name">Name: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" [(ngModel)]="user.name">
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="handle">Handle: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="handle" [(ngModel)]="user.handle" >
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="email">Email: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="email" [(ngModel)]="user.email" >
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="birthday">Birthday: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="birthday" [(ngModel)]="user.birthday" >
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="registeredAt">Registered at:</label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="registeredAt" [(ngModel)]="user.registeredAt">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" [(ngModel)]="manufacturer.name">
+    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="description">Descritpion: </label>
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="description" [(ngModel)]="manufacturer.description" >
+    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="registerDate">Registered at:</label>
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="registerDate" [(ngModel)]="manufacturer.registerDate">
+    
     
     <div *ngIf="editForm.invalid" class="alert text-red-600 uppercase mb-2 mt-6">
         Form is invalid
@@ -40,7 +37,7 @@
         </button>
         <div class="h-full flex justify-center mt-16">
             <div *ngIf="serverResponse=='Ok'" class="text-green-600">
-                User edited!
+                Manufacturer edited!
             </div>
             <div *ngIf="serverResponse!='Ok'" class="text-red-600">
                 Server error!
