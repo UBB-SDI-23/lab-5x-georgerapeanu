@@ -61,8 +61,7 @@ export class ProductEditComponent {
           this.serverResponse="Ok";
         },
         error: error => {
-          console.log(error);
-          this.serverResponse= error.error;
+          this.serverResponse= error.error.error;
         }
       });
     }
