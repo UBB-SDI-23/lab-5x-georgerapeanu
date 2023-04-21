@@ -28,8 +28,8 @@ export class ProductEditComponent {
       name: ['', Validators.required],
       description: ['', Validators.required],
       publishDate: ['', Validators.required],
-      price: ['', Validators.required],
-      weight: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
+      weight: ['', [Validators.required, Validators.min(0)]],
       manufacturerId: ['', Validators.required],
       color: ['', Validators.required]
     }
