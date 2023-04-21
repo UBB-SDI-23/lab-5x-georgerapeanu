@@ -13,6 +13,10 @@ import { ManufacturerDetailsComponent } from './components/manufacturers/manufac
 import { ManufacturerEditComponent } from './components/manufacturers/manufacturer-edit/manufacturer-edit.component';
 import { ManufacturerDeleteComponent } from './components/manufacturers/manufacturer-delete/manufacturer-delete.component';
 import { ProductsOverviewComponent } from './components/products/products-overview/products-overview.component';
+import { ProductDetailsComponent } from './components/products/product-details/product-details.component';
+import { ProductCreateComponent } from './components/products/product-create/product-create.component';
+import { ProductEditComponent } from './components/products/product-edit/product-edit.component';
+import { ProductDeleteComponent } from './components/products/product-delete/product-delete.component';
 
 const routes: Routes = [
   {
@@ -66,6 +70,22 @@ const routes: Routes = [
   {
     path:"products",
     component: ProductsOverviewComponent
+  },
+  {
+    path:"products/create",
+    component: ProductCreateComponent
+  },
+  {
+    path:"products/:id",
+    component: ProductDetailsComponent
+  },
+  {
+    path:"products/:id/edit",
+    component: ProductEditComponent
+  },
+  {
+    path:"products/:id/delete",
+    component: ProductDeleteComponent
   },
 ];
 

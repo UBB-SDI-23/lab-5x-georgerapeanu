@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import com.example.app.exceptions.AppException;
 import com.example.app.model.Ids.ReviewId;
 import com.example.app.model.Product;
 import com.example.app.model.Review;
@@ -32,10 +33,10 @@ public class ReviewService implements  IReviewService{
     ProductRepository productRepository;
 
     @Override
-    public Page<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) throws AppException {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-            return null;
+            throw new AppException("No such user exists");
         }
         return reviewRepository
                 .findAllByUser(user.get(), PageRequest.of(pageNumber, pageSize))
@@ -43,10 +44,10 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public Page<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) throws AppException {
         Optional<Product> product = productRepository.findById(id);
         if(product.isEmpty()){
-            return null;
+            throw new AppException("No such product exists");
         }
         return reviewRepository
                 .findAllByProduct(product.get(), PageRequest.of(pageNumber, pageSize))
@@ -54,13 +55,29 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO) {
-        reviewRepository.save(ReviewDTO.toReview(reviewDTO, userRepository.findById(userId).get(), productRepository.findById(productId).get()));
+    public void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new AppException("No such user exists");
+        }
+        Product product = productRepository.findById(productId).orElse(null);
+        if(product == null) {
+            throw new AppException("No such product exists");
+        }
+        reviewRepository.save(ReviewDTO.toReview(reviewDTO, user, product));
     }
 
     @Override
-    public void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO) {
-        Review review = ReviewDTO.toReview(reviewDTO, userRepository.findById(userId).get(), productRepository.findById(productId).get());
+    public void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new AppException("No such user exists");
+        }
+        Product product = productRepository.findById(productId).orElse(null);
+        if(product == null) {
+            throw new AppException("No such product exists");
+        }
+        Review review = ReviewDTO.toReview(reviewDTO, user, product);
         review.setId(new ReviewId(userId, productId));
         reviewRepository.save(review);
     }

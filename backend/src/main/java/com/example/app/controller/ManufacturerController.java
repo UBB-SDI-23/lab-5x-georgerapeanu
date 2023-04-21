@@ -3,6 +3,7 @@ package com.example.app.controller;
 import com.example.app.dto.ManufacturerProductCountDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
+import com.example.app.exceptions.AppException;
 import com.example.app.service.IManufacturerService;
 import com.example.app.service.IProductService;
 import jakarta.validation.Valid;
@@ -70,7 +71,11 @@ public class ManufacturerController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ) {
-        return new ResponseEntity<>(productService.getProductsByManufacturerId(id, pageNumber, pageSize), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(productService.getProductsByManufacturerId(id, pageNumber, pageSize), HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
@@ -96,7 +101,11 @@ public class ManufacturerController {
         product_ids.forEach(product_id -> {
             ProductDTO productDTO = productService.getProductById(product_id);
             productDTO.setManufacturerId(id);
-            productService.updateProductWithId(product_id, productDTO);
+            try {
+                productService.updateProductWithId(product_id, productDTO);
+            } catch (AppException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

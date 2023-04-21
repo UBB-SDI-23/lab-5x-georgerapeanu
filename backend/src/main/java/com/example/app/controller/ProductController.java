@@ -4,6 +4,7 @@ import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
+import com.example.app.exceptions.AppException;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
 import jakarta.validation.constraints.Max;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,13 +68,29 @@ public class ProductController {
     }
 
     @PostMapping(path="/products", produces = "application/json")
-    public void createProduct(@Valid @RequestBody ProductDTO productDTO ) {
-        productService.createProduct(productDTO);
+    public ResponseEntity<Map<String, String>> createProduct(@Valid @RequestBody ProductDTO productDTO ) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            productService.createProduct(productDTO);
+            response.put("message", "Product created");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody void updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDTO productDTO ) {
-        productService.updateProductWithId(id, productDTO);
+    public @ResponseBody ResponseEntity<Map<String, String>> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDTO productDTO ) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            productService.updateProductWithId(id, productDTO);
+            response.put("message", "Review updated");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(path="/products/{id}", produces = "application/json")
@@ -105,7 +124,7 @@ public class ProductController {
     }
 
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")
-    public @ResponseBody Page<ReviewDTO> getReviews(
+    public @ResponseBody ResponseEntity<Page<ReviewDTO>> getReviews(
             @PathVariable("id") Integer id,
             @RequestParam
             Integer pageNumber,
@@ -114,15 +133,35 @@ public class ProductController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ) {
-        return reviewService.getReviewsForProduct(id, pageNumber, pageSize);
+        try {
+            return new ResponseEntity<>(reviewService.getReviewsForProduct(id, pageNumber, pageSize), HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
     @PostMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
-    public void createReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
-        reviewService.createReview(user_id, id, reviewDTO);
+    public ResponseEntity<Map<String, String>> createReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            reviewService.createReview(user_id, id, reviewDTO);
+            response.put("message", "Review updated");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
     @PatchMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
-    public void updateReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
-        reviewService.updateReview(user_id, id, reviewDTO);
+    public ResponseEntity<Map<String, String>> updateReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id, @RequestBody ReviewDTO reviewDTO) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            reviewService.updateReview(user_id, id, reviewDTO);
+            response.put("message", "Review updated");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
     @DeleteMapping(path="/products/{id}/reviews/{user_id}", produces = "application/json")
     public void deleteReview(@PathVariable("id") Integer id, @PathVariable("user_id") Integer user_id) {

@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import com.example.app.dto.ProductScoreDTO;
+import com.example.app.exceptions.AppException;
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import com.example.app.dto.model.ManufacturerDTO;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -42,13 +44,24 @@ public class ProductService implements  IProductService{
         return ProductDTO.fromProduct(product);
     }
 
-    public void createProduct(ProductDTO productDTO) {
-        productRepository.save(ProductDTO.toProduct(productDTO, manufacturerRepository.findById(productDTO.getManufacturerId()).get()));
+    public void createProduct(ProductDTO productDTO) throws AppException {
+        Optional<Manufacturer> manufacturer = manufacturerRepository.findById(productDTO.getManufacturerId());
+        if(manufacturer.isEmpty()) {
+            throw new AppException("Manufacturer not found");
+        }
+        productRepository.save(ProductDTO.toProduct(productDTO, manufacturer.get()));
     }
 
-    public void updateProductWithId(Integer id, ProductDTO productDTO ) {
-        Product repoProduct = productRepository.findById(id).get();
-        Product product = ProductDTO.toProduct(productDTO, manufacturerRepository.findById(productDTO.getManufacturerId()).get());
+    public void updateProductWithId(Integer id, ProductDTO productDTO ) throws AppException {
+        Product repoProduct = productRepository.findById(id).orElse(null);
+        if(repoProduct == null) {
+            throw new AppException("No such product exists");
+        }
+        Manufacturer manufacturer = manufacturerRepository.findById(productDTO.getManufacturerId()).orElse(null);
+        if(manufacturer == null) {
+            throw new AppException("No such manufacturer exists");
+        }
+        Product product = ProductDTO.toProduct(productDTO, manufacturer);
         product.setId(repoProduct.getId());
         productRepository.save(product);
     }
@@ -73,10 +86,10 @@ public class ProductService implements  IProductService{
     }
 
     @Override
-    public Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) {
+    public Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) throws AppException {
         Manufacturer manufacturer = manufacturerRepository.findById(id).orElse(null);
         if(manufacturer == null){
-            return null;
+            throw new AppException("No such manufacturer exists");
         }
         return productRepository
                 .findAllByManufacturer(manufacturer, PageRequest.of(pageNumber, pageSize))

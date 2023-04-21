@@ -19,6 +19,10 @@ import { ManufacturerDetailsComponent } from './components/manufacturers/manufac
 import { ManufacturerEditComponent } from './components/manufacturers/manufacturer-edit/manufacturer-edit.component';
 import { ManufacturerDeleteComponent } from './components/manufacturers/manufacturer-delete/manufacturer-delete.component';
 import { ProductsOverviewComponent } from './components/products/products-overview/products-overview.component';
+import { ProductDetailsComponent } from './components/products/product-details/product-details.component';
+import { ProductCreateComponent } from './components/products/product-create/product-create.component';
+import { ProductEditComponent } from './components/products/product-edit/product-edit.component';
+import { ProductDeleteComponent } from './components/products/product-delete/product-delete.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,10 @@ import { ProductsOverviewComponent } from './components/products/products-overvi
     ManufacturerEditComponent,
     ManufacturerDeleteComponent,
     ProductsOverviewComponent,
+    ProductDetailsComponent,
+    ProductCreateComponent,
+    ProductEditComponent,
+    ProductDeleteComponent,
   ],
   imports: [
     BrowserModule,

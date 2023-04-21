@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.dto.model.UserDTO;
+import com.example.app.exceptions.AppException;
 import com.example.app.service.IReviewService;
 import com.example.app.service.IUserService;
 import jakarta.validation.constraints.Max;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -65,7 +68,7 @@ public class UserController {
     }
 
     @GetMapping(path="/users/{id}/reviews", produces = "application/json")
-    public @ResponseBody Page<ReviewDTO> getReviews(
+    public @ResponseBody ResponseEntity<Page<ReviewDTO>> getReviews(
             @PathVariable("id") Integer id,
             @RequestParam
             Integer pageNumber,
@@ -74,15 +77,35 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ) {
-        return reviewService.getReviewsForUser(id, pageNumber, pageSize);
+        try {
+            return new ResponseEntity<>(reviewService.getReviewsForUser(id, pageNumber, pageSize), HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
     @PostMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
-    public void createReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
-        reviewService.createReview(id, product_id, reviewDTO);
+    public ResponseEntity<Map<String, String>> createReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            reviewService.createReview(id, product_id, reviewDTO);
+            response.put("message", "Review created");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
     @PatchMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
-    public void updateReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
-        reviewService.updateReview(id, product_id, reviewDTO);
+    public ResponseEntity<Map<String, String> > updateReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            reviewService.updateReview(id, product_id, reviewDTO);
+            response.put("message", "Review created");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
     @DeleteMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
     public void deleteReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id) {
