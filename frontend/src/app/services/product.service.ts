@@ -39,7 +39,6 @@ export class ProductService {
   }
 
   deleteProduct(id: number): Observable<any> {
-    console.log(environment.apiURL + "/products/" + id.toString());
     return this.http.delete(environment.apiURL + "/products/" + id.toString());
   }
 }

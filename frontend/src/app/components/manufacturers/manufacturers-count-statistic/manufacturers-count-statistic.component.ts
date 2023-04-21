@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProductScoreDTO } from 'src/app/dto/PoductScoreDTO';
-import { ProductService } from 'src/app/services/product.service';
+import { ManufacturerProductCountDTO } from 'src/app/dto/ManufacturerProductCountDTO';
+import { ManufacturerService } from 'src/app/services/manufacturer.service';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-products-score-statistic',
-  templateUrl: './products-score-statistic.component.html',
-  styleUrls: ['./products-score-statistic.component.css']
+  selector: 'app-manufacturers-count-statistic',
+  templateUrl: './manufacturers-count-statistic.component.html',
+  styleUrls: ['./manufacturers-count-statistic.component.css']
 })
-export class ProductsScoreStatisticComponent {
+export class ManufacturersCountStatisticComponent {
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
   desiredPage: number = 0;
-  productScores: ProductScoreDTO[] = [];
+  manufacturerCounts: ManufacturerProductCountDTO[] = [];
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
   constructor(
-    private productService: ProductService,
+    private manufacturerService: ManufacturerService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
@@ -41,8 +42,8 @@ export class ProductsScoreStatisticComponent {
             this.pageSize = 10;
           }
           this.desiredPage = this.pageNumber;
-          this.productService.getProductScoreStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
-            this.productScores = result.content;
+          this.manufacturerService.getManufacturerCountStatistic(this.pageNumber, this.pageSize).subscribe((result) => {
+            this.manufacturerCounts = result.content;
             this.totalPages = result.totalPages;
             this.currentPage = this.pageNumber;
             this.currentSize = this.pageSize;

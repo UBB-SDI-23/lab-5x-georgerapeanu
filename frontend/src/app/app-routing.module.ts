@@ -21,6 +21,7 @@ import { ReviewDetailsComponent } from './components/reviews/review-details/revi
 import { ReviewCreateComponent } from './components/reviews/review-create/review-create.component';
 import { ReviewEditComponent } from './components/reviews/review-edit/review-edit.component';
 import { ReviewDeleteComponent } from './components/reviews/review-delete/review-delete.component';
+import { ManufacturersCountStatisticComponent } from './components/manufacturers/manufacturers-count-statistic/manufacturers-count-statistic.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path:"manufacturers/create",
     component: ManufacturerCreateComponent
+  },
+  {
+    path:"manufacturers/sorted-by-products",
+    component: ManufacturersCountStatisticComponent
   },
   {
     path:"manufacturers/:id",

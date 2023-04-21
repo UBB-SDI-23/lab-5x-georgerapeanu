@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { GenericPageDTO } from '../dto/GenericPageDTO';
 import { environment } from 'src/environments/environment';
 import { ProductDTO } from '../dto/ProductDTO';
+import { ManufacturerProductCountDTO } from '../dto/ManufacturerProductCountDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,10 @@ export class ManufacturerService {
   }
 
   deleteManufacturer(id: number): Observable<any> {
-    console.log(environment.apiURL + "/manufacturers/" + id.toString());
     return this.http.delete(environment.apiURL + "/manufacturers/" + id.toString());
+  }
+
+  getManufacturerCountStatistic(pageNumber: number, pageSize: number): Observable<GenericPageDTO<ManufacturerProductCountDTO>> {
+    return this.http.get<GenericPageDTO<ManufacturerProductCountDTO>>(environment.apiURL + "/manufacturers/sorted-by-products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 }
