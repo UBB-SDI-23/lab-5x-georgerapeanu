@@ -55,12 +55,21 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException {
-        User user = userRepository.findById(userId).orElse(null);
+    public ReviewDTO getReview(Integer userId, Integer productId) throws AppException {
+        Optional<Review> review = reviewRepository.findById(new ReviewId(userId, productId));
+        if(review.isEmpty()) {
+            throw  new AppException("No such review exists");
+        }
+        return ReviewDTO.fromReview(review.get());
+    }
+
+    @Override
+    public void createReview(ReviewDTO reviewDTO) throws AppException {
+        User user = userRepository.findById(reviewDTO.getUserId()).orElse(null);
         if(user == null) {
             throw new AppException("No such user exists");
         }
-        Product product = productRepository.findById(productId).orElse(null);
+        Product product = productRepository.findById(reviewDTO.getProductId()).orElse(null);
         if(product == null) {
             throw new AppException("No such product exists");
         }

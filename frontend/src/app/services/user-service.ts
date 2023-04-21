@@ -34,7 +34,6 @@ export class UserService {
   }
 
   deleteUser(id: number): Observable<any> {
-    console.log(environment.apiURL + "/users/" + id.toString());
     return this.http.delete(environment.apiURL + "/users/" + id.toString());
   }
 }

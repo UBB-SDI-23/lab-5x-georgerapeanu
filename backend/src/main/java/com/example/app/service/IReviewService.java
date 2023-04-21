@@ -10,7 +10,8 @@ import java.util.List;
 public interface IReviewService {
     Page<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) throws AppException;
     Page<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) throws AppException;
-    void createReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException;
+    ReviewDTO getReview(Integer userId, Integer productId) throws AppException;
+    void createReview(ReviewDTO reviewDTO) throws AppException;
     void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException;
     void deleteReview(Integer userId, Integer productId);
 }

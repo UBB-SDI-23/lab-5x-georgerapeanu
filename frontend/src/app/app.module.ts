@@ -28,6 +28,10 @@ import { ManufacturersOverviewPageComponent } from './components/manufacturers/m
 import { ProductsOverviewPageComponent } from './components/products/products-overview-page/products-overview-page.component';
 import { ReviewsOverviewPageComponent } from './components/reviews/reviews-overview-page/reviews-overview-page.component';
 import { AbstractOverviewPageComponent } from './components/abstract/abstract-overview-page/abstract-overview-page.component';
+import { ReviewDetailsComponent } from './components/reviews/review-details/review-details.component';
+import { ReviewCreateComponent } from './components/reviews/review-create/review-create.component';
+import { ReviewEditComponent } from './components/reviews/review-edit/review-edit.component';
+import { ReviewDeleteComponent } from './components/reviews/review-delete/review-delete.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +59,10 @@ import { AbstractOverviewPageComponent } from './components/abstract/abstract-ov
     ProductsOverviewPageComponent,
     ReviewsOverviewPageComponent,
     AbstractOverviewPageComponent,
+    ReviewDetailsComponent,
+    ReviewCreateComponent,
+    ReviewEditComponent,
+    ReviewDeleteComponent,
   ],
   imports: [
     BrowserModule,

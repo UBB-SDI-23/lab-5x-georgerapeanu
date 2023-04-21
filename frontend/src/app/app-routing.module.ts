@@ -17,6 +17,10 @@ import { ProductDetailsComponent } from './components/products/product-details/p
 import { ProductCreateComponent } from './components/products/product-create/product-create.component';
 import { ProductEditComponent } from './components/products/product-edit/product-edit.component';
 import { ProductDeleteComponent } from './components/products/product-delete/product-delete.component';
+import { ReviewDetailsComponent } from './components/reviews/review-details/review-details.component';
+import { ReviewCreateComponent } from './components/reviews/review-create/review-create.component';
+import { ReviewEditComponent } from './components/reviews/review-edit/review-edit.component';
+import { ReviewDeleteComponent } from './components/reviews/review-delete/review-delete.component';
 
 const routes: Routes = [
   {
@@ -87,6 +91,22 @@ const routes: Routes = [
     path:"products/:id/delete",
     component: ProductDeleteComponent
   },
+  {
+    path: "reviews",
+    component: ReviewDetailsComponent
+  },
+  {
+    path: "reviews/create",
+    component: ReviewCreateComponent
+  },
+  {
+    path: "reviews/edit",
+    component: ReviewEditComponent
+  },
+  {
+    path: "reviews/delete",
+    component: ReviewDeleteComponent
+  }
 ];
 
 @NgModule({

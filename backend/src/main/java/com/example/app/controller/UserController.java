@@ -83,32 +83,4 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
-    public ResponseEntity<Map<String, String>> createReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            reviewService.createReview(id, product_id, reviewDTO);
-            response.put("message", "Review created");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (AppException e) {
-            response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-    }
-    @PatchMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
-    public ResponseEntity<Map<String, String> > updateReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id, @RequestBody ReviewDTO reviewDTO) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            reviewService.updateReview(id, product_id, reviewDTO);
-            response.put("message", "Review created");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (AppException e) {
-            response.put("error", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-    }
-    @DeleteMapping(path="/users/{id}/reviews/{product_id}", produces = "application/json")
-    public void deleteReview(@PathVariable("id") Integer id, @PathVariable("product_id") Integer product_id) {
-        reviewService.deleteReview(id, product_id);
-    }
 }
