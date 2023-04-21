@@ -14,6 +14,7 @@ export class ProductsOverviewComponent {
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
+  minWeight: number = -1;
   products: ProductDTO[] = [];
   constructor(
     private productService: ProductService,
@@ -31,13 +32,16 @@ export class ProductsOverviewComponent {
           if('pageNumber' in params) {
             this.pageNumber = parseInt(params['pageNumber']);
           }
+          if('weight' in params) {
+            this.minWeight = parseInt(params['weight']);
+          }
           if(this.pageSize < 4) {
             this.pageSize = 4;
           }
           if(this.pageSize > 10) {
             this.pageSize = 10;
           }
-          this.productService.getAllProducts(this.pageNumber, this.pageSize).subscribe(result => {
+          this.productService.getAllProductsWithWeightFilter(this.pageNumber, this.pageSize, this.minWeight).subscribe(result => {
             this.products = result.content;
             this.totalPages = result.totalPages;
             this.currentPage = this.pageNumber;
@@ -52,7 +56,16 @@ export class ProductsOverviewComponent {
       [],
       {
         relativeTo: this.activatedRoute,
-        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber}
+        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber, 'weight': this.minWeight}
+      }
+    )
+  }
+  setWeight(minWeight: number): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': this.pageSize, 'pageNumber': this.pageNumber, 'weight': minWeight}
       }
     )
   }

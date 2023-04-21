@@ -22,6 +22,10 @@ export class ProductService {
     return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
+  getAllProductsWithWeightFilter(pageNumber: number, pageSize: number, weight: number): Observable<GenericPageDTO<ProductDTO>> {
+    return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/products/weight-filter" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
+  }
+
   getAllReviewsForProduct(productId: number, pageNumber: number, pageSize: number): Observable<GenericPageDTO<ReviewDTO>> {
     return this.http.get<GenericPageDTO<ReviewDTO>>(environment.apiURL + "/products" + `/${productId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }

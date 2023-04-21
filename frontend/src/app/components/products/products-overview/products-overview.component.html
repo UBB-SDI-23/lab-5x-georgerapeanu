@@ -14,6 +14,10 @@
     </svg>
     Create product
   </a>
+  <div class="my-1">
+    <label class="text-gray-600" for="weight">Minimum weight:</label>
+    <input class="ml-2 text-center w-12 h-6 border border-gray-200" type="text" name="weight" [(ngModel)]="minWeight" (keydown.enter)="setWeight(minWeight)">
+  </div>
  
   <app-products-overview-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.products" [actionable]="true">
 
