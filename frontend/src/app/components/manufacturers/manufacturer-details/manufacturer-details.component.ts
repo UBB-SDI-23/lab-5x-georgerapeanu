@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
+import { ProductDTO } from 'src/app/dto/ProductDTO';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
 
@@ -13,22 +14,65 @@ import { Location } from '@angular/common';
 export class ManufacturerDetailsComponent {
 
   manufacturer: ManufacturerDTO | null = null;
+  pageSize: number = 10;
+  pageNumber: number = 0;
+  totalPages: number = 0;
+  currentPage: number = this.pageNumber;
+  currentSize: number = this.pageSize;
+  products: ProductDTO[] = [];
 
   constructor(
     private route: ActivatedRoute, 
     private manufacturerService: ManufacturerService, 
     private location: Location,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.paramMap.get('id');
-    if(userIdString == null) {
+    let manufacturerIdString: string | null = this.route.snapshot.paramMap.get('id');
+    if(manufacturerIdString == null) {
       return;
     }
-    this.manufacturerService.getManufacturerById(parseInt(userIdString)).subscribe(result => {
+    let manufacturerId = parseInt(manufacturerIdString);
+
+    this.activatedRoute.queryParams
+    .subscribe(
+      params => {
+        if('pageSize' in params) {
+          this.pageSize = parseInt(params['pageSize']);
+        }
+        if('pageNumber' in params) {
+          this.pageNumber = parseInt(params['pageNumber']);
+        }
+        if(this.pageSize < 4) {
+          this.pageSize = 4;
+        }
+        if(this.pageSize > 10) {
+          this.pageSize = 10;
+        }
+        this.manufacturerService.getAllProductsForManufacturer(manufacturerId, this.pageNumber, this.pageSize).subscribe(result => {
+          this.products = result.content;
+          this.totalPages = result.totalPages;
+          this.currentPage = this.pageNumber;
+          this.currentSize = this.pageSize;
+        });
+      }
+    );
+
+    this.manufacturerService.getManufacturerById(manufacturerId).subscribe(result => {
       this.manufacturer = result;
     });
+  }
+
+  setPageNumber(pageNumber: number): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber}
+      }
+    )
   }
 
   goBack(): void {

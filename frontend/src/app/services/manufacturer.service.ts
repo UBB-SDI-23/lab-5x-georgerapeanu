@@ -4,16 +4,22 @@ import { ManufacturerDTO } from '../dto/ManufacturerDTO';
 import { Observable } from 'rxjs';
 import { GenericPageDTO } from '../dto/GenericPageDTO';
 import { environment } from 'src/environments/environment';
+import { ProductDTO } from '../dto/ProductDTO';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ManufacturerService {
 
   constructor(private http: HttpClient) { }
 
   getAllManufacturers(pageNumber: number, pageSize: number): Observable<GenericPageDTO<ManufacturerDTO>> {
     return this.http.get<GenericPageDTO<ManufacturerDTO>>(environment.apiURL + "/manufacturers" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  }
+
+  getAllProductsForManufacturer(manufacturerId: number, pageNumber: number, pageSize: number): Observable<GenericPageDTO<ProductDTO>> {
+    return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/manufacturers" + `/${manufacturerId}` + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getManufacturerById(id: number): Observable<ManufacturerDTO> {

@@ -5,6 +5,7 @@ import { ProductScoreDTO } from '../dto/PoductScoreDTO';
 import { environment } from 'src/environments/environment';
 import { GenericPageDTO } from '../dto/GenericPageDTO';
 import { ProductDTO } from '../dto/ProductDTO';
+import { ReviewDTO } from '../dto/ReviewDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class ProductService {
 
   getAllProducts(pageNumber: number, pageSize: number): Observable<GenericPageDTO<ProductDTO>> {
     return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  }
+
+  getAllReviewsForProduct(productId: number, pageNumber: number, pageSize: number): Observable<GenericPageDTO<ReviewDTO>> {
+    return this.http.get<GenericPageDTO<ReviewDTO>>(environment.apiURL + "/products" + `/${productId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getProductById(id: number): Observable<ProductDTO> {

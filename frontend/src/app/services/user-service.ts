@@ -4,6 +4,7 @@ import { UserDTO } from '../dto/UserDTO';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { GenericPageDTO } from '../dto/GenericPageDTO';
+import { ReviewDTO } from '../dto/ReviewDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class UserService {
 
   getAllUsers(pageNumber: number, pageSize: number): Observable<GenericPageDTO<UserDTO>> {
     return this.http.get<GenericPageDTO<UserDTO>>(environment.apiURL + "/users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  }
+
+  getAllReviewsForUser(userId: number, pageNumber: number, pageSize: number): Observable<GenericPageDTO<ReviewDTO>> {
+    return this.http.get<GenericPageDTO<ReviewDTO>>(environment.apiURL + "/users" + `/${userId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getUserById(id: number): Observable<UserDTO> {
