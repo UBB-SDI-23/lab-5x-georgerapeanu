@@ -2,6 +2,7 @@ package com.example.app.dto.model;
 
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class ProductDTO {
     private String name;
     private String description;
     private Date publishDate;
+    @Min(0)
     private Double price;
+    @Min(0)
     private Integer weight;
     private Integer manufacturerId;
     private String color;

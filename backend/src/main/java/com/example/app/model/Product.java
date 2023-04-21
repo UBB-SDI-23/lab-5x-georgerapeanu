@@ -1,6 +1,7 @@
 package com.example.app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,9 @@ public class Product {
     private String name;
     private String description;
     private Date publishDate;
+    @Min(0)
     private Double price;
+    @Min(0)
     private Integer weight;
     private String color;
 
