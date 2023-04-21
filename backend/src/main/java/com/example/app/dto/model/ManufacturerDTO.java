@@ -18,7 +18,7 @@ public class ManufacturerDTO {
     public ManufacturerDTO() {
     }
 
-    public ManufacturerDTO(Integer id, String name, String description, Date registerDate, List<Integer> product_ids) {
+    public ManufacturerDTO(Integer id, String name, String description, Date registerDate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,8 +62,7 @@ public class ManufacturerDTO {
                 manufacturer.getId(),
                 manufacturer.getName(),
                 manufacturer.getDescription(),
-                manufacturer.getRegisterDate(),
-                manufacturer.getProducts().stream().map(Product::getId).collect(Collectors.toList())
+                manufacturer.getRegisterDate()
         );
     }
 
