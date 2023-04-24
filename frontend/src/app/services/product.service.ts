@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductScoreDTO } from '../dto/PoductScoreDTO';
 import { environment } from 'src/environments/environment';
-import { GenericPageDTO } from '../dto/GenericPageDTO';
-import { ProductDTO } from '../dto/ProductDTO';
-import { ReviewDTO } from '../dto/ReviewDTO';
+import { GenericPage } from '../model/GenericPage';
+import { Product } from '../model/Product';
+import { Review } from '../model/Review';
+import { ProductCreate } from '../model/ProductCreate';
 
 @Injectable({
   providedIn: 'root'
@@ -14,31 +15,31 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProductScoreStatistic(pageNumber: number, pageSize: number): Observable<GenericPageDTO<ProductScoreDTO>> {
-    return this.http.get<GenericPageDTO<ProductScoreDTO>>(environment.apiURL + "/products/sorted-by-reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  getProductScoreStatistic(pageNumber: number, pageSize: number): Observable<GenericPage<ProductScoreDTO>> {
+    return this.http.get<GenericPage<ProductScoreDTO>>(environment.apiURL + "/products/sorted-by-reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
-  getAllProducts(pageNumber: number, pageSize: number): Observable<GenericPageDTO<ProductDTO>> {
-    return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  getAllProducts(pageNumber: number, pageSize: number): Observable<GenericPage<Product>> {
+    return this.http.get<GenericPage<Product>>(environment.apiURL + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
-  getAllProductsWithWeightFilter(pageNumber: number, pageSize: number, weight: number): Observable<GenericPageDTO<ProductDTO>> {
-    return this.http.get<GenericPageDTO<ProductDTO>>(environment.apiURL + "/products/weight-filter" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
+  getAllProductsWithWeightFilter(pageNumber: number, pageSize: number, weight: number): Observable<GenericPage<Product>> {
+    return this.http.get<GenericPage<Product>>(environment.apiURL + "/products/weight-filter" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
   }
 
-  getAllReviewsForProduct(productId: number, pageNumber: number, pageSize: number): Observable<GenericPageDTO<ReviewDTO>> {
-    return this.http.get<GenericPageDTO<ReviewDTO>>(environment.apiURL + "/products" + `/${productId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  getAllReviewsForProduct(productId: number, pageNumber: number, pageSize: number): Observable<GenericPage<Review>> {
+    return this.http.get<GenericPage<Review>>(environment.apiURL + "/products" + `/${productId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
-  getProductById(id: number): Observable<ProductDTO> {
-    return this.http.get<ProductDTO>(environment.apiURL + "/products/" + id.toString());
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(environment.apiURL + "/products/" + id.toString());
   }
 
-  editProduct(product: ProductDTO): Observable<any>{
+  editProduct(product: Product): Observable<any>{
     return this.http.patch(environment.apiURL + "/products/" + product.id.toString(), product);
   }
 
-  createProduct(product: ProductDTO): Observable<any>{
+  createProduct(product: ProductCreate): Observable<any>{
     return this.http.post(environment.apiURL + "/products", product);
   }
 

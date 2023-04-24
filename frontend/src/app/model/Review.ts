@@ -1,4 +1,4 @@
-export interface ReviewDTO{
+export interface Review{
     userId: number,
     productId: number,
     score: number,

@@ -1,5 +1,4 @@
-export interface ProductDTO{
-    id: number,
+export interface ProductCreate{
     name: string,
     description: string,
     publishDate: Date,

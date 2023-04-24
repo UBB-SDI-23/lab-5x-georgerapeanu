@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { User } from 'src/app/model/User';
 import { Location } from '@angular/common';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
+import { Review } from 'src/app/model/Review';
 
 @Component({
   selector: 'app-user-details',
@@ -11,13 +11,13 @@ import { ReviewDTO } from 'src/app/dto/ReviewDTO';
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent {
-  user: UserDTO | null = null;
+  user: User | null = null;
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  reviews: ReviewDTO[] = [];
+  reviews: Review[] = [];
 
 
   constructor(

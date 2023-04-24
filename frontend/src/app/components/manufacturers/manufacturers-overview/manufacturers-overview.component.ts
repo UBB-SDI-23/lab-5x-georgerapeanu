@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
-import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
+import { Manufacturer } from 'src/app/model/Manufacturer';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class ManufacturersOverviewComponent {
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  manufacturers: ManufacturerDTO[] = [];
+  manufacturers: Manufacturer[] = [];
   constructor(
     private manufacturerService: ManufacturerService,
     private router: Router,

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
+import { Review } from 'src/app/model/Review';
 import { AbstractOverviewPageComponent } from '../../abstract/abstract-overview-page/abstract-overview-page.component';
 
 @Component({
@@ -7,6 +7,6 @@ import { AbstractOverviewPageComponent } from '../../abstract/abstract-overview-
   templateUrl: './reviews-overview-page.component.html',
   styleUrls: ['./reviews-overview-page.component.css']
 })
-export class ReviewsOverviewPageComponent extends AbstractOverviewPageComponent<ReviewDTO>{
+export class ReviewsOverviewPageComponent extends AbstractOverviewPageComponent<Review>{
 
 }

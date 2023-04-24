@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
+import { Product } from 'src/app/model/Product';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { FormBuilder } from '@angular/forms';
@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent {
-  product: ProductDTO = {
+  product: Product = {
     id: 0,
     name: "",
     description: "",

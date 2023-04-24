@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ProductCreate } from 'src/app/model/ProductCreate';
 
 @Component({
   selector: 'app-product-create',
@@ -12,8 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./product-create.component.css']
 })
 export class ProductCreateComponent {
-  product: ProductDTO = {
-    id: 0,
+  product: ProductCreate = {
     name: "",
     description: "",
     publishDate: new Date(),

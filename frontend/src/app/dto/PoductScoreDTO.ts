@@ -1,6 +1,6 @@
-import { ProductDTO } from "./ProductDTO";
+import { Product } from "../model/Product";
 
 export interface ProductScoreDTO{
-    productDTO: ProductDTO,
+    productDTO: Product,
     score: number
 }

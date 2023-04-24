@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
+import { Product } from 'src/app/model/Product';
 import { ProductService } from 'src/app/services/product.service';
 import { Location } from '@angular/common';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
+import { Review } from 'src/app/model/Review';
 
 @Component({
   selector: 'app-product-details',
@@ -11,13 +11,13 @@ import { ReviewDTO } from 'src/app/dto/ReviewDTO';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent {
-  product: ProductDTO | null = null;
+  product: Product | null = null;
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  reviews: ReviewDTO[] = [];
+  reviews: Review[] = [];
 
   constructor(
     private route: ActivatedRoute, 

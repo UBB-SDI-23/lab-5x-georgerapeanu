@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/user-service';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { User } from 'src/app/model/User';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class UsersOverviewComponent {
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  users: UserDTO[] = [];
+  users: User[] = [];
   constructor(
     private userService: UserService,
     private router: Router,

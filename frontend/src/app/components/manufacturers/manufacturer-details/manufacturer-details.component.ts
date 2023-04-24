@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
+import { Manufacturer } from 'src/app/model/Manufacturer';
+import { Product } from 'src/app/model/Product';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
 
@@ -13,13 +13,13 @@ import { Location } from '@angular/common';
 })
 export class ManufacturerDetailsComponent {
 
-  manufacturer: ManufacturerDTO | null = null;
+  manufacturer: Manufacturer | null = null;
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  products: ProductDTO[] = [];
+  products: Product[] = [];
 
   constructor(
     private route: ActivatedRoute, 

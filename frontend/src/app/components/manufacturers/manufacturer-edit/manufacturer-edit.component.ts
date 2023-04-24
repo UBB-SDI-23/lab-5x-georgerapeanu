@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
+import { Manufacturer } from 'src/app/model/Manufacturer';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 })
 export class ManufacturerEditComponent {
 
-  manufacturer: ManufacturerDTO = {
+  manufacturer: Manufacturer = {
     id: 0,
     name: "",
     description: "",

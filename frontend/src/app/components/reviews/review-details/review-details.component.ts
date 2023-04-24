@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { UserService } from 'src/app/services/user-service';
 import { Location } from '@angular/common';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
+import { Review } from 'src/app/model/Review';
 import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { ReviewService } from 'src/app/services/review.service';
   styleUrls: ['./review-details.component.css']
 })
 export class ReviewDetailsComponent {
-  review: ReviewDTO | null = null;
+  review: Review | null = null;
 
   constructor(
     private route: ActivatedRoute, 

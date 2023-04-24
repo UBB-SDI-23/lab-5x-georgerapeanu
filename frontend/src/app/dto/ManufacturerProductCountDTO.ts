@@ -1,6 +1,6 @@
-import { ManufacturerDTO } from "./ManufacturerDTO";
+import { Manufacturer } from "../model/Manufacturer";
 
 export interface ManufacturerProductCountDTO{
-    manufacturerDTO: ManufacturerDTO,
+    manufacturerDTO: Manufacturer,
     productCount: number
 }

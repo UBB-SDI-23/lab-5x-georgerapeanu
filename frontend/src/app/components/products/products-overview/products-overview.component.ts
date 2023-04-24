@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
+import { Product } from 'src/app/model/Product';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class ProductsOverviewComponent {
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
   minWeight: number = -1;
-  products: ProductDTO[] = [];
+  products: Product[] = [];
   constructor(
     private productService: ProductService,
     private router: Router,

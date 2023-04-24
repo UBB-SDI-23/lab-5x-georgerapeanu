@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserDTO } from 'src/app/dto/UserDTO';
+import { User } from 'src/app/model/User';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
 import { FormBuilder } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent {
-  user: UserDTO = {
+  user: User = {
     id: 0,
     name: "",
     handle: "",

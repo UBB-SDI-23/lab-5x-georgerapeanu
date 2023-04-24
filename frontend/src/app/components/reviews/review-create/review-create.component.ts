@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ReviewService } from 'src/app/services/review.service';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ReviewCreate } from 'src/app/model/ReviewCreate';
 
 @Component({
   selector: 'app-review-create',
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./review-create.component.css']
 })
 export class ReviewCreateComponent {
-  review: ReviewDTO = {
+  review: ReviewCreate = {
     userId: 0,
     productId: 0,
     score: 0,

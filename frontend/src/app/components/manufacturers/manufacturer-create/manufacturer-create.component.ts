@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ManufacturerDTO } from 'src/app/dto/ManufacturerDTO';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
+import { ManufacturerCreate } from 'src/app/model/ManufacturerCreate';
 
 @Component({
   selector: 'app-manufacturer-create',
@@ -11,8 +11,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./manufacturer-create.component.css']
 })
 export class ManufacturerCreateComponent {
-  manufacturer: ManufacturerDTO = {
-    id: 0,
+  manufacturer: ManufacturerCreate = {
     name: "",
     description: "",
     registerDate: new Date(),

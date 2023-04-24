@@ -1,4 +1,4 @@
-export interface GenericPageDTO<T> {
+export interface GenericPage<T> {
     content: T[],
     totalPages: number,
     pageable: {

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProductDTO } from 'src/app/dto/ProductDTO';
+import { Product } from 'src/app/model/Product';
 import { AbstractOverviewPageComponent } from '../../abstract/abstract-overview-page/abstract-overview-page.component';
 
 @Component({
@@ -7,6 +7,6 @@ import { AbstractOverviewPageComponent } from '../../abstract/abstract-overview-
   templateUrl: './products-overview-page.component.html',
   styleUrls: ['./products-overview-page.component.css']
 })
-export class ProductsOverviewPageComponent extends AbstractOverviewPageComponent<ProductDTO> {
+export class ProductsOverviewPageComponent extends AbstractOverviewPageComponent<Product> {
   
 }

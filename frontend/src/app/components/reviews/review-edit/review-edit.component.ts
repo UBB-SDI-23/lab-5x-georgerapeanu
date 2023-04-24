@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ReviewDTO } from 'src/app/dto/ReviewDTO';
+import { Review } from 'src/app/model/Review';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ReviewService } from 'src/app/services/review.service';
 import { FormBuilder } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./review-edit.component.css']
 })
 export class ReviewEditComponent {
-  review: ReviewDTO = {
+  review: Review = {
     userId: 0,
     productId: 0,
     score: 0,

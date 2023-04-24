@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { UserDTO } from 'src/app/dto/UserDTO';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { UserCreate } from 'src/app/model/UserCreate';
 
 @Component({
   selector: 'app-user-create',
@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./user-create.component.css']
 })
 export class UserCreateComponent {
-  user: UserDTO = {
+  user: UserCreate = {
     id: 0,
     name: "",
     handle: "",
