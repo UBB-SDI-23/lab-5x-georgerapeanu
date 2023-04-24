@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Manufacturer } from 'src/app/model/Manufacturer';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
+import { Manufacturer } from 'src/app/model/Manufacturer';
 
 @Component({
   selector: 'app-manufacturer-edit',
@@ -11,19 +11,12 @@ import { Location } from '@angular/common';
   styleUrls: ['./manufacturer-edit.component.css']
 })
 export class ManufacturerEditComponent {
-
-  manufacturer: Manufacturer = {
-    id: 0,
-    name: "",
-    description: "",
-    registerDate: new Date(),
-  };
   editForm = this.formBuilder.group(
     {
-      id: [{value: '', disabled: true}],
+      id: [0],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      registerDate: ['', Validators.required],
+      registerDate: [new Date(), Validators.required],
     }
   );
   serverResponse: string|null = null;
@@ -42,13 +35,13 @@ export class ManufacturerEditComponent {
       return;
     }
     this.manufacturerService.getManufacturerById(parseInt(manufacturerIdString)).subscribe(result => {
-      this.manufacturer = result;
+      this.editForm.setValue(result);
     });
   }
 
   onSubmit(): void {
     if(this.editForm.valid) {
-      this.manufacturerService.editManufacturer(this.manufacturer).subscribe({
+      this.manufacturerService.editManufacturer(this.editForm.value as Manufacturer).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
