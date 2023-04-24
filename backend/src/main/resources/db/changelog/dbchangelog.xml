@@ -182,4 +182,12 @@
     <changeSet id="1680067598535-4" author="georgerapeanu">
         <tagDatabase tag="lab7-begin"/>
     </changeSet>
+    <changeSet id="1680067598536-1" author="georgerapeanu">
+        <dropIndex tableName="review" indexName="REVIEW_PRODUCT_ID_INDEX"/>
+        <dropPrimaryKey tableName="review"/>
+        <addPrimaryKey tableName="review" columnNames="product_id,user_id"/>
+    </changeSet>
+    <changeSet id="1680067598536-2" author="georgerapeanu">
+        <tagDatabase tag="lab7-possible-speedup"/>
+    </changeSet>
 </databaseChangeLog>
