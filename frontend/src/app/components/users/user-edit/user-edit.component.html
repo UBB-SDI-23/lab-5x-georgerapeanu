@@ -4,32 +4,52 @@
         Back
     </button>
     <h1 class="font-bold text-3xl py-5">
-        Edit User #{{user.id}}
+        Edit User #{{editForm.get('id')?.value}}
     </h1>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="name">Name: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" [(ngModel)]="user.name">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" >
+    <div *ngIf="
+        editForm.get('name')?.errors?.['required'] &&
+        (editForm.get('name')?.touched || editForm.get('name')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Username is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="handle">Handle: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="handle" [(ngModel)]="user.handle" >
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="handle">
+    <div *ngIf="
+        editForm.get('handle')?.errors?.['required'] &&
+        (editForm.get('handle')?.touched || editForm.get('handle')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Handle is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="email">Email: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="email" [(ngModel)]="user.email" >
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="email">
+    <div *ngIf="
+        editForm.get('email')?.errors?.['required'] &&
+        (editForm.get('email')?.touched || editForm.get('email')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Email is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="birthday">Birthday: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="birthday" [(ngModel)]="user.birthday" >
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="birthday">
+    <div *ngIf="
+        editForm.get('birthday')?.errors?.['required'] &&
+        (editForm.get('birthday')?.touched || editForm.get('birthday')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Birthday is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="registeredAt">Registered at:</label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="registeredAt" [(ngModel)]="user.registeredAt">
-    
-    <div *ngIf="editForm.invalid" class="alert text-red-600 uppercase mb-2 mt-6">
-        Form is invalid
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="registeredAt">
+    <div *ngIf="
+        editForm.get('registeredAt')?.errors?.['required'] &&
+        (editForm.get('registeredAt')?.touched || editForm.get('registeredAt')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Registered at is required
     </div>
 
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
         Submit
     </button>
-    <div *ngIf="serverResponse=='Ok'" class="alert text-green-600 uppercase">
-        User created!
-    </div>
-    <div *ngIf="serverResponse=='Error'" class="alert text-red-600 uppercase">
-        Server error!
-    </div>
 </div>
 
 <div *ngIf="serverResponse!=null" class="z-10 top-0 left-0 absolute h-full w-full bg-gray-700/75 justify-center flex">

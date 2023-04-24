@@ -50,12 +50,6 @@
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
         Submit
     </button>
-    <div *ngIf="serverResponse=='Ok'" class="alert text-green-600 uppercase">
-        User created!
-    </div>
-    <div *ngIf="serverResponse=='Error'" class="alert text-red-600 uppercase">
-        Server error!
-    </div>
 </div>
 
 <div *ngIf="serverResponse!=null" class="z-10 top-0 left-0 absolute h-full w-full bg-gray-700/75 justify-center flex">

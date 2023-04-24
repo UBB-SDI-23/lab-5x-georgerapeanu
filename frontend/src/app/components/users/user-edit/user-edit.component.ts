@@ -12,24 +12,17 @@ import { Location } from '@angular/common';
   styleUrls: ['./user-edit.component.css']
 })
 export class UserEditComponent {
-  user: User = {
-    id: 0,
-    name: "",
-    handle: "",
-    email: "",
-    birthday: new Date(),
-    registeredAt: new Date(),
-  };
   editForm = this.formBuilder.group(
     {
-      id: [{value: '', disabled: true}],
+      id: [0],
       name: ['', Validators.required],
       handle: ['', Validators.required],
       email: ['', Validators.required],
-      birthday: ['', Validators.required],
-      registeredAt: ['', Validators.required]
+      birthday: [new Date(), Validators.required],
+      registeredAt: [new Date(), Validators.required]
     }
   );
+
   serverResponse: string|null = null;
 
   constructor(
@@ -46,13 +39,13 @@ export class UserEditComponent {
       return;
     }
     this.userService.getUserById(parseInt(userIdString)).subscribe(result => {
-      this.user = result;
+      this.editForm.setValue(result);
     });
   }
 
   onSubmit(): void {
     if(this.editForm.valid) {
-      this.userService.editUser(this.user).subscribe({
+      this.userService.editUser(this.editForm.value as User).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
