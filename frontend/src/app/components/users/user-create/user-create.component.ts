@@ -12,21 +12,13 @@ import { UserCreate } from 'src/app/model/UserCreate';
   styleUrls: ['./user-create.component.css']
 })
 export class UserCreateComponent {
-  user: UserCreate = {
-    id: 0,
-    name: "",
-    handle: "",
-    email: "",
-    birthday: new Date(),
-    registeredAt: new Date(),
-  };
   createForm = this.formBuilder.group(
     {
       name: ['', Validators.required],
       handle: ['', Validators.required],
       email: ['', Validators.required],
-      birthday: ['', Validators.required],
-      registeredAt: ['', Validators.required]
+      birthday: [new Date(), Validators.required],
+      registeredAt: [new Date(), Validators.required]
     }
   );
   serverResponse: string|null = null;
@@ -44,14 +36,11 @@ export class UserCreateComponent {
     if(userIdString == null) {
       return;
     }
-    this.userService.getUserById(parseInt(userIdString)).subscribe(result => {
-      this.user = result;
-    });
   }
 
   onSubmit(): void {
     if(this.createForm.valid) {
-      this.userService.createUser(this.user).subscribe({
+      this.userService.createUser(this.createForm.value as UserCreate).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
