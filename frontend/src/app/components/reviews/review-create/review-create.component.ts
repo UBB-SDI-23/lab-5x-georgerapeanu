@@ -12,20 +12,13 @@ import { ReviewCreate } from 'src/app/model/ReviewCreate';
   styleUrls: ['./review-create.component.css']
 })
 export class ReviewCreateComponent {
-  review: ReviewCreate = {
-    userId: 0,
-    productId: 0,
-    score: 0,
-    comment: "",
-    postedDate: new Date()
-  };
   createForm = this.formBuilder.group(
     {
       userId: [0, Validators.required],
       productId: [0, Validators.required],
       score: [0, Validators.required],
       comment: ['', Validators.required],
-      postedDate: ['', Validators.required],
+      postedDate: [new Date(), Validators.required],
     }
   );
   serverResponse: string|null = null;
@@ -41,17 +34,17 @@ export class ReviewCreateComponent {
   ngOnInit(): void {
     let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_id');
     if(userIdString != null) {
-      this.review.userId = parseInt(userIdString);
+      this.createForm.controls.userId.setValue(parseInt(userIdString));
     }
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString != null) {
-      this.review.productId = parseInt(productIdString);
+      this.createForm.controls.productId.setValue(parseInt(productIdString));
     }
   }
 
   onSubmit(): void {
     if(this.createForm.valid) {
-      this.reviewService.createReview(this.review).subscribe({
+      this.reviewService.createReview(this.createForm.value as ReviewCreate).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },

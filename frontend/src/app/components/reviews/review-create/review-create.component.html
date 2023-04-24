@@ -7,18 +7,44 @@
         Create Review
     </h1>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="userId">User: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="userId" [(ngModel)]="review.userId">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="userId">
+    <div *ngIf="
+        createForm.get('userId')?.errors?.['required'] &&
+        (createForm.get('userId')?.touched || createForm.get('userId')?.dirty)
+    " class="alert text-red-600 text-sm">
+        User is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="productId">Product: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="productId" [(ngModel)]="review.productId">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="productId">
+    <div *ngIf="
+        createForm.get('productId')?.errors?.['required'] &&
+        (createForm.get('productId')?.touched || createForm.get('productId')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Product is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="score">Score: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="score" [(ngModel)]="review.score">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="score">
+    <div *ngIf="
+        createForm.get('score')?.errors?.['required'] &&
+        (createForm.get('score')?.touched || createForm.get('score')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Score is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="comment">Comment: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="comment" [(ngModel)]="review.comment">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="comment">
+    <div *ngIf="
+        createForm.get('comment')?.errors?.['required'] &&
+        (createForm.get('comment')?.touched || createForm.get('comment')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Comment is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="postedDate">Posted at: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="postedDate" [(ngModel)]="review.postedDate">
-
-    <div *ngIf="createForm.invalid" class="alert text-red-600 uppercase mb-2 mt-6">
-        Form is invalid
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="postedDate">
+    <div *ngIf="
+        createForm.get('postedDate')?.errors?.['required'] &&
+        (createForm.get('postedDate')?.touched || createForm.get('postedDate')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Posted at is required
     </div>
 
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
