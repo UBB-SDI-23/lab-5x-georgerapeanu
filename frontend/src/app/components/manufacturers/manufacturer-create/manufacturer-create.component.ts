@@ -11,16 +11,11 @@ import { ManufacturerCreate } from 'src/app/model/ManufacturerCreate';
   styleUrls: ['./manufacturer-create.component.css']
 })
 export class ManufacturerCreateComponent {
-  manufacturer: ManufacturerCreate = {
-    name: "",
-    description: "",
-    registerDate: new Date(),
-  };
   createForm = this.formBuilder.group(
     {
       name: ['', Validators.required],
       description: ['', Validators.required],
-      registerDate: ['', Validators.required]
+      registerDate: [new Date(), Validators.required]
     }
   );
   serverResponse: string|null = null;
@@ -38,14 +33,11 @@ export class ManufacturerCreateComponent {
     if(manufacturerIdString == null) {
       return;
     }
-    this.manufacturerService.getManufacturerById(parseInt(manufacturerIdString)).subscribe(result => {
-      this.manufacturer = result;
-    });
   }
 
   onSubmit(): void {
     if(this.createForm.valid) {
-      this.manufacturerService.createManufacturer(this.manufacturer).subscribe({
+      this.manufacturerService.createManufacturer(this.createForm.value as ManufacturerCreate).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
