@@ -26,7 +26,7 @@
     <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="registerDate">
     <div *ngIf="
         editForm.get('registerDate')?.errors?.['required'] &&
-        (editForm.get('name')?.touched || editForm.get('name')?.dirty)
+        (editForm.get('registerDate')?.touched || editForm.get('registerDate')?.dirty)
     " class="alert text-red-600 text-sm">
         Registered at is required
     </div>

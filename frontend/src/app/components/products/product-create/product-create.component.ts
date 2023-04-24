@@ -12,23 +12,14 @@ import { ProductCreate } from 'src/app/model/ProductCreate';
   styleUrls: ['./product-create.component.css']
 })
 export class ProductCreateComponent {
-  product: ProductCreate = {
-    name: "",
-    description: "",
-    publishDate: new Date(),
-    price: 0,
-    weight: 0,
-    manufacturerId: 0,
-    color: ""
-  };
   createForm = this.formBuilder.group(
     {
       name: ['', Validators.required],
       description: ['', Validators.required],
-      publishDate: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
-      weight: ['', [Validators.required, Validators.min(0)]],
-      manufacturerId: ['', Validators.required],
+      publishDate: [new Date(), Validators.required],
+      price: [0.0, [Validators.required, Validators.min(0)]],
+      weight: [0, [Validators.required, Validators.min(0)]],
+      manufacturerId: [0, Validators.required],
       color: ['', Validators.required]
     }
   );
@@ -47,14 +38,11 @@ export class ProductCreateComponent {
     if(productIdString == null) {
       return;
     }
-    this.productService.getProductById(parseInt(productIdString)).subscribe(result => {
-      this.product = result;
-    });
   }
 
   onSubmit(): void {
     if(this.createForm.valid) {
-      this.productService.createProduct(this.product).subscribe({
+      this.productService.createProduct(this.createForm.value as ProductCreate).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },

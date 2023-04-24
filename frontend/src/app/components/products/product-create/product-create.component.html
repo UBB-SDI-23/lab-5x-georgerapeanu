@@ -7,22 +7,60 @@
         Create Product
     </h1>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="name">Name: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" [(ngModel)]="product.name">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name">
+    <div *ngIf="
+        createForm.get('name')?.errors?.['required'] &&
+        (createForm.get('name')?.touched || createForm.get('name')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Name is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="description">Description: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="description" [(ngModel)]="product.description">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="description">
+    <div *ngIf="
+        createForm.get('description')?.errors?.['required'] &&
+        (createForm.get('description')?.touched || createForm.get('description')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Description is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="publishDate">Published At: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="publishDate" [(ngModel)]="product.publishDate">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="publishDate">
+    <div *ngIf="
+        createForm.get('publishDate')?.errors?.['required'] &&
+        (createForm.get('publishDate')?.touched || createForm.get('publishDate')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Published at is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="price">Price: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="price" [(ngModel)]="product.price">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="price">
+    <div *ngIf="
+        createForm.get('price')?.errors?.['required'] &&
+        (createForm.get('price')?.touched || createForm.get('price')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Price is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="weight">Weight: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="weight" [(ngModel)]="product.weight">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="weight">
+    <div *ngIf="
+        createForm.get('weight')?.errors?.['required'] &&
+        (createForm.get('weight')?.touched || createForm.get('weight')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Weight is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="manufacturerId">Manufacturer: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="manufacturerId" [(ngModel)]="product.manufacturerId">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="manufacturerId">
+    <div *ngIf="
+        createForm.get('manufacturerId')?.errors?.['required'] &&
+        (createForm.get('manufacturerId')?.touched || createForm.get('manufacturerId')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Manufacturer is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="color">Color: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="color" [(ngModel)]="product.color">
-
-    <div *ngIf="createForm.invalid" class="alert text-red-600 uppercase mb-2 mt-6">
-        Form is invalid
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="color">
+    <div *ngIf="
+        createForm.get('color')?.errors?.['required'] &&
+        (createForm.get('color')?.touched || createForm.get('color')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Color is required
     </div>
 
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
