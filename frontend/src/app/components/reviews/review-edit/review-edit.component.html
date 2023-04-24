@@ -6,19 +6,36 @@
     <h1 class="font-bold text-3xl py-5">
         Edit Review
     </h1>
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="userId">User: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12 bg-gray-100" type="text" [value]="review.userId" [readOnly]="true">
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="productId">Product: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12 bg-gray-100" type="text" [value]="review.productId" [readOnly]="true">
+    <h2 class="font-semibold text-xl py-1">
+        User #{{editForm.get('userId')?.value}}
+    </h2>
+    <h2 class="font-semibold text-xl py-1">
+        Product #{{editForm.get('productId')?.value}}
+    </h2>
+    
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="score">Score: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="score" [(ngModel)]="review.score">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="score">
+    <div *ngIf="
+        editForm.get('score')?.errors?.['required'] &&
+        (editForm.get('score')?.touched || editForm.get('score')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Score is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="comment">Comment: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="comment" [(ngModel)]="review.comment">
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="comment">
+    <div *ngIf="
+        editForm.get('comment')?.errors?.['required'] &&
+        (editForm.get('comment')?.touched || editForm.get('comment')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Comment is required
+    </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="postedDate">Posted at: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="postedDate" [(ngModel)]="review.postedDate">
-
-    <div *ngIf="editForm.invalid" class="alert text-red-600 uppercase mb-2 mt-6">
-        Form is invalid
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="postedDate">
+    <div *ngIf="
+        editForm.get('postedDate')?.errors?.['required'] &&
+        (editForm.get('postedDate')?.touched || editForm.get('postedDate')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Posted at is required
     </div>
 
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
@@ -34,7 +51,7 @@
         </button>
         <div class="h-full flex justify-center mt-16">
             <div *ngIf="serverResponse=='Ok'" class="text-green-600">
-                Review editd!
+                Review edited!
             </div>
             <div *ngIf="serverResponse!='Ok'" class="text-red-600">
                 {{serverResponse}}

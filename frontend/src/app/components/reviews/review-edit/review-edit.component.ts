@@ -12,18 +12,13 @@ import { Location } from '@angular/common';
   styleUrls: ['./review-edit.component.css']
 })
 export class ReviewEditComponent {
-  review: Review = {
-    userId: 0,
-    productId: 0,
-    score: 0,
-    comment: "",
-    postedDate: new Date()
-  };
   editForm = this.formBuilder.group(
     {
+      userId: [0],
+      productId: [0],
       score: [0, Validators.required],
       comment: ['', Validators.required],
-      postedDate: ['', Validators.required],
+      postedDate: [new Date(), Validators.required],
     }
   );
   serverResponse: string|null = null;
@@ -41,20 +36,20 @@ export class ReviewEditComponent {
     if(userIdString == null) {
       return ;
     }
-    this.review.userId = parseInt(userIdString);
+    this.editForm.controls.userId.setValue(parseInt(userIdString));
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString == null) {
       return ;
     }
-    this.review.productId = parseInt(productIdString);
-    this.reviewService.getReviewById(this.review.userId, this.review.productId).subscribe(result => {
-      this.review = result;
+    this.editForm.controls.productId.setValue(parseInt(productIdString));
+    this.reviewService.getReviewById(parseInt(userIdString), parseInt(productIdString)).subscribe(result => {
+      this.editForm.setValue(result);
     });
   }
 
   onSubmit(): void {
     if(this.editForm.valid) {
-      this.reviewService.editReview(this.review).subscribe({
+      this.reviewService.editReview(this.editForm.value as Review).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
