@@ -13,24 +13,15 @@ import { Location } from '@angular/common';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent {
-  product: Product = {
-    id: 0,
-    name: "",
-    description: "",
-    publishDate: new Date(),
-    price: 0,
-    weight: 0,
-    manufacturerId: 0,
-    color: ""
-  };
   editForm = this.formBuilder.group(
     {
+      id: [0],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      publishDate: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
-      weight: ['', [Validators.required, Validators.min(0)]],
-      manufacturerId: ['', Validators.required],
+      publishDate: [new Date(), Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      weight: [0, [Validators.required, Validators.min(0)]],
+      manufacturerId: [0, Validators.required],
       color: ['', Validators.required]
     }
   );
@@ -50,13 +41,13 @@ export class ProductEditComponent {
       return;
     }
     this.productService.getProductById(parseInt(productIdString)).subscribe(result => {
-      this.product = result;
+      this.editForm.setValue(result);
     });
   }
 
   onSubmit(): void {
     if(this.editForm.valid) {
-      this.productService.editProduct(this.product).subscribe({
+      this.productService.editProduct(this.editForm.value as Product).subscribe({
         next: response => {
           this.serverResponse="Ok";
         },
