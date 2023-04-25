@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { GenericPage } from '../model/GenericPage';
 import { Review } from '../model/Review';
 import { UserCreate } from '../model/UserCreate';
+import UserReviewCountDTO from '../dto/UserReviewCountDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class UserService {
 
   getAllUsers(pageNumber: number, pageSize: number): Observable<GenericPage<User>> {
     return this.http.get<GenericPage<User>>(environment.apiURL + "/users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  }
+
+  getUserReviewCountsPage(pageNumber: number, pageSize: number): Observable<GenericPage<UserReviewCountDTO>> {
+    return this.http.get<GenericPage<UserReviewCountDTO>>(environment.apiURL + "/user-review-counts" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getAllReviewsForUser(userId: number, pageNumber: number, pageSize: number): Observable<GenericPage<Review>> {

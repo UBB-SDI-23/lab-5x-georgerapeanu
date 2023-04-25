@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/user-service';
 import { User } from 'src/app/model/User';
 import { ActivatedRoute, Router } from '@angular/router';
+import UserReviewCountDTO from 'src/app/dto/UserReviewCountDTO';
 
 @Component({
   selector: 'app-users-overview',
@@ -14,7 +15,7 @@ export class UsersOverviewComponent {
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
-  users: User[] = [];
+  userReviewCounts: UserReviewCountDTO[] = [];
   constructor(
     private userService: UserService,
     private router: Router,
@@ -37,8 +38,8 @@ export class UsersOverviewComponent {
           if(this.pageSize > 10) {
             this.pageSize = 10;
           }
-          this.userService.getAllUsers(this.pageNumber, this.pageSize).subscribe(result => {
-            this.users = result.content;
+          this.userService.getUserReviewCountsPage(this.pageNumber, this.pageSize).subscribe(result => {
+            this.userReviewCounts = result.content;
             this.totalPages = result.totalPages;
             this.currentPage = this.pageNumber;
             this.currentSize = this.pageSize;

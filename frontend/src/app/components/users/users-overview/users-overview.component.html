@@ -15,8 +15,8 @@
   Create user
 </a>
 
-<app-users-overview-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.users" [actionable]="true">
-</app-users-overview-page>
+<app-user-review-count-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.userReviewCounts" [actionable]="true">
+</app-user-review-count-page>
 
 <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" (pageChangeEvent)="this.setPageNumber($event)">
 </app-pagination>
