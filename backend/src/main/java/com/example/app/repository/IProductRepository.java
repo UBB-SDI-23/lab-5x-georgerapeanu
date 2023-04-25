@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface IProductRepository {
     Page<ProductScoreDTO> getProductsSortedByAverageScore(Pageable pageable);
-    List<ProductScoreDTO> getProductsSortedByAverageScoreFromList(List<ProductDTO> productDTOS);
+    List<ProductScoreDTO> getProductScoresFromList(List<ProductDTO> productDTOS);
 }

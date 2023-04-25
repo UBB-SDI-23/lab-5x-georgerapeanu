@@ -6,6 +6,7 @@ import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
@@ -52,5 +53,32 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
         long total = em.createQuery(count_cq).getSingleResult();
 
         return new PageImpl<>(results, pageable, total);
+    }
+
+    @Override
+    public List<ManufacturerProductCountDTO> getManufacturerProductCountsFromList(List<ManufacturerDTO> manufacturerDTOS) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Tuple> cq = cb.createQuery(Tuple.class);
+        Root<Product> product = cq.from(Product.class);
+        CriteriaBuilder.In<Integer> inClause = cb.in(product.get("manufacturer").get("id"));
+        for(ManufacturerDTO manufacturerDTO: manufacturerDTOS) {
+            inClause.value(manufacturerDTO.getId());
+        }
+        cq
+                .multiselect(product.get("manufacturer").get("id").alias("id"), cb.count(product.get("id")).alias("count"))
+                .groupBy(product.get("manufacturer").get("id"))
+                .where(inClause);
+
+        TypedQuery<Tuple> typedQuery = em.createQuery(cq);
+
+        return typedQuery
+                .getResultStream()
+                .map(row -> {
+                    ManufacturerDTO manufacturerDTO = manufacturerDTOS.stream()
+                            .filter(manufacturer -> manufacturer.getId() == row.get("id"))
+                            .findFirst()
+                            .get();
+                    return new ManufacturerProductCountDTO(manufacturerDTO, ((Long)row.get("count")).intValue());
+                }).collect(Collectors.toList());
     }
 }

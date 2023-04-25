@@ -6,6 +6,7 @@ import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.repository.ManufacturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,19 @@ public class ManufacturerService implements IManufacturerService{
     public Page<ManufacturerProductCountDTO> getManufacturersSortedByProducts(Integer pageNumber, Integer pageSize) {
         return manufacturerRepository
                 .getManufacturersSortedByProductCount(PageRequest.of(pageNumber, pageSize));
+    }
+
+    @Override
+    public Page<ManufacturerProductCountDTO> getManufacturerProductCountsPage(Integer pageNumber, Integer pageSize) {
+        Page<ManufacturerDTO> manufacturerDTOPage = manufacturerRepository
+                .findAll(PageRequest.of(pageNumber, pageSize))
+                .map(ManufacturerDTO::fromManufacturer);
+
+        return new PageImpl<>(
+                manufacturerRepository.getManufacturerProductCountsFromList(manufacturerDTOPage.getContent()),
+                PageRequest.of(pageNumber, pageSize),
+                manufacturerDTOPage.getTotalElements()
+        );
     }
 
 }

@@ -63,7 +63,7 @@ public class ProductRepositoryImpl implements IProductRepository{
     }
 
     @Override
-    public List<ProductScoreDTO> getProductsSortedByAverageScoreFromList(List<ProductDTO> productDTOs) {
+    public List<ProductScoreDTO> getProductScoresFromList(List<ProductDTO> productDTOs) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Tuple> review_scores_cq = cb.createQuery(Tuple.class);

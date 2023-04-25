@@ -108,4 +108,16 @@ public class ManufacturerController {
             }
         });
     }
+
+    @GetMapping(path="/manufacturer-product-counts")
+    public @ResponseBody Page<ManufacturerProductCountDTO> getManufacturerProductCountsPage(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return manufacturerService.getManufacturerProductCountsPage(pageNumber, pageSize);
+    }
 }

@@ -15,4 +15,5 @@ public interface IManufacturerService {
     void updateManufacturerWithId(Integer id, ManufacturerDTO user );
     void deleteManufacturerWithId(Integer id);
     public Page<ManufacturerProductCountDTO> getManufacturersSortedByProducts(Integer pageNumber, Integer pageSize);
+    public Page<ManufacturerProductCountDTO> getManufacturerProductCountsPage(Integer pageNumber, Integer pageSize);
 }
