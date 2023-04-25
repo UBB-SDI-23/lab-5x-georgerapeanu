@@ -20,6 +20,10 @@ export class ManufacturerService {
     return this.http.get<GenericPage<Manufacturer>>(environment.apiURL + "/manufacturers" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
+  getManufacturersReviewCountPage(pageNumber: number, pageSize: number): Observable<GenericPage<ManufacturerProductCountDTO>> {
+    return this.http.get<GenericPage<ManufacturerProductCountDTO>>(environment.apiURL + "/manufacturer-product-counts" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  }
+
   getAllProductsForManufacturer(manufacturerId: number, pageNumber: number, pageSize: number): Observable<GenericPage<Product>> {
     return this.http.get<GenericPage<Product>>(environment.apiURL + "/manufacturers" + `/${manufacturerId}` + "/products" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }

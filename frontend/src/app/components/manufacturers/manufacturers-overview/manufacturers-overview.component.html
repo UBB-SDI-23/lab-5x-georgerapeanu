@@ -15,9 +15,9 @@
     Create manufacturer
   </a>
   
-  <app-manufacturers-overview-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.manufacturers" [actionable]="true">
+  <app-manufacturer-product-count-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.manufacturerProductCounts" [actionable]="true">
 
-  </app-manufacturers-overview-page>
+  </app-manufacturer-product-count-page>
 
   <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" (pageChangeEvent)="this.setPageNumber($event)">
   
