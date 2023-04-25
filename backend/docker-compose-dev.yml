@@ -31,25 +31,6 @@ services:
       - LIQUIBASE_COMMAND_TAG=${TARGET_TAG}
     command:
       - update-to-tag
-  web:
-    image: "tomcat:11.0"
-    ports:
-      - "8080:8080"
-    depends_on:
-      liquibase:
-        condition: service_completed_successfully
-    env_file:
-      - .env
-    environment:
-      - spring.profiles.active=dev
-      - spring.datasource.password=${DATABASE_PASSWORD}
-      - spring.datasource.username=${DATABASE_USERNAME}
-      - spring.datasource.name=postgres=${DATABASE_PLATFORM}
-      - spring.sql.init.platform=${DATABASE_PLATFORM}
-      - spring.datasource.url=${DATABASE_DRIVER}://database:5432/main
-    volumes:
-      - ./target/${APP_NAME}-${APP_VERSION}.war:/usr/local/tomcat/webapps/ROOT.war
-
 volumes:
   sdi-postgres:
     external: true

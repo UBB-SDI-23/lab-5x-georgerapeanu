@@ -1,5 +1,6 @@
 package com.example.app.controller;
 
+import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.dto.model.UserDTO;
 import com.example.app.exceptions.AppException;
@@ -82,5 +83,17 @@ public class UserController {
         } catch (AppException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(path="/users-review-count")
+    public @ResponseBody Page<UserReviewCountDTO> getUsersReviewCount(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return userService.getUserReviewCount(pageNumber, pageSize);
     }
 }

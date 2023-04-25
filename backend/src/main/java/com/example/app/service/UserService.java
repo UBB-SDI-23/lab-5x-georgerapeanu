@@ -1,9 +1,11 @@
 package com.example.app.service;
 
+import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.model.User;
 import com.example.app.dto.model.UserDTO;
 import com.example.app.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,19 @@ public class UserService implements  IUserService{
 
     public void deleteUserWithId(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<UserReviewCountDTO> getUserReviewCount(Integer pageNumber, Integer pageSize) {
+        Page<UserDTO> userDTOPage = userRepository
+                .findAll(PageRequest.of(pageNumber, pageSize))
+                .map(UserDTO::fromUser);
+
+        return new PageImpl<>(
+                userRepository.getUserReviewCount(userDTOPage.getContent()),
+                PageRequest.of(pageNumber, pageSize),
+                userDTOPage.getTotalElements()
+        );
     }
 
 }
