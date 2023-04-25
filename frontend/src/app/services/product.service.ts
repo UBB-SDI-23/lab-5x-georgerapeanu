@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductScoreDTO } from '../dto/PoductScoreDTO';
+import { ProductScoreDTO } from '../dto/ProductScoreDTO';
 import { environment } from 'src/environments/environment';
 import { GenericPage } from '../model/GenericPage';
 import { Product } from '../model/Product';
@@ -25,6 +25,10 @@ export class ProductService {
 
   getAllProductsWithWeightFilter(pageNumber: number, pageSize: number, weight: number): Observable<GenericPage<Product>> {
     return this.http.get<GenericPage<Product>>(environment.apiURL + "/products/weight-filter" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
+  }
+
+  getProductScorePageWithWeightFilter(pageNumber: number, pageSize: number, weight: number): Observable<GenericPage<ProductScoreDTO>> {
+    return this.http.get<GenericPage<ProductScoreDTO>>(environment.apiURL + "/product-scores" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
   }
 
   getAllReviewsForProduct(productId: number, pageNumber: number, pageSize: number): Observable<GenericPage<Review>> {

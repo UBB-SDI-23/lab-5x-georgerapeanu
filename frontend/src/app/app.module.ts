@@ -35,6 +35,7 @@ import { ReviewDeleteComponent } from './components/reviews/review-delete/review
 import { ManufacturersCountStatisticComponent } from './components/manufacturers/manufacturers-count-statistic/manufacturers-count-statistic.component';
 import { UserReviewCountPageComponent } from './components/users/user-review-count-page/user-review-count-page.component';
 import { ManufacturerProductCountPageComponent } from './components/manufacturers/manufacturer-product-count-page/manufacturer-product-count-page.component';
+import { ProductScorePageComponent } from './components/products/product-score-page/product-score-page.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ManufacturerProductCountPageComponent } from './components/manufacturer
     ManufacturersCountStatisticComponent,
     UserReviewCountPageComponent,
     ManufacturerProductCountPageComponent,
+    ProductScorePageComponent,
   ],
   imports: [
     BrowserModule,

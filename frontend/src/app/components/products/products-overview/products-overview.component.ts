@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/model/Product';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductScoreDTO } from 'src/app/dto/ProductScoreDTO';
 
 @Component({
   selector: 'app-products-overview',
@@ -15,7 +16,7 @@ export class ProductsOverviewComponent {
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
   minWeight: number = -1;
-  products: Product[] = [];
+  productScores: ProductScoreDTO[] = [];
   constructor(
     private productService: ProductService,
     private router: Router,
@@ -41,8 +42,8 @@ export class ProductsOverviewComponent {
           if(this.pageSize > 10) {
             this.pageSize = 10;
           }
-          this.productService.getAllProductsWithWeightFilter(this.pageNumber, this.pageSize, this.minWeight).subscribe(result => {
-            this.products = result.content;
+          this.productService.getProductScorePageWithWeightFilter(this.pageNumber, this.pageSize, this.minWeight).subscribe(result => {
+            this.productScores = result.content;
             this.totalPages = result.totalPages;
             this.currentPage = this.pageNumber;
             this.currentSize = this.pageSize;

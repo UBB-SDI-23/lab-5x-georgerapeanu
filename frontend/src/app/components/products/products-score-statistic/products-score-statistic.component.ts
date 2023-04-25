@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductScoreDTO } from 'src/app/dto/PoductScoreDTO';
+import { ProductScoreDTO } from 'src/app/dto/ProductScoreDTO';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
