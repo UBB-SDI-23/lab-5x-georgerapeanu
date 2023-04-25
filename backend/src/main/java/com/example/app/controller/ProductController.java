@@ -139,4 +139,16 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(path="/product-scores")
+    public @ResponseBody Page<ProductScoreDTO> getProductScoresPage(
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return productService.getProductScoresPage(pageNumber, pageSize);
+    }
 }

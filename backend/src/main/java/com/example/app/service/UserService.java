@@ -10,9 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class UserService implements  IUserService{
     @Autowired
@@ -47,13 +44,13 @@ public class UserService implements  IUserService{
     }
 
     @Override
-    public Page<UserReviewCountDTO> getUserReviewCount(Integer pageNumber, Integer pageSize) {
+    public Page<UserReviewCountDTO> getUserReviewCountPage(Integer pageNumber, Integer pageSize) {
         Page<UserDTO> userDTOPage = userRepository
                 .findAll(PageRequest.of(pageNumber, pageSize))
                 .map(UserDTO::fromUser);
 
         return new PageImpl<>(
-                userRepository.getUserReviewCount(userDTOPage.getContent()),
+                userRepository.getUserReviewCountFromList(userDTOPage.getContent()),
                 PageRequest.of(pageNumber, pageSize),
                 userDTOPage.getTotalElements()
         );

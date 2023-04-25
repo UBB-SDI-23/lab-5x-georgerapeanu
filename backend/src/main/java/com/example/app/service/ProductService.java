@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +101,18 @@ public class ProductService implements  IProductService{
     public Page<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize) {
         return productRepository
                 .getProductsSortedByAverageScore(PageRequest.of(pageNumber, pageSize));
+    }
+
+    @Override
+    public Page<ProductScoreDTO> getProductScoresPage(Integer pageNumber, Integer pageSize) {
+        Page<ProductDTO> productDTOPage = productRepository
+                .findAll(PageRequest.of(pageNumber, pageSize))
+                .map(ProductDTO::fromProduct);
+        return new PageImpl<>(
+                productRepository.getProductsSortedByAverageScoreFromList(productDTOPage.getContent()),
+                PageRequest.of(pageNumber, pageSize),
+                productDTOPage.getTotalElements()
+        );
     }
 }
 

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements IUserRepository{
     @PersistenceContext
     EntityManager em;
-    public List<UserReviewCountDTO> getUserReviewCount(List<UserDTO> users) {
+    public List<UserReviewCountDTO> getUserReviewCountFromList(List<UserDTO> users) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> user_review_count_cq = cb.createQuery(Tuple.class);
         Root<Review> review = user_review_count_cq.from(Review.class);

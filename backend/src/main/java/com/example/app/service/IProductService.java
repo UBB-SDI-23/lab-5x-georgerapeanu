@@ -17,9 +17,7 @@ public interface IProductService {
     void deleteProductWithId(Integer id);
     public Page<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight, Integer pageNumber, Integer pageSize);
     public ManufacturerDTO getManufacturerByProductId(Integer id);
-
     Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) throws AppException;
-
     Page<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize);
-
+    Page<ProductScoreDTO> getProductScoresPage(Integer pageNumber, Integer pageSize);
 }

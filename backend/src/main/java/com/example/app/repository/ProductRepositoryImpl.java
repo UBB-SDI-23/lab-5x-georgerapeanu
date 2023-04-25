@@ -61,4 +61,33 @@ public class ProductRepositoryImpl implements IProductRepository{
 
         return new PageImpl<>(results, pageable, total);
     }
+
+    @Override
+    public List<ProductScoreDTO> getProductsSortedByAverageScoreFromList(List<ProductDTO> productDTOs) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Tuple> review_scores_cq = cb.createQuery(Tuple.class);
+        Root<Review> review = review_scores_cq.from(Review.class);
+        CriteriaBuilder.In<Integer> inClause = cb.in(review.get("product").get("id"));
+        for(ProductDTO productDTO: productDTOs) {
+            inClause.value(productDTO.getId());
+        }
+        review_scores_cq
+                .multiselect(review.get("product").get("id").alias("product_id"), cb.avg(cb.coalesce(review.get("score"), 0)).alias("score"))
+                .groupBy(review.get("product").get("id"))
+                .where(inClause);
+
+        TypedQuery<Tuple> typedQuery = em.createQuery(review_scores_cq);
+
+        return typedQuery
+                .getResultStream()
+                .map(row -> {
+                    ProductDTO productDTO = productDTOs.stream()
+                            .filter(product -> product.getId() == row.get("product_id"))
+                            .findFirst()
+                            .get();
+                    return new ProductScoreDTO(productDTO, ((Double)row.get("score")));
+                })
+                .collect(Collectors.toList());
+    }
 }

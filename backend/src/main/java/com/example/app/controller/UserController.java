@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @RestController
 @CrossOrigin(origins = "*")
 @Validated
@@ -86,7 +82,7 @@ public class UserController {
     }
 
     @GetMapping(path="/users-review-count")
-    public @ResponseBody Page<UserReviewCountDTO> getUsersReviewCount(
+    public @ResponseBody Page<UserReviewCountDTO> getUsersReviewCountPage(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -94,6 +90,6 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ){
-        return userService.getUserReviewCount(pageNumber, pageSize);
+        return userService.getUserReviewCountPage(pageNumber, pageSize);
     }
 }
