@@ -31,14 +31,17 @@ public class UserRepositoryImpl implements IUserRepository{
                 .groupBy(review.get("user").get("id"))
                 .where(inClause);
 
-        TypedQuery<Tuple> typedQuery = em.createQuery(user_review_count_cq);
+        List<Tuple> typedQueryResult = em.createQuery(user_review_count_cq).getResultList();
 
-
-        return typedQuery
-                .getResultStream()
-                .map(row -> {
-                    UserDTO userDTO = users.stream().filter(user -> user.getId().equals(row.get("id"))).findFirst().get();
-                    return new UserReviewCountDTO(userDTO, ((Long)row.get("count")).intValue());
+        return users.stream()
+                .map(user -> {
+                    Integer count = typedQueryResult.stream()
+                            .filter(row -> row.get("id").equals(user.getId()))
+                            .findFirst()
+                            .map(row -> (Long)row.get("count"))
+                            .map(value -> value.intValue())
+                            .orElse(0);
+                    return new UserReviewCountDTO(user, count);
                 }).collect(Collectors.toList());
     }
 }

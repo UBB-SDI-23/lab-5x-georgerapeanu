@@ -69,16 +69,18 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 .groupBy(product.get("manufacturer").get("id"))
                 .where(inClause);
 
-        TypedQuery<Tuple> typedQuery = em.createQuery(cq);
+        List<Tuple> typedQueryResult = em.createQuery(cq).getResultList();
 
-        return typedQuery
-                .getResultStream()
-                .map(row -> {
-                    ManufacturerDTO manufacturerDTO = manufacturerDTOS.stream()
-                            .filter(manufacturer -> manufacturer.getId().equals(row.get("id")))
+        return manufacturerDTOS.stream()
+                .map(manufacturerDTO -> {
+                    Integer count = typedQueryResult.stream()
+                            .filter(row -> row.get("id").equals(manufacturerDTO.getId()))
+                            .map(row -> (Long)row.get("count"))
+                            .map(Long::intValue)
                             .findFirst()
-                            .get();
-                    return new ManufacturerProductCountDTO(manufacturerDTO, ((Long)row.get("count")).intValue());
-                }).collect(Collectors.toList());
+                            .orElse(0);
+                    return new ManufacturerProductCountDTO(manufacturerDTO, count);
+                })
+                .collect(Collectors.toList());
     }
 }

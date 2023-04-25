@@ -81,7 +81,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(path="/users-review-count")
+    @GetMapping(path="/user-review-counts")
     public @ResponseBody Page<UserReviewCountDTO> getUsersReviewCountPage(
             @RequestParam
             Integer pageNumber,

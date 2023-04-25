@@ -71,23 +71,23 @@ public class ProductRepositoryImpl implements IProductRepository{
         CriteriaBuilder.In<Integer> inClause = cb.in(review.get("product").get("id"));
         for(ProductDTO productDTO: productDTOs) {
             inClause.value(productDTO.getId());
+            System.out.println(productDTO.getId());
         }
         review_scores_cq
                 .multiselect(review.get("product").get("id").alias("product_id"), cb.avg(cb.coalesce(review.get("score"), 0)).alias("score"))
                 .groupBy(review.get("product").get("id"))
                 .where(inClause);
 
-        TypedQuery<Tuple> typedQuery = em.createQuery(review_scores_cq);
+        List<Tuple> typedQueryResult = em.createQuery(review_scores_cq).getResultList();
 
-        return typedQuery
-                .getResultStream()
-                .map(row -> {
-                    ProductDTO productDTO = productDTOs.stream()
-                            .filter(product -> product.getId().equals(row.get("product_id")))
+        return productDTOs.stream()
+                .map(productDTO -> {
+                    Double score = typedQueryResult.stream()
+                            .filter(row -> row.get("product_id").equals(productDTO.getId()))
+                            .map(row -> (Double)row.get("score"))
                             .findFirst()
-                            .get();
-                    return new ProductScoreDTO(productDTO, ((Double)row.get("score")));
-                })
-                .collect(Collectors.toList());
+                            .orElse(0.0);
+                    return new ProductScoreDTO(productDTO, score);
+                }).collect(Collectors.toList());
     }
 }
