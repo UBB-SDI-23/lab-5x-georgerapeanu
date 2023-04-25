@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements IUserRepository{
         return typedQuery
                 .getResultStream()
                 .map(row -> {
-                    UserDTO userDTO = users.stream().filter(user -> user.getId() == row.get("id")).findFirst().get();
+                    UserDTO userDTO = users.stream().filter(user -> user.getId().equals(row.get("id"))).findFirst().get();
                     return new UserReviewCountDTO(userDTO, ((Long)row.get("count")).intValue());
                 }).collect(Collectors.toList());
     }

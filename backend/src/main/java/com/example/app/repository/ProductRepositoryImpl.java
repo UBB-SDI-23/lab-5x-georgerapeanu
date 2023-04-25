@@ -83,7 +83,7 @@ public class ProductRepositoryImpl implements IProductRepository{
                 .getResultStream()
                 .map(row -> {
                     ProductDTO productDTO = productDTOs.stream()
-                            .filter(product -> product.getId() == row.get("product_id"))
+                            .filter(product -> product.getId().equals(row.get("product_id")))
                             .findFirst()
                             .get();
                     return new ProductScoreDTO(productDTO, ((Double)row.get("score")));

@@ -75,7 +75,7 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 .getResultStream()
                 .map(row -> {
                     ManufacturerDTO manufacturerDTO = manufacturerDTOS.stream()
-                            .filter(manufacturer -> manufacturer.getId() == row.get("id"))
+                            .filter(manufacturer -> manufacturer.getId().equals(row.get("id")))
                             .findFirst()
                             .get();
                     return new ManufacturerProductCountDTO(manufacturerDTO, ((Long)row.get("count")).intValue());
