@@ -61,6 +61,17 @@ export class ProductsOverviewComponent {
       }
     )
   }
+
+  setPageSize(pageSize: number): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': pageSize, 'pageNumber': this.pageNumber}
+      }
+    )
+  }
+
   setWeight(minWeight: number): void {
     this.router.navigate(
       [],

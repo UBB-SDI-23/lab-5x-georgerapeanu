@@ -73,6 +73,16 @@ export class ProductDetailsComponent {
     )
   }
 
+  setPageSize(pageSize: number): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': pageSize, 'pageNumber': this.pageNumber}
+      }
+    )
+  }
+
   goBack(): void {
     this.location.back();
   }

@@ -19,6 +19,6 @@
 
   </app-manufacturer-product-count-page>
 
-  <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" (pageChangeEvent)="this.setPageNumber($event)">
+  <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" [pageSize]="pageSize" (pageChangeEvent)="this.setPageNumber($event)" (pageSizeEvent)="this.setPageSize($event)">
   
   </app-pagination>

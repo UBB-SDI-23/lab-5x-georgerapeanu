@@ -17,7 +17,7 @@
     <app-products-overview-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.products" [actionable]="true">
     </app-products-overview-page>
     
-    <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" (pageChangeEvent)="this.setPageNumber($event)">
+    <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" [pageSize]="pageSize" (pageChangeEvent)="this.setPageNumber($event)" (pageSizeEvent)="this.setPageSize($event)">
     </app-pagination>
         
     <div class="flex gap-9 my-4">

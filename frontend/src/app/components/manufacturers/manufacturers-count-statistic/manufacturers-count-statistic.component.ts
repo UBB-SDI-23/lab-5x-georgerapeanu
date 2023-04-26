@@ -63,4 +63,14 @@ export class ManufacturersCountStatisticComponent {
       }
     )
   }
+
+  setPageSize(pageSize: number): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {'pageSize': pageSize, 'pageNumber': this.pageNumber}
+      }
+    )
+  }
 }
