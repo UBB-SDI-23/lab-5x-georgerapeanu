@@ -179,3 +179,68 @@ You will need to:
     - Installing an SSL certificate using something like `certbot` or `acmesh` and `freedns`. Since your VM IP will change if you shut down your VM, I recommend starting and configuring it well in advance of your lab, to account for any possible delays with the DNS propagation. Everything should now use `https`. Make sure you update your frontend accordingly.
     - Making both `nginx` and your application server services that start when your VM starts and that you control with commands such as `sudo systemctl start nginx`, `sudo systemctl start your_app_server`. You might be asked to show this by restarting your VM.
 
+## Lab 8 assignment
+
+**Points**: 0.5
+
+**Deadline**: Week 9
+
+**Last chance deadline and penalties**: Week 11, -0.2 points / week delayed
+
+----
+
+You will need to:
+- Implement register and login with username, password and JWT tokens. The username should be unique. The password should have some validation rules to ensure that the password is strong.  
+    - Your `User` model must contain any fields needed for login (probably just username and password and whatever else your framework has built in). You should also have a `UserProfile` model with `5` fields with at least 3 validation rules. For example: bio, location, birthday, gender, marital status.  
+    - If you already have a `User` model and you use it for this, add one more entity to your app.
+    - All of your entities should be directly or indirectly associated with the user that created them. Add `10 000` (ten thousand) random users and randomly associate the existing entities with these users. For testing purposes, have the same password for each of these users. Each entity **must** have an associated user, but not all users must have associated entities. The data insertion part must be implemented in an SQL script. You might want to work on a backup database before running the script on the production database.
+    - The `/api/register` endpoint should generate a confirmation code that is valid for `10` minutes. The user must request `/api/register/confirm/<confirmation code>` to activate their account.
+- Everything must be validated everywhere possible, including IDs. Implement the `happy case - with data`, `happy case - without data` and `error case` scenarios for all endpoints.
+- For all routes that show all entities, also show the username of the user that added the entity. Clicking on the username should take you to the user's profile page.
+    - The profile page should contain the user profile info and statistics regarding how many of each entity the user has added.
+- You must start using feature branches for all functionalities. Your feature branches should be named according to the feature that you're implementing. Use Pull Requests and merge your branches into a `development` branch when you are done with your work. You can delete the feature branches after that. Have netlify deploy from `development`. You can read more about this here: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
+
+
+## Lab 9 assignment
+
+**Points**: 0.5
+
+**Deadline**: Week 10
+
+**Last chance deadline and penalties**: Week 12, -0.2 points / week delayed
+
+----
+
+You will need to implement the following user roles:
+- Anonymous user (no login): can only **read** everything, cannot add, cannot edit;
+- Logged in user, **regular** role: can add entities and can edit the entities they added;
+- Logged in user, **moderator** role: can add entities and can edit all entities;
+- Logged in user, **admin** role: 
+    - can add entities and can edit all entities, has access to a page where they can edit user roles for everyone including other admins;
+    - has access to a page from where they can **bulk delete** data and from where they can **run the data generation scripts** you wrote for the previous assignments. If you find it easier, you can refactor them such that the data is generated directly from your code and not from the SQL scripts, but this is not mandatory.
+
+You can make your first admin user by directly editing the database.
+
+Permissions need to be checked on both backend and frontend. We will check by making API requests from Postman using users with the wrong roles.
+
+If you haven't already, make sure that you do not store user passwords in plain text. They should at least by hashed with SHA-256.
+
+
+## Lab 10 assignment
+
+**Points**: 0.5, +1 bonus
+
+**Deadline**: Week 11
+
+**Last chance deadline and penalties**: Week 13, -0.2 points / week delayed
+
+----
+
+You will need to:
+- Dockerize your application. You should have setups both for local development and production deployment. Make a new VM, install docker and docker-compose on it and deploy the project like that.
+- Write two E2E tests for your application.
+
+The following points are available as bonuses:
+- +0.5: setup a Kubernetes Cluster on your Cloud Provider (for example: https://cloud.google.com/kubernetes-engine) and use your app with it. Use JMeter with the Ultimate Thread Group plugin and show how Kubernetes scales resources to accomodate requests from JMeter. Correlate the JMeter graphs with the Kubernetes graphs.
+- +0.5: make your frontend responsive. It should seamlessly adapt to any screen size, with no scrollbars and with proper component sizes and layout.
+
