@@ -19,7 +19,7 @@
     <button (click)="setPageNumber(this.totalPages - 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
       >>
     </button>
-    <input type="text" class="h-8 w-8 border-2 border-slate-400 text-center" [(ngModel)]="pageNumber" (keydown.enter)="setPageNumber(pageNumber)">
+    <input type="text" class="h-8 w-8 border-2 border-slate-400 text-center" [(ngModel)]="pageNumber" (keydow-n.enter)="setPageNumber(pageNumber)">
     <select [(ngModel)]="pageSize" (ngModelChange)="setPageSize(this.pageSize)" name="pageSize" [value]="pageSize" class="text-center border-slate-400 bg-white border-2">
         <option value="4">4</option>
         <option value="7">7</option>

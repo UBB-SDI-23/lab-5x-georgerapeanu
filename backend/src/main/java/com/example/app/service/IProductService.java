@@ -19,5 +19,5 @@ public interface IProductService {
     public ManufacturerDTO getManufacturerByProductId(Integer id);
     Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) throws AppException;
     Page<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize);
-    Page<ProductScoreDTO> getProductScoresPage(Integer pageNumber, Integer pageSize);
+    Page<ProductScoreDTO> getProductScoresPage(Integer weight, Integer pageNumber, Integer pageSize);
 }

@@ -101,9 +101,9 @@ public class ProductService implements  IProductService{
     }
 
     @Override
-    public Page<ProductScoreDTO> getProductScoresPage(Integer pageNumber, Integer pageSize) {
+    public Page<ProductScoreDTO> getProductScoresPage(Integer weight, Integer pageNumber, Integer pageSize) {
         Page<ProductDTO> productDTOPage = productRepository
-                .findAll(PageRequest.of(pageNumber, pageSize))
+                .findAll(ProductSpecifications.weightBiggerThan(weight), PageRequest.of(pageNumber, pageSize))
                 .map(ProductDTO::fromProduct);
         return new PageImpl<>(
                 productRepository.getProductScoresFromList(productDTOPage.getContent()),

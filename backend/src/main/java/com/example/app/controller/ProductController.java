@@ -142,6 +142,7 @@ public class ProductController {
 
     @GetMapping(path="/product-scores")
     public @ResponseBody Page<ProductScoreDTO> getProductScoresPage(
+            @RequestParam Integer weight,
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -149,6 +150,6 @@ public class ProductController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ){
-        return productService.getProductScoresPage(pageNumber, pageSize);
+        return productService.getProductScoresPage(weight, pageNumber, pageSize);
     }
 }
