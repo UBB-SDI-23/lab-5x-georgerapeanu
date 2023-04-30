@@ -2,31 +2,28 @@ package com.example.app.model.Ids;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReviewId implements Serializable {
-    @Column(name = "user_id")
-    public Integer userId;
+    @Column(name = "user_handle")
+    public String userHandle;
     @Column(name = "product_id")
     public Integer productId;
 
-    public ReviewId() {
+    public String getUserHandle() {
+        return userHandle;
     }
 
-    public ReviewId(Integer userId, Integer productId) {
-        this.userId = userId;
-        this.productId = productId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserHandle(String userHandle) {
+        this.userHandle = userHandle;
     }
 
     public Integer getProductId() {
@@ -38,18 +35,15 @@ public class ReviewId implements Serializable {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof ReviewId)) {
-            return false;
-        }
-        return Objects.equals(this.userId, ((ReviewId) other).userId) & Objects.equals(this.productId, ((ReviewId) other).productId);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReviewId reviewId = (ReviewId) o;
+        return Objects.equals(userHandle, reviewId.userHandle) && Objects.equals(productId, reviewId.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.userId, this.productId);
+        return Objects.hash(userHandle, productId);
     }
 }

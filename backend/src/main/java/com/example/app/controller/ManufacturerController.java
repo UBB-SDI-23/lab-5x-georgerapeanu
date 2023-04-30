@@ -53,11 +53,12 @@ public class ManufacturerController {
 
     @GetMapping(path="/manufacturers/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<ManufacturerDTO> getManufacturer(@PathVariable("id") Integer id) {
-        ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(id);
-        if(manufacturerDTO == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } else {
+        ManufacturerDTO manufacturerDTO = null;
+        try {
+            manufacturerDTO = manufacturerService.getManufacturerById(id);
             return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -79,13 +80,23 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
-    public void createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
-        manufacturerService.createManufacturer(manufacturerDTO);
+    public ResponseEntity<String> createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        try {
+            manufacturerService.createManufacturer(manufacturerDTO);
+            return new ResponseEntity<>("Manufacturer created", HttpStatus.CREATED);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody void updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
-        manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
+    public @ResponseBody ResponseEntity<String> updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        try {
+            manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
+            return new ResponseEntity<>("Manufacturer updated", HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(path="/manufacturers/{id}", produces = "application/json")
@@ -94,7 +105,7 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public void createManufacturer(
+    public void moveProductsToManufacturers(
             @PathVariable("id") Integer id,
             @Valid @RequestBody Page<Integer> product_ids
     ) {

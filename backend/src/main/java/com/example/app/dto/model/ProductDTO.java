@@ -4,90 +4,43 @@ import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class ProductDTO {
+    @Getter
+    @Setter
     private Integer id;
     @NotBlank
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private String description;
+    @Getter
+    @Setter
     private Date publishDate;
     @Min(0)
+    @Getter
+    @Setter
     private Double price;
     @Min(0)
+    @Getter
+    @Setter
     private Integer weight;
+    @Getter
+    @Setter
     private Integer manufacturerId;
+    @Getter
+    @Setter
     private String color;
-
-    public Integer getManufacturerId() {
-        return manufacturerId;
-    }
-
-    public void setManufacturerId(Integer manufacturer_id) {
-        this.manufacturerId = manufacturer_id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getColor() {
-        return this.color;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
 
     public static ProductDTO fromProduct(Product product) {
         return new ProductDTO(
@@ -115,32 +68,6 @@ public class ProductDTO {
     }
 
 
-    @Override
-    public String toString() {
-        return "ProductDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", publishDate=" + publishDate +
-                ", price=" + price +
-                ", weight=" + weight +
-                ", manufacturerId=" + manufacturerId +
-                ", color='" + color + "'" +
-                '}';
-    }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductDTO that = (ProductDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(publishDate, that.publishDate) && Objects.equals(price, that.price) && Objects.equals(weight, that.weight) && Objects.equals(manufacturerId, that.manufacturerId) && Objects.equals(color, that.color);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, publishDate, price, weight, manufacturerId, color);
-    }
 }
 
