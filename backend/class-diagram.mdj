@@ -1524,7 +1524,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAGHCJLZTSR+R7M="
 									},
-									"text": "+user"
+									"text": "+userProfile"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3187,7 +3187,7 @@
 											"top": 534,
 											"width": 238.0751953125,
 											"height": 13,
-											"text": "+createUser(User user)",
+											"text": "+createUser(User userProfile)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3204,7 +3204,7 @@
 											"top": 549,
 											"width": 238.0751953125,
 											"height": 13,
-											"text": "+updateUserWithId(Integer id, User user)",
+											"text": "+updateUserWithId(Integer id, User userProfile)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4945,7 +4945,7 @@
 											"top": 827,
 											"width": 355.88134765625,
 											"height": 13,
-											"text": "+createUser(Integer id, User user)",
+											"text": "+createUser(Integer id, User userProfile)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4962,7 +4962,7 @@
 											"top": 842,
 											"width": 355.88134765625,
 											"height": 13,
-											"text": "+updateUser(Integer id, User user)",
+											"text": "+updateUser(Integer id, User userProfile)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6520,7 +6520,7 @@
 								"_parent": {
 									"$ref": "AAAAAAGHCJLZTCR6elo="
 								},
-								"name": "user",
+								"name": "userProfile",
 								"reference": {
 									"$ref": "AAAAAAGHCH3QJhgYXjo="
 								},
@@ -6777,7 +6777,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGHCJ0jDVee72Y="
 									},
-									"name": "User user",
+									"name": "User userProfile",
 									"type": ""
 								}
 							]
@@ -6805,7 +6805,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGHCJ0mw1ftciM="
 									},
-									"name": "User user",
+									"name": "User userProfile",
 									"type": ""
 								}
 							]
@@ -7433,7 +7433,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGHCKadfJFhQ+g="
 									},
-									"name": "User user",
+									"name": "User userProfile",
 									"type": ""
 								}
 							]
@@ -7460,7 +7460,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGHCKadfJFiZKY="
 									},
-									"name": "User user"
+									"name": "User userProfile"
 								}
 							]
 						},
