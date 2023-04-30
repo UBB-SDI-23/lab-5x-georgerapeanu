@@ -13,3 +13,5 @@ sudo snap install core; sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 sudo certbot certonly
+cd /home/ubuntu/
+git clone https://github.com/UBB-SDI-23/lab-5x-georgerapeanu
