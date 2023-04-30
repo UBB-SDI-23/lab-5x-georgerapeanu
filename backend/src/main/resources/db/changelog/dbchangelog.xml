@@ -220,4 +220,13 @@
     <changeSet id="1680067598538-1" author="georgerapeanu">
         <tagDatabase tag="lab8-migrations"/>
     </changeSet>
+    <changeSet id="1680067598539-1" author="georgerapeanu">
+        <addColumn tableName="manufacturer">
+            <column name="user_handle" type="VARCHAR(255)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_handle" baseTableName="manufacturer" constraintName="FK_manufacturer_user" referencedColumnNames="handle" referencedTableName="user"/>
+    </changeSet>
+    <changeSet id="1680067598539-2" author="georgerapeanu">
+        <tagDatabase tag="lab8-migrations-continuation"/>
+    </changeSet>
 </databaseChangeLog>
