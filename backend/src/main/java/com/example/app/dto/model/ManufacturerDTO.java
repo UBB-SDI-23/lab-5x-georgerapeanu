@@ -41,7 +41,7 @@ public class ManufacturerDTO {
                 manufacturer.getName(),
                 manufacturer.getDescription(),
                 manufacturer.getRegisterDate(),
-                manufacturer.getUser().getHandle()
+                manufacturer.getUserHandle()
         );
     }
 
@@ -52,6 +52,7 @@ public class ManufacturerDTO {
         manufacturer.setName(manufacturerDTO.getName());
         manufacturer.setRegisterDate(manufacturerDTO.getRegisterDate());
         manufacturer.setUser(user);
+        manufacturer.setUserHandle(manufacturerDTO.getUserHandle());
         return manufacturer;
     }
 }

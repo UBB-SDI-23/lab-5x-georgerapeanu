@@ -119,7 +119,7 @@ public class ProductService implements  IProductService{
                 .map(productScoreDTO -> {
                     return new ProductScoreWithUserHandleDTO(
                             productScoreDTO,
-                            manufacturerRepository.findById(productScoreDTO.getProductDTO().getManufacturerId()).get().getUser().getHandle()
+                            manufacturerRepository.findById(productScoreDTO.getProductDTO().getManufacturerId()).get().getUserHandle()
                     );
                 });
     }
