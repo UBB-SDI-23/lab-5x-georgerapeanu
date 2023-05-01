@@ -12,4 +12,5 @@ public interface IManufacturerRepository {
     public Page<ManufacturerProductCountDTO> getManufacturersSortedByProductCount(Pageable pageable);
     public List<ManufacturerProductCountDTO> getManufacturerProductCountsFromList(List<ManufacturerDTO> manufacturerDTOS);
 
+    public Integer getManufacturerCountForUserHandle(String userHandle);
 }

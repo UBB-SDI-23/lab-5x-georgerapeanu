@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user-service';
 import { UserProfile } from 'src/app/model/UserProfile';
 import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
+import { UserCreatedCountDTO } from 'src/app/model/UserCreatedCountDTO';
 
 @Component({
   selector: 'app-user-details',
@@ -12,6 +13,7 @@ import { Review } from 'src/app/model/Review';
 })
 export class UserDetailsComponent {
   user: UserProfile | null = null;
+  userCreatedCount: UserCreatedCountDTO | null = null;
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
@@ -55,6 +57,9 @@ export class UserDetailsComponent {
           this.currentPage = this.pageNumber;
           this.currentSize = this.pageSize;
         });
+        this.userService.getUserCreatedCount(userHandle).subscribe(result => {
+          this.userCreatedCount = result;
+        })
       }
     );
     this.userService.getUserById(userHandle).subscribe(result => {

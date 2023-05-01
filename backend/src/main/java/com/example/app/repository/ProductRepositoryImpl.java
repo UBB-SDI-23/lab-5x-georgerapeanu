@@ -90,4 +90,18 @@ public class ProductRepositoryImpl implements IProductRepository{
                     return new ProductScoreDTO(productDTO, score);
                 }).collect(Collectors.toList());
     }
+
+    @Override
+    public Integer getProductCountForUserHandle(String userHandle) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Product> product = cq.from(Product.class);
+        Join<Manufacturer, Product> productManufacturerJoin = product.join("manufacturer", JoinType.LEFT);
+        cq
+                .select(cb.count(productManufacturerJoin))
+                .where(cb.equal(productManufacturerJoin.get("user").get("handle"), userHandle));
+
+        TypedQuery<Long> typedQuery = em.createQuery(cq);
+        return typedQuery.getSingleResult().intValue();
+    }
 }

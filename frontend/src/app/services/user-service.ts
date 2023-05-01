@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { GenericPage } from '../model/GenericPage';
 import { Review } from '../model/Review';
 import UserReviewCountDTO from '../dto/UserReviewCountDTO';
+import { UserCreatedCountDTO } from '../model/UserCreatedCountDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class UserService {
 
   deleteUser(userHandle: string): Observable<any> {
     return this.http.delete(environment.apiURL + "/users/" + userHandle);
+  }
+
+  getUserCreatedCount(userHandle: string): Observable<UserCreatedCountDTO> {
+    return this.http.get<UserCreatedCountDTO>(environment.apiURL + "/user-created-count" + "/" + userHandle);
   }
 }

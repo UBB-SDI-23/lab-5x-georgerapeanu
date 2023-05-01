@@ -1,10 +1,10 @@
 package com.example.app.service;
 
+import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.model.UserProfile;
 import com.example.app.dto.model.UserProfileDTO;
-import com.example.app.repository.UserProfileRepository;
-import com.example.app.repository.UserRepository;
+import com.example.app.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +17,13 @@ public class UserProfileProfileService implements IUserProfileService {
     UserRepository userRepository;
     @Autowired
     UserProfileRepository userProfileRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    ManufacturerRepository manufacturerRepository;
+
 
     @Override
     public Page<UserProfileDTO> getAllUserProfiles(Integer pageNumber, Integer pageSize){
@@ -61,6 +68,16 @@ public class UserProfileProfileService implements IUserProfileService {
                 userRepository.getUserReviewCountFromList(userDTOPage.getContent()),
                 PageRequest.of(pageNumber, pageSize),
                 userDTOPage.getTotalElements()
+        );
+    }
+
+    @Override
+    public UserCreatedCountDTO getUserCreatedCount(String handle) {
+        return new UserCreatedCountDTO(
+                handle,
+                reviewRepository.getReviewCountForUserHandle(handle),
+                productRepository.getProductCountForUserHandle(handle),
+                manufacturerRepository.getManufacturerCountForUserHandle(handle)
         );
     }
 
