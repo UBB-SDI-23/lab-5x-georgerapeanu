@@ -34,6 +34,10 @@ public class Manufacturer {
     @Getter
     @Setter
     List<Product> products;
+    @Getter
+    @Setter
+    @Column(name = "user_handle", insertable=false, updatable = false)
+    private String userHandle;
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_handle", nullable = false)
     @Getter
