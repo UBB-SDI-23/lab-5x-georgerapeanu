@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import com.example.app.dto.ProductScoreDTO;
+import com.example.app.dto.ProductScoreWithUserHandleDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.model.Manufacturer;
 import com.example.app.model.Product;
@@ -110,6 +111,17 @@ public class ProductService implements  IProductService{
                 PageRequest.of(pageNumber, pageSize),
                 productDTOPage.getTotalElements()
         );
+    }
+
+    @Override
+    public Page<ProductScoreWithUserHandleDTO> getProductScoresPageWithUsers(Integer weight, Integer pageNumber, Integer pageSize) {
+        return this.getProductScoresPage(weight, pageNumber, pageSize)
+                .map(productScoreDTO -> {
+                    return new ProductScoreWithUserHandleDTO(
+                            productScoreDTO,
+                            manufacturerRepository.findById(productScoreDTO.getProductDTO().getManufacturerId()).get().getUserHandle()
+                    );
+                });
     }
 }
 

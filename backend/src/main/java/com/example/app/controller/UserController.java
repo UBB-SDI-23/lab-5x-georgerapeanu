@@ -1,11 +1,12 @@
 package com.example.app.controller;
 
+import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.ReviewDTO;
-import com.example.app.dto.model.UserDTO;
+import com.example.app.dto.model.UserProfileDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.service.IReviewService;
-import com.example.app.service.IUserService;
+import com.example.app.service.IUserProfileService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ import jakarta.validation.Valid;
 @Validated
 public class UserController {
     @Autowired
-    private IUserService userService;
+    private IUserProfileService userProfileService;
 
     @Autowired
     private IReviewService reviewService;
 
     @GetMapping(path="/users")
-    public @ResponseBody Page<UserDTO> getUsers(
+    public @ResponseBody Page<UserProfileDTO> getUsers(
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -36,37 +37,32 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ){
-        return userService.getAllUsers(pageNumber, pageSize);
+        return userProfileService.getAllUserProfiles(pageNumber, pageSize);
     }
 
     @GetMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<UserDTO> getUser(@PathVariable("id") Integer id) {
-        UserDTO userDTO = userService.getUserById(id);
-        if(userDTO == null){
+    public @ResponseBody ResponseEntity<UserProfileDTO> getUser(@PathVariable("id") String handle) {
+        UserProfileDTO userProfileDTO = userProfileService.getUserProfileById(handle);
+        if(userProfileDTO == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+            return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
         }
     }
 
-    @PostMapping(path="/users", produces = "application/json")
-    public void createUser(@Valid @RequestBody UserDTO userDTO ) {
-        userService.createUser(userDTO);
-    }
-
     @PatchMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody void updateUser(@PathVariable("id") Integer id, @Valid @RequestBody UserDTO userDTO ) {
-        userService.updateUserWithId(id, userDTO);
+    public @ResponseBody void updateUser(@PathVariable("id") String handle, @Valid @RequestBody UserProfileDTO userProfileDTO) {
+        userProfileService.updateUserProfileWithId(handle, userProfileDTO);
     }
 
     @DeleteMapping(path="/users/{id}", produces = "application/json")
-    public @ResponseBody void deleteUser(@PathVariable("id") Integer id) {
-        userService.deleteUserWithId(id);
+    public @ResponseBody void deleteUser(@PathVariable("id") String handle) {
+        userProfileService.deleteUserProfileWithId(handle);
     }
 
     @GetMapping(path="/users/{id}/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<Page<ReviewDTO>> getReviews(
-            @PathVariable("id") Integer id,
+            @PathVariable("id") String handle,
             @RequestParam
             Integer pageNumber,
             @RequestParam
@@ -75,7 +71,7 @@ public class UserController {
             Integer pageSize
     ) {
         try {
-            return new ResponseEntity<>(reviewService.getReviewsForUser(id, pageNumber, pageSize), HttpStatus.OK);
+            return new ResponseEntity<>(reviewService.getReviewsForUser(handle, pageNumber, pageSize), HttpStatus.OK);
         } catch (AppException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -90,6 +86,14 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize
     ){
-        return userService.getUserReviewCountPage(pageNumber, pageSize);
+        return userProfileService.getUserReviewCountPage(pageNumber, pageSize);
+    }
+
+    @GetMapping(path="/user-created-count/{handle}", produces = "application/json")
+    public @ResponseBody UserCreatedCountDTO getUserCreatedCount(
+            @PathVariable("handle")
+            String handle
+    ) {
+        return userProfileService.getUserCreatedCount(handle);
     }
 }

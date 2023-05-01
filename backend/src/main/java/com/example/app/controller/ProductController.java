@@ -1,5 +1,6 @@
 package com.example.app.controller;
 
+import com.example.app.dto.ProductScoreWithUserHandleDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.dto.ProductScoreDTO;
@@ -151,5 +152,18 @@ public class ProductController {
             Integer pageSize
     ){
         return productService.getProductScoresPage(weight, pageNumber, pageSize);
+    }
+
+    @GetMapping(path="/product-scores-with-users")
+    public @ResponseBody Page<ProductScoreWithUserHandleDTO> getProductScoresWithUsersPage(
+            @RequestParam Integer weight,
+            @RequestParam
+            Integer pageNumber,
+            @RequestParam
+            @Min(value=4, message = "pageSize should be at least 4")
+            @Max(value=10, message = "pageSize should be at most 10")
+            Integer pageSize
+    ){
+        return productService.getProductScoresPageWithUsers(weight, pageNumber, pageSize);
     }
 }

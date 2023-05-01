@@ -15,7 +15,8 @@ export class ManufacturerCreateComponent {
     {
       name: ['', Validators.required],
       description: ['', Validators.required],
-      registerDate: [new Date(), Validators.required]
+      registerDate: [new Date(), Validators.required],
+      userHandle: ['', Validators.required]
     }
   );
   serverResponse: string|null = null;
@@ -39,9 +40,13 @@ export class ManufacturerCreateComponent {
     if(this.createForm.valid) {
       this.manufacturerService.createManufacturer(this.createForm.value as ManufacturerCreate).subscribe({
         next: response => {
+          console.log("ok");
+          console.log(response);
           this.serverResponse="Ok";
         },
         error: error => {
+          console.log("error");
+          console.log(error);
           this.serverResponse="Error";
         }
       });

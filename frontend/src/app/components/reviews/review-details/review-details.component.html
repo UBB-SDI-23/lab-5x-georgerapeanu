@@ -7,7 +7,7 @@
         Review Details
     </h1>
     <ul>
-        <li class="my-2"><a [routerLink]="['/users', review?.userId]">User #{{review?.userId}}</a></li>
+        <li class="my-2"><a [routerLink]="['/users', review?.userHandle]">User {{review?.userHandle}}</a></li>
         <li class="my-2"><a [routerLink]="['/products', review?.productId]">Product #{{review?.productId}}</a></li>
         <li class="my-2">Score: {{review?.score}}</li>
         <li class="my-2">Comment: {{review?.comment}}</li>
@@ -15,10 +15,10 @@
     </ul>
 
     <div class="flex gap-9 my-4">
-        <a [routerLink]="['/reviews', 'edit']" [queryParams]="{'user_id': review?.userId, 'product_id': review?.productId}" class="text-blue-600 font-semibold text-sm uppercase">
+        <a [routerLink]="['/reviews', 'edit']" [queryParams]="{'user_handle': review?.userHandle, 'product_id': review?.productId}" class="text-blue-600 font-semibold text-sm uppercase">
             Edit
         </a>
-        <a [routerLink]="['/reviews', 'delete']" [queryParams]="{'user_id': review?.userId, 'product_id': review?.productId}" class="text-blue-600 font-semibold text-sm uppercase">
+        <a [routerLink]="['/reviews', 'delete']" [queryParams]="{'user_handle': review?.userHandle, 'product_id': review?.productId}" class="text-blue-600 font-semibold text-sm uppercase">
             Delete
         </a>
     </div>

@@ -19,9 +19,9 @@
     <input class="ml-2 text-center w-12 h-6 border border-gray-200" type="text" name="weight" [(ngModel)]="minWeight" (keydown.enter)="setWeight(minWeight)">
   </div>
  
-  <app-product-score-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.productScores" [actionable]="true">
+  <app-products-score-with-users-page [currentPage]="this.currentPage" [currentSize]="this.currentSize" [data]="this.productScoreWithUsers" [actionable]="true">
 
-  </app-product-score-page>
+  </app-products-score-with-users-page>
 
   <app-pagination [totalPages]="this.totalPages" [pageNumber]="this.pageNumber" [currentPage]="this.currentPage" [pageSize]="pageSize" (pageChangeEvent)="this.setPageNumber($event)" (pageSizeEvent)="this.setPageSize($event)">
   

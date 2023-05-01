@@ -10,6 +10,7 @@
         <li class="my-2">Name: {{manufacturer?.name}}</li>
         <li class="my-2">Description: {{manufacturer?.description}}</li>
         <li class="my-2">Registered at: {{manufacturer?.registerDate}}</li>
+        <li class="my-2"><a [routerLink]="['/users', manufacturer?.userHandle]">Added by: {{manufacturer?.userHandle}}</a></li>
     </ul>
     
     <h2 class="text-2xl py-5">Manufacturer Products:</h2>

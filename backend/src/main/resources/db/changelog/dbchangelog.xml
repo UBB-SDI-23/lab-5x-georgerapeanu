@@ -57,7 +57,7 @@
         </createTable>
     </changeSet>
     <changeSet author="georgerapeanu (generated)" id="1680067598531-10">
-        <createTable tableName="user">
+        <createTable tableName="userProfile">
             <column name="id" type="INTEGER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_pkey"/>
             </column>
@@ -75,7 +75,7 @@
         <addForeignKeyConstraint baseColumnNames="manufacturer_id" baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="manufacturer" validate="true"/>
     </changeSet>
     <changeSet author="georgerapeanu (generated)" id="1680067598531-13">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userProfile" validate="true"/>
     </changeSet>
     <changeSet id="1680067598532-1" author="georgerapeanu">
         <dropSequence sequenceName="manufacturer_seq"/>
@@ -88,7 +88,7 @@
     <changeSet id="1680067598532-2" author="georgerapeanu">
         <addAutoIncrement tableName="manufacturer" columnName="id"/>
         <addAutoIncrement tableName="product" columnName="id"/>
-        <addAutoIncrement tableName="user" columnName="id"/>
+        <addAutoIncrement tableName="userProfile" columnName="id"/>
     </changeSet>
     <changeSet id="1680067598533-1" author="georgerapeanu">
         <dropForeignKeyConstraint baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j"/>
@@ -106,8 +106,8 @@
         <dropNotNullConstraint tableName="review" columnName="user_id"/>
         <dropNotNullConstraint tableName="review" columnName="product_id"/>
 
-        <dropPrimaryKey tableName="user"/>
-        <dropNotNullConstraint tableName="user" columnName="id"/>
+        <dropPrimaryKey tableName="userProfile"/>
+        <dropNotNullConstraint tableName="userProfile" columnName="id"/>
     </changeSet>
     <changeSet id="1680067598533-2" author="georgerapeanu">
         <tagDatabase tag="test-tag"/>
@@ -124,10 +124,10 @@
         <addNotNullConstraint tableName="review" columnName="user_id"/>
         <addPrimaryKey tableName="review" columnNames="user_id,product_id"/>
 
-        <addNotNullConstraint tableName="user" columnName="id"/>
-        <addPrimaryKey tableName="user" columnNames="id"/>
+        <addNotNullConstraint tableName="userProfile" columnName="id"/>
+        <addPrimaryKey tableName="userProfile" columnNames="id"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userProfile" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="manufacturer_id" baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="manufacturer" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
@@ -152,8 +152,8 @@
         <dropNotNullConstraint tableName="review" columnName="user_id"/>
         <dropNotNullConstraint tableName="review" columnName="product_id"/>
 
-        <dropPrimaryKey tableName="user"/>
-        <dropNotNullConstraint tableName="user" columnName="id"/>
+        <dropPrimaryKey tableName="userProfile"/>
+        <dropNotNullConstraint tableName="userProfile" columnName="id"/>
     </changeSet>
     <changeSet id="1680067598535-2" author="georgerapeanu">
         <addColumn tableName="product">
@@ -172,10 +172,10 @@
         <addNotNullConstraint tableName="review" columnName="user_id"/>
         <addPrimaryKey tableName="review" columnNames="user_id,product_id"/>
 
-        <addNotNullConstraint tableName="user" columnName="id"/>
-        <addPrimaryKey tableName="user" columnNames="id"/>
+        <addNotNullConstraint tableName="userProfile" columnName="id"/>
+        <addPrimaryKey tableName="userProfile" columnNames="id"/>
 
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="userProfile" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="manufacturer_id" baseTableName="product" constraintName="FK9it4492m5g5mttbvqy9dd2ngh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="manufacturer" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="review" constraintName="FK8ldiblkvx92d9i5yn9qqeuk8j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="product" validate="true"/>
     </changeSet>
@@ -189,5 +189,44 @@
     </changeSet>
     <changeSet id="1680067598536-2" author="georgerapeanu">
         <tagDatabase tag="lab7-possible-speedup"/>
+    </changeSet>
+    <changeSet id="1680067598537-1" author="georgerapeanu">
+        <tagDatabase tag="lab8-begin"/>
+    </changeSet>
+    <changeSet id="1680067598537-2" author="georgerapeanu">
+        <tagDatabase tag="lab8-begin"/>
+    </changeSet>
+    <changeSet id="1680067598537-3" author="georgerapeanu">
+        <dropForeignKeyConstraint baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8"/>
+        <dropPrimaryKey tableName="userProfile"/>
+        <dropNotNullConstraint tableName="userProfile" columnName="id"/>
+        <renameTable newTableName="user_profile" oldTableName="userProfile"/>
+        <createTable tableName="userProfile">
+            <column name="handle" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_pkey"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+        <dropColumn columnName="id" tableName="user_profile"/>
+        <dropColumn columnName="user_id" tableName="review"/>
+        <addPrimaryKey tableName="user_profile" columnNames="handle"/>
+        <addNotNullConstraint tableName="userProfile" columnName="handle"/>
+        <addColumn tableName="review">
+            <column name="user_handle" type="VARCHAR(255)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_handle" baseTableName="review" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="handle" referencedTableName="userProfile"/>
+        <addForeignKeyConstraint baseColumnNames="handle" baseTableName="user_profile" constraintName="FKp62gdxif9h9dtdwcyf5b7gdi8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="handle" referencedTableName="userProfile"/>
+    </changeSet>
+    <changeSet id="1680067598538-1" author="georgerapeanu">
+        <tagDatabase tag="lab8-migrations"/>
+    </changeSet>
+    <changeSet id="1680067598539-1" author="georgerapeanu">
+        <addColumn tableName="manufacturer">
+            <column name="user_handle" type="VARCHAR(255)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_handle" baseTableName="manufacturer" constraintName="FK_manufacturer_user" referencedColumnNames="handle" referencedTableName="userProfile"/>
+    </changeSet>
+    <changeSet id="1680067598539-2" author="georgerapeanu">
+        <tagDatabase tag="lab8-migrations-continuation"/>
     </changeSet>
 </databaseChangeLog>
