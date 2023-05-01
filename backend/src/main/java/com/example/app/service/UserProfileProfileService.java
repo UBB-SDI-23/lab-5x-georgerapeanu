@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserProfileProfileService implements IUserProfileService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
     UserProfileRepository userProfileRepository;
 
     @Override

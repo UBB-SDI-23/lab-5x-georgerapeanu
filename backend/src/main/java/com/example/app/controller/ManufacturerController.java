@@ -107,7 +107,7 @@ public class ManufacturerController {
     @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
     public void moveProductsToManufacturers(
             @PathVariable("id") Integer id,
-            @Valid @RequestBody Page<Integer> product_ids
+            @Valid @RequestBody List<Integer> product_ids
     ) {
         product_ids.forEach(product_id -> {
             ProductDTO productDTO = productService.getProductById(product_id);

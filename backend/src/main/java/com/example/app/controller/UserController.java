@@ -49,11 +49,6 @@ public class UserController {
         }
     }
 
-    @PostMapping(path="/users", produces = "application/json")
-    public void createUser(@Valid @RequestBody UserProfileDTO userProfileDTO) {
-        userProfileService.createUserProfile(userProfileDTO);
-    }
-
     @PatchMapping(path="/users/{id}", produces = "application/json")
     public @ResponseBody void updateUser(@PathVariable("id") String handle, @Valid @RequestBody UserProfileDTO userProfileDTO) {
         userProfileService.updateUserProfileWithId(handle, userProfileDTO);

@@ -19,12 +19,12 @@ public class User {
     @Setter
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch= FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Review> reviews;
 
     @Getter
     @Setter
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="handle", unique = true)
     UserProfile userProfile;
 }
