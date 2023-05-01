@@ -1,6 +1,6 @@
-import { User } from "../model/User"
+import { UserProfile } from "../model/UserProfile"
 
 export default interface UserReviewCountDTO {
-    userDTO: User,
+    userProfileDTO: UserProfile,
     count: number
 }

@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 export class ReviewEditComponent {
   editForm = this.formBuilder.group(
     {
-      userId: [0],
+      userHandle: [""],
       productId: [0],
       score: [0, Validators.required],
       comment: ['', Validators.required],
@@ -32,17 +32,17 @@ export class ReviewEditComponent {
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_id');
-    if(userIdString == null) {
+    let userHandleString: string | null = this.route.snapshot.queryParamMap.get('user_handle');
+    if(userHandleString == null) {
       return ;
     }
-    this.editForm.controls.userId.setValue(parseInt(userIdString));
+    this.editForm.controls.userHandle.setValue(userHandleString);
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString == null) {
       return ;
     }
     this.editForm.controls.productId.setValue(parseInt(productIdString));
-    this.reviewService.getReviewById(parseInt(userIdString), parseInt(productIdString)).subscribe(result => {
+    this.reviewService.getReviewById(userHandleString, parseInt(productIdString)).subscribe(result => {
       this.editForm.setValue(result);
     });
   }

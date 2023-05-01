@@ -30,6 +30,14 @@
     " class="alert text-red-600 text-sm">
         Registered at is required
     </div>
+    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="userHandle">User handle: </label>
+    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="userHandle">
+    <div *ngIf="
+        editForm.get('userHandle')?.errors?.['required'] &&
+        (editForm.get('userHandle')?.touched || editForm.get('userHandle')?.dirty)
+    " class="alert text-red-600 text-sm">
+        User handle is required
+    </div>
 
     <button class="my-4 text-blue-600 font-semibold uppercase"  (click)="onSubmit()">
         Submit

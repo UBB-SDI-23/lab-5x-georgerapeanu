@@ -9,7 +9,6 @@ import {HttpClientModule} from '@angular/common/http';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserCreateComponent } from './components/users/user-create/user-create.component';
 import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
 import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 import { PaginationComponent } from './components/reusable/pagination/pagination.component';
@@ -44,7 +43,6 @@ import { ProductScorePageComponent } from './components/products/product-score-p
     UsersOverviewComponent,
     UserDetailsComponent,
     UserEditComponent,
-    UserCreateComponent,
     ProductsScoreStatisticComponent,
     UserDeleteComponent,
     PaginationComponent,

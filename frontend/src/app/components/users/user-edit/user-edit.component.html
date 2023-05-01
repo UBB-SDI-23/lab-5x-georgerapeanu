@@ -4,7 +4,7 @@
         Back
     </button>
     <h1 class="font-bold text-3xl py-5">
-        Edit User #{{editForm.get('id')?.value}}
+        Edit User {{editForm.get('handle')?.value}}
     </h1>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="name">Name: </label>
     <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="name" >
@@ -12,15 +12,7 @@
         editForm.get('name')?.errors?.['required'] &&
         (editForm.get('name')?.touched || editForm.get('name')?.dirty)
     " class="alert text-red-600 text-sm">
-        Username is required
-    </div>
-    <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="handle">Handle: </label>
-    <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="handle">
-    <div *ngIf="
-        editForm.get('handle')?.errors?.['required'] &&
-        (editForm.get('handle')?.touched || editForm.get('handle')?.dirty)
-    " class="alert text-red-600 text-sm">
-        Handle is required
+        User name is required
     </div>
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="email">Email: </label>
     <input class="border-2 border-gray-200 rounded w-full h-12" type="text" formControlName="email">

@@ -3,4 +3,5 @@ export interface Manufacturer{
     name: string,
     description: string,
     registerDate: Date,
+    userHandle: string
 }

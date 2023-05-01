@@ -17,6 +17,7 @@ export class ManufacturerEditComponent {
       name: ['', Validators.required],
       description: ['', Validators.required],
       registerDate: [new Date(), Validators.required],
+      userHandle: ['', Validators.required]
     }
   );
   serverResponse: string|null = null;
