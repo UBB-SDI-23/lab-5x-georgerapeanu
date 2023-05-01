@@ -39,7 +39,7 @@ public class UserProfile {
     private Date registeredAt;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_handle", unique = true)
+    @JoinColumn(name="handle", unique = true)
     User user;
 
 }

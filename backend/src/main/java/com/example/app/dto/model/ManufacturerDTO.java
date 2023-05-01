@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@NotBlank
 @EqualsAndHashCode
 @ToString
 public class ManufacturerDTO {
@@ -22,15 +21,18 @@ public class ManufacturerDTO {
     @NotBlank
     @Getter
     @Setter
+    @NotBlank
     private String name;
     @Getter
     @Setter
+    @NotBlank
     private String description;
     @Getter
     @Setter
     private Date registerDate;
     @Getter
     @Setter
+    @NotBlank
     private String userHandle;
 
     public static ManufacturerDTO fromManufacturer(Manufacturer manufacturer){
