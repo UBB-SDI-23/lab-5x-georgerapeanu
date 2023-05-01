@@ -32,7 +32,7 @@ export class PaginationComponent {
       answer.push(i);
     }
 
-    for(let i = Math.max(0, this.totalPages - 4);i <= this.totalPages;i++) {
+    for(let i = Math.max(0, this.totalPages - 5);i < this.totalPages;i++) {
       answer.push(i);
     }
 
@@ -40,7 +40,7 @@ export class PaginationComponent {
       if(this.pageNumber - i >= 0){
         answer.push(this.pageNumber - i);
       }
-      if(this.pageNumber + i <= this.totalPages) {
+      if(this.pageNumber + i < this.totalPages) {
         answer.push(this.pageNumber + i);
       }
     }

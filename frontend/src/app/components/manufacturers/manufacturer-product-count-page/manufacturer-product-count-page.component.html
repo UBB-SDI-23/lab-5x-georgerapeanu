@@ -5,6 +5,7 @@
         <th class="py-3 px-6 text-left">Name</th>
         <th class="py-3 px-6 text-left">Description</th>
         <th class="py-3 px-6 text-left">Registered At</th>
+        <th class="py-3 px-6 text-left">Added by</th>
         <th class="py-3 px-6 text-left">Product count</th>
         <th *ngIf="actionable" class="py-3 px-6 text-left">Actions</th>
       </tr>
@@ -15,6 +16,7 @@
         <td class="py-3 px-6 text-left">{{ manufacturerProductCount.manufacturerDTO.name }}</td>
         <td class="py-3 px-6 text-left">{{ manufacturerProductCount.manufacturerDTO.description }}</td>
         <td class="py-3 px-6 text-left">{{ manufacturerProductCount.manufacturerDTO.registerDate| date }}</td>
+        <td class="py-3 px-6 text-left">{{ manufacturerProductCount.manufacturerDTO.userHandle }}</td>
         <td class="py-3 px-6 text-left">{{ manufacturerProductCount.productCount }}</td>
         <td *ngIf="actionable" class="py-3 px-6 text-left flex gap-6 items-center">
           <a [routerLink]="['/manufacturers', manufacturerProductCount.manufacturerDTO.id]" class="text-black">

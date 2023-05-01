@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service';
-import { User } from 'src/app/model/User';
+import { UserProfile } from 'src/app/model/UserProfile';
 import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
 
@@ -11,7 +11,7 @@ import { Review } from 'src/app/model/Review';
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent {
-  user: User | null = null;
+  user: UserProfile | null = null;
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
@@ -33,7 +33,7 @@ export class UserDetailsComponent {
     if(userIdString == null) {
       return;
     }
-    let userId = parseInt(userIdString);
+    let userHandle = userIdString;
     this.activatedRoute.queryParams
     .subscribe(
       params => {
@@ -49,7 +49,7 @@ export class UserDetailsComponent {
         if(this.pageSize > 10) {
           this.pageSize = 10;
         }
-        this.userService.getAllReviewsForUser(userId, this.pageNumber, this.pageSize).subscribe(result => {
+        this.userService.getAllReviewsForUser(userHandle, this.pageNumber, this.pageSize).subscribe(result => {
           this.reviews = result.content;
           this.totalPages = result.totalPages;
           this.currentPage = this.pageNumber;
@@ -57,7 +57,7 @@ export class UserDetailsComponent {
         });
       }
     );
-    this.userService.getUserById(userId).subscribe(result => {
+    this.userService.getUserById(userHandle).subscribe(result => {
       this.user = result;
     });
   }

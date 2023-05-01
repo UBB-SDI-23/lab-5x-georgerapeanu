@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/user-service';
-import { User } from 'src/app/model/User';
+import { UserProfile } from 'src/app/model/UserProfile';
 import { ActivatedRoute, Router } from '@angular/router';
 import UserReviewCountDTO from 'src/app/dto/UserReviewCountDTO';
 

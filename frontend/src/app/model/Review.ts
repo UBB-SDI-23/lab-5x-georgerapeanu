@@ -1,5 +1,5 @@
 export interface Review{
-    userId: number,
+    userHandle: string,
     productId: number,
     score: number,
     comment: string,

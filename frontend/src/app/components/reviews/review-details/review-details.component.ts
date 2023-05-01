@@ -21,17 +21,17 @@ export class ReviewDetailsComponent {
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_id');
-    if(userIdString == null) {
+    let userHandleString: string | null = this.route.snapshot.queryParamMap.get('user_handle');
+    if(userHandleString == null) {
       return;
     }
-    let userId = parseInt(userIdString);
+    let userHandle = userHandleString;
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString == null) {
       return;
     }
     let productId = parseInt(productIdString);
-    this.reviewService.getReviewById(userId, productId).subscribe(result => {
+    this.reviewService.getReviewById(userHandle, productId).subscribe(result => {
       this.review = result;
     });
   }
