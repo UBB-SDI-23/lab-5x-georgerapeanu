@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../model/User';
+import { UserProfile } from '../model/UserProfile';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { GenericPage } from '../model/GenericPage';
 import { Review } from '../model/Review';
-import { UserCreate } from '../model/UserCreate';
 import UserReviewCountDTO from '../dto/UserReviewCountDTO';
+import { UserCreatedCountDTO } from '../model/UserCreatedCountDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,31 +15,31 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(pageNumber: number, pageSize: number): Observable<GenericPage<User>> {
-    return this.http.get<GenericPage<User>>(environment.apiURL + "/users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  getAllUsers(pageNumber: number, pageSize: number): Observable<GenericPage<UserProfile>> {
+    return this.http.get<GenericPage<UserProfile>>(environment.apiURL + "/users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
   getUserReviewCountsPage(pageNumber: number, pageSize: number): Observable<GenericPage<UserReviewCountDTO>> {
     return this.http.get<GenericPage<UserReviewCountDTO>>(environment.apiURL + "/user-review-counts" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
-  getAllReviewsForUser(userId: number, pageNumber: number, pageSize: number): Observable<GenericPage<Review>> {
-    return this.http.get<GenericPage<Review>>(environment.apiURL + "/users" + `/${userId}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
+  getAllReviewsForUser(userHandle: string, pageNumber: number, pageSize: number): Observable<GenericPage<Review>> {
+    return this.http.get<GenericPage<Review>>(environment.apiURL + "/users" + `/${userHandle}` + "/reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
   }
 
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(environment.apiURL + "/users/" + id.toString());
+  getUserById(userHandle: string): Observable<UserProfile> {
+    return this.http.get<UserProfile>(environment.apiURL + "/users/" + userHandle);
   }
 
-  editUser(user: User): Observable<any>{
-    return this.http.patch(environment.apiURL + "/users/" + user.id.toString(), user);
+  editUser(user: UserProfile): Observable<any>{
+    return this.http.patch(environment.apiURL + "/users/" + user.handle, user);
   }
 
-  createUser(user: UserCreate): Observable<any>{
-    return this.http.post(environment.apiURL + "/users", user);
+  deleteUser(userHandle: string): Observable<any> {
+    return this.http.delete(environment.apiURL + "/users/" + userHandle);
   }
 
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(environment.apiURL + "/users/" + id.toString());
+  getUserCreatedCount(userHandle: string): Observable<UserCreatedCountDTO> {
+    return this.http.get<UserCreatedCountDTO>(environment.apiURL + "/user-created-count" + "/" + userHandle);
   }
 }

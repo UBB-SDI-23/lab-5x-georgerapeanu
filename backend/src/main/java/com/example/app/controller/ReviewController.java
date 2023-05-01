@@ -21,11 +21,11 @@ public class ReviewController {
 
     @GetMapping(path="/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<ReviewDTO> getReview(
-            @RequestParam("user_id") Integer userId,
+            @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId
     ) {
         try {
-            return new ResponseEntity<>(reviewService.getReview(userId, productId), HttpStatus.OK);
+            return new ResponseEntity<>(reviewService.getReview(userHandle, productId), HttpStatus.OK);
         } catch (AppException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -46,13 +46,13 @@ public class ReviewController {
     }
     @PatchMapping(path="/reviews", produces = "application/json")
     public ResponseEntity<Map<String, String>> updateReview(
-            @RequestParam("user_id") Integer userId,
+            @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId,
             @RequestBody ReviewDTO reviewDTO
     ) {
         Map<String, String> response = new HashMap<>();
         try {
-            reviewService.updateReview(userId, productId, reviewDTO);
+            reviewService.updateReview(userHandle, productId, reviewDTO);
             response.put("message", "Review updated");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
@@ -62,8 +62,8 @@ public class ReviewController {
     }
     @DeleteMapping(path="/reviews", produces = "application/json")
     public void deleteReview(
-            @RequestParam("user_id") Integer userId,
+            @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId) {
-        reviewService.deleteReview(userId, productId);
+        reviewService.deleteReview(userHandle, productId);
     }
 }

@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -53,11 +55,12 @@ public class ManufacturerController {
 
     @GetMapping(path="/manufacturers/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<ManufacturerDTO> getManufacturer(@PathVariable("id") Integer id) {
-        ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(id);
-        if(manufacturerDTO == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } else {
+        ManufacturerDTO manufacturerDTO = null;
+        try {
+            manufacturerDTO = manufacturerService.getManufacturerById(id);
             return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
+        } catch (AppException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -79,13 +82,29 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
-    public void createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
-        manufacturerService.createManufacturer(manufacturerDTO);
+    public ResponseEntity<Map<String, String> > createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            manufacturerService.createManufacturer(manufacturerDTO);
+            response.put("message", "Manufacturer created");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody void updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
-        manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
+    public @ResponseBody ResponseEntity<Map<String, String>> updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
+            response.put("message", "Manufacturer updated");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(path="/manufacturers/{id}", produces = "application/json")
@@ -94,9 +113,9 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public void createManufacturer(
+    public void moveProductsToManufacturers(
             @PathVariable("id") Integer id,
-            @Valid @RequestBody Page<Integer> product_ids
+            @Valid @RequestBody List<Integer> product_ids
     ) {
         product_ids.forEach(product_id -> {
             ProductDTO productDTO = productService.getProductById(product_id);

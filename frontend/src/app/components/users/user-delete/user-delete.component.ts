@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./user-delete.component.css']
 })
 export class UserDeleteComponent {
-  userId: number = 0
+  userHandle: string = "";
   serverResponse: String|null = null;
   constructor(
     private route: ActivatedRoute,
@@ -19,11 +19,11 @@ export class UserDeleteComponent {
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.paramMap.get('id');
-    if(userIdString == null) {
+    let userHandleString: string | null = this.route.snapshot.paramMap.get('id');
+    if(userHandleString == null) {
       return;
     }
-    this.userId = parseInt(userIdString);
+    this.userHandle = userHandleString;
   }
 
   goBack(): void {
@@ -35,7 +35,7 @@ export class UserDeleteComponent {
   }
 
   deleteUser(): void {
-    this.userService.deleteUser(this.userId).subscribe({
+    this.userService.deleteUser(this.userHandle).subscribe({
       next: response => {
         this.serverResponse="Operation was succesful!";
       },

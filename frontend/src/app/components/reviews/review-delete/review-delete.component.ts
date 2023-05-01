@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./review-delete.component.css']
 })
 export class ReviewDeleteComponent {
-  userId: number = 0;
+  userHandle: string = "";
   productId: number = 0;
   serverResponse: String|null = null;
   constructor(
@@ -20,15 +20,15 @@ export class ReviewDeleteComponent {
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_id');
-    if(userIdString == null) {
+    let userHandleString: string | null = this.route.snapshot.queryParamMap.get('user_handle');
+    if(userHandleString == null) {
       return;
     }
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString == null) {
       return;
     }
-    this.userId = parseInt(userIdString);
+    this.userHandle = userHandleString;
     this.productId = parseInt(productIdString);
   }
 
@@ -37,7 +37,7 @@ export class ReviewDeleteComponent {
   }
 
   deleteReview(): void {
-    this.reviewService.deleteReview(this.userId, this.productId).subscribe({
+    this.reviewService.deleteReview(this.userHandle, this.productId).subscribe({
       next: response => {
         this.serverResponse="Operation was succesful!";
       },

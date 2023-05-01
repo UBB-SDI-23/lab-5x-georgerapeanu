@@ -2,6 +2,7 @@ package com.example.app.service;
 
 import com.example.app.dto.ManufacturerProductCountDTO;
 import com.example.app.dto.ProductScoreDTO;
+import com.example.app.dto.ProductScoreWithUserHandleDTO;
 import com.example.app.dto.model.ManufacturerDTO;
 import com.example.app.dto.model.ProductDTO;
 import com.example.app.exceptions.AppException;
@@ -20,4 +21,5 @@ public interface IProductService {
     Page<ProductDTO> getProductsByManufacturerId(Integer id, Integer pageNumber, Integer pageSize) throws AppException;
     Page<ProductScoreDTO> getProductsSortedByScore(Integer pageNumber, Integer pageSize);
     Page<ProductScoreDTO> getProductScoresPage(Integer weight, Integer pageNumber, Integer pageSize);
+    Page<ProductScoreWithUserHandleDTO> getProductScoresPageWithUsers(Integer weight, Integer pageNumber, Integer pageSize);
 }

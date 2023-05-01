@@ -9,7 +9,6 @@ import {HttpClientModule} from '@angular/common/http';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserCreateComponent } from './components/users/user-create/user-create.component';
 import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
 import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 import { PaginationComponent } from './components/reusable/pagination/pagination.component';
@@ -36,6 +35,7 @@ import { ManufacturersCountStatisticComponent } from './components/manufacturers
 import { UserReviewCountPageComponent } from './components/users/user-review-count-page/user-review-count-page.component';
 import { ManufacturerProductCountPageComponent } from './components/manufacturers/manufacturer-product-count-page/manufacturer-product-count-page.component';
 import { ProductScorePageComponent } from './components/products/product-score-page/product-score-page.component';
+import { ProductsScoreWithUsersPageComponent } from './components/products/products-score-with-users-page/products-score-with-users-page.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { ProductScorePageComponent } from './components/products/product-score-p
     UsersOverviewComponent,
     UserDetailsComponent,
     UserEditComponent,
-    UserCreateComponent,
     ProductsScoreStatisticComponent,
     UserDeleteComponent,
     PaginationComponent,
@@ -71,6 +70,7 @@ import { ProductScorePageComponent } from './components/products/product-score-p
     UserReviewCountPageComponent,
     ManufacturerProductCountPageComponent,
     ProductScorePageComponent,
+    ProductsScoreWithUsersPageComponent,
   ],
   imports: [
     BrowserModule,

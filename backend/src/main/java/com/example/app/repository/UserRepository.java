@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository
-        extends JpaRepository<User, Integer>,
+        extends JpaRepository<User, String>,
                 JpaSpecificationExecutor<User>,
                 IUserRepository{
 }

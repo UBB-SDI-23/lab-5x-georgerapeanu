@@ -5,6 +5,7 @@
         <th class="py-3 px-6 text-left">Name</th>
         <th class="py-3 px-6 text-left">Description</th>
         <th class="py-3 px-6 text-left">Registered At</th>
+        <th class="py-3 px-6 text-left">Added by</th>
         <th *ngIf="actionable" class="py-3 px-6 text-left">Actions</th>
       </tr>
     </thead>
@@ -14,6 +15,7 @@
         <td class="py-3 px-6 text-left">{{ manufacturer.name }}</td>
         <td class="py-3 px-6 text-left">{{ manufacturer.description }}</td>
         <td class="py-3 px-6 text-left">{{ manufacturer.registerDate | date }}</td>
+        <td class="py-3 px-6 text-left">{{ manufacturer.userHandle }}</td>
         <td *ngIf="actionable" class="py-3 px-6 text-left flex gap-6 items-center">
           <a [routerLink]="['/manufacturers', manufacturer.id, 'edit']" class="text-black">
             <svg width="16px" height="16px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

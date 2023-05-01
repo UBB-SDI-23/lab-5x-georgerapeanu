@@ -14,7 +14,7 @@ import { ReviewCreate } from 'src/app/model/ReviewCreate';
 export class ReviewCreateComponent {
   createForm = this.formBuilder.group(
     {
-      userId: [0, Validators.required],
+      userHandle: ["", Validators.required],
       productId: [0, Validators.required],
       score: [0, Validators.required],
       comment: ['', Validators.required],
@@ -32,9 +32,9 @@ export class ReviewCreateComponent {
   ) {}
 
   ngOnInit(): void {
-    let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_id');
+    let userIdString: string | null = this.route.snapshot.queryParamMap.get('user_handle');
     if(userIdString != null) {
-      this.createForm.controls.userId.setValue(parseInt(userIdString));
+      this.createForm.controls.userHandle.setValue(userIdString);
     }
     let productIdString: string | null = this.route.snapshot.queryParamMap.get('product_id');
     if(productIdString != null) {

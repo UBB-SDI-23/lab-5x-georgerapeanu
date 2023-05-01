@@ -4,7 +4,6 @@ import { HomeComponent } from './components/home/home.component';
 import { UsersOverviewComponent } from './components/users/users-overview/users-overview.component';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
-import { UserCreateComponent } from './components/users/user-create/user-create.component';
 import { ProductsScoreStatisticComponent } from './components/products/products-score-statistic/products-score-statistic.component';
 import { UserDeleteComponent } from './components/users/user-delete/user-delete.component';
 import { ManufacturersOverviewComponent } from './components/manufacturers/manufacturers-overview/manufacturers-overview.component';
@@ -31,10 +30,6 @@ const routes: Routes = [
   {
     path:"users",
     component: UsersOverviewComponent
-  },
-  {
-    path:"users/create",
-    component: UserCreateComponent
   },
   {
     path:"users/:id",

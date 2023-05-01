@@ -4,10 +4,9 @@ import com.example.app.exceptions.AppException;
 import com.example.app.model.Ids.ReviewId;
 import com.example.app.model.Product;
 import com.example.app.model.Review;
-import com.example.app.dto.model.ProductDTO;
-import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.model.User;
+import com.example.app.model.UserProfile;
 import com.example.app.repository.ProductRepository;
 import com.example.app.repository.ReviewRepository;
 import com.example.app.repository.UserRepository;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,8 +31,8 @@ public class ReviewService implements  IReviewService{
     ProductRepository productRepository;
 
     @Override
-    public Page<ReviewDTO> getReviewsForUser(Integer id, Integer pageNumber, Integer pageSize) throws AppException {
-        Optional<User> user = userRepository.findById(id);
+    public Page<ReviewDTO> getReviewsForUser(String handle, Integer pageNumber, Integer pageSize) throws AppException {
+        Optional<User> user = userRepository.findById(handle);
         if(user.isEmpty()){
             throw new AppException("No such user exists");
         }
@@ -55,8 +53,8 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public ReviewDTO getReview(Integer userId, Integer productId) throws AppException {
-        Optional<Review> review = reviewRepository.findById(new ReviewId(userId, productId));
+    public ReviewDTO getReview(String handle, Integer productId) throws AppException {
+        Optional<Review> review = reviewRepository.findById(new ReviewId(handle, productId));
         if(review.isEmpty()) {
             throw  new AppException("No such review exists");
         }
@@ -65,7 +63,7 @@ public class ReviewService implements  IReviewService{
 
     @Override
     public void createReview(ReviewDTO reviewDTO) throws AppException {
-        User user = userRepository.findById(reviewDTO.getUserId()).orElse(null);
+        User user = userRepository.findById(reviewDTO.getUserHandle()).orElse(null);
         if(user == null) {
             throw new AppException("No such user exists");
         }
@@ -77,8 +75,8 @@ public class ReviewService implements  IReviewService{
     }
 
     @Override
-    public void updateReview(Integer userId, Integer productId, ReviewDTO reviewDTO) throws AppException {
-        User user = userRepository.findById(userId).orElse(null);
+    public void updateReview(String handle, Integer productId, ReviewDTO reviewDTO) throws AppException {
+        User user = userRepository.findById(handle).orElse(null);
         if(user == null) {
             throw new AppException("No such user exists");
         }
@@ -87,13 +85,13 @@ public class ReviewService implements  IReviewService{
             throw new AppException("No such product exists");
         }
         Review review = ReviewDTO.toReview(reviewDTO, user, product);
-        review.setId(new ReviewId(userId, productId));
+        review.setId(new ReviewId(handle, productId));
         reviewRepository.save(review);
     }
 
     @Override
-    public void deleteReview(Integer userId, Integer productId) {
-        reviewRepository.deleteById(new ReviewId(userId, productId));
+    public void deleteReview(String handle, Integer productId) {
+        reviewRepository.deleteById(new ReviewId(handle, productId));
     }
 
 }
