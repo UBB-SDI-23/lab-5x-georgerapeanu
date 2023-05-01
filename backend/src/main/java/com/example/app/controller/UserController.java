@@ -1,5 +1,6 @@
 package com.example.app.controller;
 
+import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.dto.model.UserProfileDTO;
@@ -86,5 +87,13 @@ public class UserController {
             Integer pageSize
     ){
         return userProfileService.getUserReviewCountPage(pageNumber, pageSize);
+    }
+
+    @GetMapping(path="/user-created-count/{handle}", produces = "application/json")
+    public @ResponseBody UserCreatedCountDTO getUserCreatedCount(
+            @PathVariable("handle")
+            String handle
+    ) {
+        return userProfileService.getUserCreatedCount(handle);
     }
 }

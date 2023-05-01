@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.UserProfileDTO;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,5 @@ public interface IUserProfileService {
     void updateUserProfileWithId(String handle, UserProfileDTO userProfileDTO);
     void deleteUserProfileWithId(String handle);
     Page<UserReviewCountDTO> getUserReviewCountPage(Integer pageNumber, Integer pageSize);
+    UserCreatedCountDTO getUserCreatedCount(String handle);
 }

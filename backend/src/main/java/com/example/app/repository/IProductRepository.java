@@ -10,4 +10,5 @@ import java.util.List;
 public interface IProductRepository {
     Page<ProductScoreDTO> getProductsSortedByAverageScore(Pageable pageable);
     List<ProductScoreDTO> getProductScoresFromList(List<ProductDTO> productDTOS);
+    public Integer getProductCountForUserHandle(String userHandle);
 }

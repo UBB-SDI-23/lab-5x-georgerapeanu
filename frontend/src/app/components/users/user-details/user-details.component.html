@@ -14,6 +14,14 @@
             <li class="my-2">Registered at: {{user?.registeredAt}}</li>
         </ul>
 
+        <h3 class="text-xl pt-5">User added:</h3>
+        <ul>
+            <li class="my-2 ml-2">Manufacturers: {{userCreatedCount?.manufacturerCount}}</li>
+            <li class="my-2 ml-2">Products: {{userCreatedCount?.productCount}}</li>
+            <li class="my-2 ml-2">Reviews: {{userCreatedCount?.reviewCount}}</li>
+            
+        </ul>
+
         <h2 class="text-2xl py-5">User Reviews:</h2>
 
         <a [routerLink]="['/reviews', 'create']" [queryParams]="{'user_handle': user?.handle}"  class="flex text-gray-600 font-semibold px-2 my-2 gap-2">

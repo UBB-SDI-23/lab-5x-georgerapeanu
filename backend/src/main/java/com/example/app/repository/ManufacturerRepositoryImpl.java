@@ -83,4 +83,17 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Integer getManufacturerCountForUserHandle(String userHandle) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Manufacturer> manufacturers = cq.from(Manufacturer.class);
+
+        cq
+                .select(cb.count(manufacturers))
+                .where(cb.equal(manufacturers.get("user").get("handle"), userHandle));
+        TypedQuery<Long> typedQuery = em.createQuery(cq);
+        return typedQuery.getSingleResult().intValue();
+    }
 }
