@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -80,22 +82,28 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
-    public ResponseEntity<String> createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+    public ResponseEntity<Map<String, String> > createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        Map<String, String> response = new HashMap<>();
         try {
             manufacturerService.createManufacturer(manufacturerDTO);
-            return new ResponseEntity<>("Manufacturer created", HttpStatus.CREATED);
+            response.put("message", "Manufacturer created");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (AppException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PatchMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<String> updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+    public @ResponseBody ResponseEntity<Map<String, String>> updateManufacturer(@PathVariable("id") Integer id, @Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+        Map<String, String> response = new HashMap<>();
         try {
             manufacturerService.updateManufacturerWithId(id, manufacturerDTO);
-            return new ResponseEntity<>("Manufacturer updated", HttpStatus.OK);
+            response.put("message", "Manufacturer updated");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
