@@ -7,6 +7,7 @@ import { GenericPage } from '../model/GenericPage';
 import { Product } from '../model/Product';
 import { Review } from '../model/Review';
 import { ProductCreate } from '../model/ProductCreate';
+import { ProductScoreWithUserHandleDTO } from '../dto/ProductScoreWithUserHandleDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ import { ProductCreate } from '../model/ProductCreate';
 export class ProductService {
 
   constructor(private http: HttpClient) { }
+
+  getProductScoreWithUserHandles(pageNumber: number, pageSize: number, weight: number): Observable<GenericPage<ProductScoreWithUserHandleDTO>> {
+    return this.http.get<GenericPage<ProductScoreWithUserHandleDTO>>(environment.apiURL + "/product-scores-with-users" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}` + `&weight=${weight}`);
+  }
 
   getProductScoreStatistic(pageNumber: number, pageSize: number): Observable<GenericPage<ProductScoreDTO>> {
     return this.http.get<GenericPage<ProductScoreDTO>>(environment.apiURL + "/products/sorted-by-reviews" + `?pageNumber=${pageNumber}` + `&pageSize=${[pageSize]}`);
