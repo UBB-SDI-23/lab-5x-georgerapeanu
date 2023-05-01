@@ -3,9 +3,12 @@ package com.example.app.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Setter;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -15,85 +18,40 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
     private Integer id;
     @NotBlank(message = "Product name is mandatory")
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private String description;
+    @Getter
+    @Setter
     private Date publishDate;
     @Min(0)
+    @Getter
+    @Setter
     private Double price;
     @Min(0)
+    @Getter
+    @Setter
     private Integer weight;
+    @Getter
+    @Setter
     private String color;
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     @OneToMany(mappedBy = "product", fetch=FetchType.LAZY)
+    @Getter
+    @Setter
     List<Review> reviews;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id", nullable = false)
+    @Getter
+    @Setter
     private Manufacturer manufacturer;
 
-    public Manufacturer getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
 }
