@@ -22,6 +22,11 @@ public class User {
     @NotBlank
     private String password;
 
+
+    @Getter
+    @Setter
+    private boolean activated;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Review> reviews;
 

@@ -80,6 +80,7 @@ public class LoginService implements ILoginService{
                 user.get()
         );
         user.get().setUserProfile(userProfile);
+        user.get().setActivated(true);
         userProfileRepository.save(userProfile);
     }
 }
