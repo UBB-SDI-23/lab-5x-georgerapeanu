@@ -36,6 +36,10 @@ import { UserReviewCountPageComponent } from './components/users/user-review-cou
 import { ManufacturerProductCountPageComponent } from './components/manufacturers/manufacturer-product-count-page/manufacturer-product-count-page.component';
 import { ProductScorePageComponent } from './components/products/product-score-page/product-score-page.component';
 import { ProductsScoreWithUsersPageComponent } from './components/products/products-score-with-users-page/products-score-with-users-page.component';
+import { LoginStatusComponent } from './components/reusable/login-status/login-status.component';
+import { CookieModule } from 'ngx-cookie';
+import { RegisterComponent } from './components/login/register/register.component';
+import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
 
 @NgModule({
   declarations: [
@@ -71,13 +75,17 @@ import { ProductsScoreWithUsersPageComponent } from './components/products/produ
     ManufacturerProductCountPageComponent,
     ProductScorePageComponent,
     ProductsScoreWithUsersPageComponent,
+    LoginStatusComponent,
+    RegisterComponent,
+    RegisterConfirmComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CookieModule.withOptions()
   ],
   providers: [],
   bootstrap: [AppComponent]

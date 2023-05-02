@@ -21,6 +21,8 @@ import { ReviewCreateComponent } from './components/reviews/review-create/review
 import { ReviewEditComponent } from './components/reviews/review-edit/review-edit.component';
 import { ReviewDeleteComponent } from './components/reviews/review-delete/review-delete.component';
 import { ManufacturersCountStatisticComponent } from './components/manufacturers/manufacturers-count-statistic/manufacturers-count-statistic.component';
+import { RegisterComponent } from './components/login/register/register.component';
+import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
 
 const routes: Routes = [
   {
@@ -106,6 +108,14 @@ const routes: Routes = [
   {
     path: "reviews/delete",
     component: ReviewDeleteComponent
+  },
+  {
+    path: "register",
+    component: RegisterComponent
+  },
+  {
+    path: 'register/:token',
+    component: RegisterConfirmComponent
   }
 ];
 

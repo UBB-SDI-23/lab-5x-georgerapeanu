@@ -4,7 +4,7 @@ import { UserService } from 'src/app/services/user-service';
 import { UserProfile } from 'src/app/model/UserProfile';
 import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
-import { UserCreatedCountDTO } from 'src/app/model/UserCreatedCountDTO';
+import { UserCreatedCountDTO } from 'src/app/dto/UserCreatedCountDTO';
 
 @Component({
   selector: 'app-user-details',
