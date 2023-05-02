@@ -1,13 +1,13 @@
 
-<ul *ngIf="token === null" class="flex gap-6">
+<ul *ngIf="user_handle === null" class="flex gap-6">
     <li>Not logged in</li>
     <li>|</li>
-    <li><a>Log in</a></li>
+    <li><a [routerLink]="['/', 'login']">Log in</a></li>
     <li><a [routerLink]="['/', 'register']">Register</a></li>
 </ul>
 
-<ul *ngIf="token !== null" class="flex gap-6">
-    <li>Logged in as {{getUserHandleFromToken()}}</li>
+<ul *ngIf="user_handle !== null" class="flex gap-6">
+    <li>Logged in as {{user_handle}}</li>
     <li>|</li>
     <li><a>Log out</a></li>
 </ul>

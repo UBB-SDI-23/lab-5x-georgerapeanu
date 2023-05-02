@@ -23,6 +23,7 @@ import { ReviewDeleteComponent } from './components/reviews/review-delete/review
 import { ManufacturersCountStatisticComponent } from './components/manufacturers/manufacturers-count-statistic/manufacturers-count-statistic.component';
 import { RegisterComponent } from './components/login/register/register.component';
 import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
+import { LoginComponent } from './components/login/login/login.component';
 
 const routes: Routes = [
   {
@@ -116,6 +117,10 @@ const routes: Routes = [
   {
     path: 'register/:token',
     component: RegisterConfirmComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 ];
 
