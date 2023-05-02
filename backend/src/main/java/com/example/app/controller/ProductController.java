@@ -8,6 +8,7 @@ import com.example.app.dto.model.ReviewDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
+import com.example.app.util.JWTUtils;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -69,10 +71,22 @@ public class ProductController {
     }
 
     @PostMapping(path="/products", produces = "application/json")
-    public ResponseEntity<Map<String, String>> createProduct(@Valid @RequestBody ProductDTO productDTO ) {
+    public ResponseEntity<Map<String, String>> createProduct(
+            @Valid @RequestBody ProductDTO productDTO,
+            @RequestHeader("Authorization")
+            String authHeader
+    ) {
         Map<String, String> response = new HashMap<>();
+        String user_handle = "";
         try {
-            productService.createProduct(productDTO);
+            user_handle = JWTUtils.getUserHandleFromAuthHeader(authHeader);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            productService.createProduct(productDTO, user_handle);
             response.put("message", "Product created");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {

@@ -3,6 +3,7 @@ package com.example.app.controller;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.service.IReviewService;
+import com.example.app.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Validated
 @RestController
@@ -32,9 +34,23 @@ public class ReviewController {
     }
     @PostMapping(path="/reviews", produces = "application/json")
     public ResponseEntity<Map<String, String>> createReview(
-            @RequestBody ReviewDTO reviewDTO
+            @RequestBody ReviewDTO reviewDTO,
+            @RequestHeader("Authorization")
+            String authHeader
     ) {
         Map<String, String> response = new HashMap<>();
+        String user_handle = "";
+        try {
+            user_handle = JWTUtils.getUserHandleFromAuthHeader(authHeader);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!Objects.equals(user_handle, reviewDTO.getUserHandle())) {
+            response.put("error", "token does not match with user");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
         try {
             reviewService.createReview(reviewDTO);
             response.put("message", "Review created");
