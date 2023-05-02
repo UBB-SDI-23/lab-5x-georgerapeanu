@@ -229,4 +229,12 @@
     <changeSet id="1680067598539-2" author="georgerapeanu">
         <tagDatabase tag="lab8-migrations-continuation"/>
     </changeSet>
+    <changeSet id="1680067598540-1" author="georgerapeanu">
+        <addColumn tableName="user">
+            <column name="activated" type="boolean" defaultValueNumeric="false"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1680067598540-2" author="georgerapeanu">
+        <tagDatabase tag="lab8-add-activated-to-user"/>
+    </changeSet>
 </databaseChangeLog>

@@ -1,6 +1,7 @@
 package com.example.app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -13,10 +14,12 @@ public class User {
     @Id
     @Getter
     @Setter
+    @NotBlank
     private String handle;
 
     @Getter
     @Setter
+    @NotBlank
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -24,7 +27,6 @@ public class User {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="handle", unique = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy="user")
     UserProfile userProfile;
 }
