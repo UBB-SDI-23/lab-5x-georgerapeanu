@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 @Validated
 public class LoginController {
 
