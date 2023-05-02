@@ -16,7 +16,12 @@ export class LoginService {
   private user_handle_subject = new BehaviorSubject<string | null>(null);
   private user_handle_observable = this.user_handle_subject.asObservable();
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { 
+    let token = this.getAuthToken();
+    if(token != null) {
+      this.setAuthToken(token);
+    }
+  }
 
   register(user: User): Observable<TokenResponseDTO> {
     return this.http.post<TokenResponseDTO>(environment.apiURL + "/register", user);
@@ -32,15 +37,15 @@ export class LoginService {
 
   setAuthToken(token: string) {
     let {exp, user_handle} = jwt_decode(token) as {exp: number, user_handle: string};
+    this.cookieService.set("auth-token", token, {expires: new Date(exp * 1000), path:"*"});
     this.user_handle_subject.next(user_handle);
-    this.cookieService.set("auth-token", token);
     if(exp * 1000 <= Date.now()) {
       this.deleteAuthToken();
     }
   }
 
-  getAuthToken(): string {
-    return this.cookieService.get("auth-token");
+  getAuthToken(): string | null{
+    return this.cookieService.get("auth-token") || null;
   }
 
   deleteAuthToken() {

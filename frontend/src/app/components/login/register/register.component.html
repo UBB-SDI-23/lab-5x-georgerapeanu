@@ -23,6 +23,12 @@
     " class="alert text-red-600 text-sm">
         Password is required
     </div>
+    <div *ngIf="
+        createForm.get('password')?.errors?.['minlength'] &&
+        (createForm.get('password')?.touched || createForm.get('password')?.dirty)
+    " class="alert text-red-600 text-sm">
+        Password should be at least 8 characters long.
+    </div>
 
     <label class="z-10 relative text-sm top-3 left-5 text-gray-400 bg-white" for="confirmPassword">Confirm Password: </label>
     <input class="border-2 border-gray-200 rounded w-full h-12" type="password" formControlName="confirmPassword">

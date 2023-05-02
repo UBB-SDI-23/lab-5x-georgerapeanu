@@ -7,7 +7,7 @@
 </ul>
 
 <ul *ngIf="user_handle !== null" class="flex gap-6">
-    <li>Logged in as {{user_handle}}</li>
+    <li><a [routerLink]="['/', 'users', user_handle]">Logged in as {{user_handle}}</a></li>
     <li>|</li>
-    <li><a>Log out</a></li>
+    <li><a [routerLink]="['/', 'logout']">Log out</a></li>
 </ul>

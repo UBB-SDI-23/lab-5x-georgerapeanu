@@ -24,6 +24,7 @@ import { ManufacturersCountStatisticComponent } from './components/manufacturers
 import { RegisterComponent } from './components/login/register/register.component';
 import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
 import { LoginComponent } from './components/login/login/login.component';
+import { LogoutComponent } from './components/login/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -121,6 +122,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   }
 ];
 

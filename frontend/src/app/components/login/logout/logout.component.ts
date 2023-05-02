@@ -8,26 +8,14 @@ import { User } from 'src/app/model/User';
 import { LoginService } from 'src/app/services/login.service';
 import { TokenResponseDTO } from 'src/app/dto/TokenResponseDTO';
 import { CookieService } from 'ngx-cookie-service';
+import { OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-logout',
+  templateUrl: './logout.component.html',
+  styleUrls: ['./logout.component.css']
 })
-export class LoginComponent {
-  serverResponse: TokenResponseDTO | null = null;
-
-  loginForm = this.formBuilder.group(
-    {
-      handle: ["", Validators.required],
-      password: ["", Validators.required],
-    }
-  );
-
-  goBack() {
-    this.location.back();
-  }
-
+export class LogoutComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private loginService: LoginService,
@@ -37,16 +25,8 @@ export class LoginComponent {
     private cookieService: CookieService,
   ) {}
 
-  onSubmit() {
-    if(this.loginForm.valid){
-      let user = this.loginForm.value as User;
-      this.loginService.login(user).subscribe({
-        next: (value) => {
-          this.loginService.setAuthToken(value.token || "");
-          this.goBack();
-        },
-        error: (error) => {this.serverResponse = error.error}
-      });
-    }
+  ngOnInit(): void {
+    this.loginService.deleteAuthToken();
+    this.location.back();
   }
 }

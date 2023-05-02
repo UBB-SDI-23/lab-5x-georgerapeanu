@@ -40,6 +40,7 @@ import { LoginStatusComponent } from './components/reusable/login-status/login-s
 import { RegisterComponent } from './components/login/register/register.component';
 import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
 import { LoginComponent } from './components/login/login/login.component';
+import { LogoutComponent } from './components/login/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { LoginComponent } from './components/login/login/login.component';
     LoginStatusComponent,
     RegisterComponent,
     RegisterConfirmComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

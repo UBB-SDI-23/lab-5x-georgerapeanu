@@ -23,7 +23,7 @@ export class RegisterComponent {
   createForm = this.formBuilder.group(
     {
       handle: ["", Validators.required],
-      password: ["", Validators.required],
+      password: ["", [Validators.required, Validators.minLength(8)]],
       confirmPassword: ["", Validators.required]
     },
     {
@@ -46,10 +46,12 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    let user = this.createForm.value as User;
-    this.loginService.register(user).subscribe({
-      next: (value) => {this.serverResponse = value},
-      error: (error) => {this.serverResponse = error.error}
-    });
+    if(this.createForm.valid){
+      let user = this.createForm.value as User;
+      this.loginService.register(user).subscribe({
+        next: (value) => {this.serverResponse = value},
+        error: (error) => {this.serverResponse = error.error}
+      });
+    }
   }
 }
