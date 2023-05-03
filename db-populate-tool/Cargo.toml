@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.24"
 fake = "2.5.0"
+pwhash = "1.0.0"
 rand = "0.8.5"
-bcrypt = "0.14.0"
