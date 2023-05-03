@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 
 @Component({
   selector: 'app-product-details',
@@ -21,9 +22,10 @@ export class ProductDetailsComponent extends AbstractPageContainerComponent {
     private productService: ProductService, 
     private location: Location,
     router: Router,
-    activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute,
+    userPreferencesService: UserPreferencesService
   ) {
-    super(router, activatedRoute);
+    super(router, activatedRoute, userPreferencesService);
   }
 
   override ngOnInit(): void {
@@ -40,7 +42,7 @@ export class ProductDetailsComponent extends AbstractPageContainerComponent {
     super.ngOnInit();
   }
 
-  pageUpdate() {
+  override pageUpdate() {
     this.productService.getAllReviewsForProduct(this.productId, this.pageNumber, this.pageSize).subscribe(result => {
       this.reviews = result.content;
       this.totalPages = result.totalPages;
