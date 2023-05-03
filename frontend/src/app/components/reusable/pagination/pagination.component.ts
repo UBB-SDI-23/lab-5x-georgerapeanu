@@ -28,7 +28,7 @@ export class PaginationComponent {
   getDisplayedPages() {
     let answer: number[] = [];
 
-    for(let i = 0;i <= Math.min(4, this.totalPages);i++) {
+    for(let i = 0;i < Math.min(5, this.totalPages);i++) {
       answer.push(i);
     }
 

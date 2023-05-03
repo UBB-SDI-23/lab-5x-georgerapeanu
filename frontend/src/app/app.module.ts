@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { UsersOverviewComponent } from './components/users/users-overview/users-overview.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { UserDetailsComponent } from './components/users/user-details/user-details.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +36,12 @@ import { UserReviewCountPageComponent } from './components/users/user-review-cou
 import { ManufacturerProductCountPageComponent } from './components/manufacturers/manufacturer-product-count-page/manufacturer-product-count-page.component';
 import { ProductScorePageComponent } from './components/products/product-score-page/product-score-page.component';
 import { ProductsScoreWithUsersPageComponent } from './components/products/products-score-with-users-page/products-score-with-users-page.component';
+import { LoginStatusComponent } from './components/reusable/login-status/login-status.component';
+import { RegisterComponent } from './components/login/register/register.component';
+import { RegisterConfirmComponent } from './components/login/register-confirm/register-confirm.component';
+import { LoginComponent } from './components/login/login/login.component';
+import { LogoutComponent } from './components/login/logout/logout.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -71,6 +77,11 @@ import { ProductsScoreWithUsersPageComponent } from './components/products/produ
     ManufacturerProductCountPageComponent,
     ProductScorePageComponent,
     ProductsScoreWithUsersPageComponent,
+    LoginStatusComponent,
+    RegisterComponent,
+    RegisterConfirmComponent,
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +90,9 @@ import { ProductsScoreWithUsersPageComponent } from './components/products/produ
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

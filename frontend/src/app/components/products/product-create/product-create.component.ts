@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ProductCreate } from 'src/app/model/ProductCreate';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-product-create',
