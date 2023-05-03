@@ -4,6 +4,7 @@ import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 
 @Component({
   selector: 'app-manufacturers-count-statistic',
@@ -15,9 +16,10 @@ export class ManufacturersCountStatisticComponent extends AbstractPageContainerC
   constructor(
     private manufacturerService: ManufacturerService,
     activatedRoute: ActivatedRoute,
-    router: Router
+    router: Router,
+    userPreferencesService: UserPreferencesService
   ) {
-    super(router, activatedRoute)
+    super(router, activatedRoute, userPreferencesService)
   }
 
   override ngOnInit(): void {

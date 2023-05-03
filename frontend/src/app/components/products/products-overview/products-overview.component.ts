@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductScoreDTO } from 'src/app/dto/ProductScoreDTO';
 import { ProductScoreWithUserHandleDTO } from 'src/app/dto/ProductScoreWithUserHandleDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 
 @Component({
   selector: 'app-products-overview',
@@ -17,9 +18,10 @@ export class ProductsOverviewComponent extends AbstractPageContainerComponent{
   constructor(
     private productService: ProductService,
     router: Router,
-    activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute,
+    userPreferencesService: UserPreferencesService
   ) {
-    super(router, activatedRoute);
+    super(router, activatedRoute, userPreferencesService);
   }
 
   override ngOnInit(): void {
@@ -36,7 +38,7 @@ export class ProductsOverviewComponent extends AbstractPageContainerComponent{
     )
   }
 
-  pageUpdate() {
+  override pageUpdate() {
     this.productService.getProductScoreWithUserHandles(this.pageNumber, this.pageSize, this.minWeight).subscribe(result => {
       this.productScoreWithUsers = result.content;
       this.totalPages = result.totalPages;
