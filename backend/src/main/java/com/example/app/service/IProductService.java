@@ -13,7 +13,7 @@ import java.util.List;
 public interface IProductService {
     Page<ProductDTO> getAllProducts(Integer pageNumber, Integer pageSize);
     ProductDTO getProductById(Integer id);
-    void createProduct(ProductDTO productDTO) throws AppException;
+    void createProduct(ProductDTO productDTO, String user_handle) throws AppException;
     void updateProductWithId(Integer id, ProductDTO productDTO) throws AppException;
     void deleteProductWithId(Integer id);
     public Page<ProductDTO> getAllProductsWithWeightBiggerThan(Integer weight, Integer pageNumber, Integer pageSize);

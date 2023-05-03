@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { GenericPage } from '../model/GenericPage';
 import { Review } from '../model/Review';
 import UserReviewCountDTO from '../dto/UserReviewCountDTO';
-import { UserCreatedCountDTO } from '../model/UserCreatedCountDTO';
+import { UserCreatedCountDTO } from '../dto/UserCreatedCountDTO';
 
 @Injectable({
   providedIn: 'root'

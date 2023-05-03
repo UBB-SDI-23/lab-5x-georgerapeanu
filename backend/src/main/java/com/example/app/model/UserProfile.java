@@ -25,11 +25,11 @@ public class UserProfile {
     @Id
     @Getter
     @Setter
-    @NotBlank(message = "User name is mandatory")
+    @NotBlank(message = "Handle is mandatory")
     private String handle;
     @Getter
     @Setter
-    @NotBlank(message = "User name is mandatory")
+    @NotBlank(message = "Email is mandatory")
     private String email;
     @Getter
     @Setter
@@ -38,8 +38,9 @@ public class UserProfile {
     @Setter
     private Date registeredAt;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="handle", unique = true)
-    User user;
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Getter
+    @Setter
+    @JoinColumn(name = "handle")
+    private User user;
 }

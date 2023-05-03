@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
 import { ManufacturerCreate } from 'src/app/model/ManufacturerCreate';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-manufacturer-create',
@@ -26,14 +27,16 @@ export class ManufacturerCreateComponent {
     private manufacturerService: ManufacturerService, 
     private formBuilder: FormBuilder,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
-    let manufacturerIdString: string | null = this.route.snapshot.paramMap.get('id');
-    if(manufacturerIdString == null) {
-      return;
-    }
+    this.loginService.getUserHandleObservable().subscribe(value => {
+      if(value != null) {
+        this.createForm.controls['userHandle'].setValue(value);
+      }
+    });
   }
 
   onSubmit(): void {
