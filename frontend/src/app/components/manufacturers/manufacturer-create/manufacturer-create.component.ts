@@ -36,7 +36,7 @@ export class ManufacturerCreateComponent {
       if(value != null) {
         this.createForm.controls['userHandle'].setValue(value);
       }
-    })
+    });
   }
 
   onSubmit(): void {

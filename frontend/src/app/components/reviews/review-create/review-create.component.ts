@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ReviewCreate } from 'src/app/model/ReviewCreate';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-review-create',
@@ -28,7 +29,8 @@ export class ReviewCreateComponent {
     private reviewService: ReviewService, 
     private formBuilder: FormBuilder,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,11 @@ export class ReviewCreateComponent {
     if(productIdString != null) {
       this.createForm.controls.productId.setValue(parseInt(productIdString));
     }
+    this.loginService.getUserHandleObservable().subscribe(value => {
+      if(value != null) {
+        this.createForm.controls['userHandle'].setValue(value);
+      }
+    });
   }
 
   onSubmit(): void {
