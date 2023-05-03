@@ -42,6 +42,7 @@ import { RegisterConfirmComponent } from './components/login/register-confirm/re
 import { LoginComponent } from './components/login/login/login.component';
 import { LogoutComponent } from './components/login/logout/logout.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AbstractPageContainerComponent } from './components/abstract/abstract-page-container/abstract-page-container.component';
 
 @NgModule({
   declarations: [
