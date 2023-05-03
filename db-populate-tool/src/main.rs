@@ -1,4 +1,4 @@
-use bcrypt;
+use pwhash::bcrypt;
 use chrono::offset::Utc;
 use chrono::DateTime;
 use fake::Fake;
@@ -15,6 +15,7 @@ const REVIEW_COUNT: usize = 10000000;
 struct User {
     pub handle: String,
     pub password: String,
+    pub activated: bool
 }
 
 struct UserProfile {
@@ -65,14 +66,20 @@ fn fake_users(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut F
     assert!(total == user_handles.len());
 
     let password =
-        bcrypt::hash("password", bcrypt::DEFAULT_COST).expect("failed encrypting password");
+        bcrypt::hash_with(
+            bcrypt::BcryptSetup {
+                variant: Some(bcrypt::BcryptVariant::V2a),
+                ..Default::default()
+            },
+            "password" 
+        ).expect("failed encrypting password");
 
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked users {}/{}", i, total);
             write!(
                 fd,
-                "INSERT INTO \"user\" (\"handle\", \"password\") VALUES "
+                "INSERT INTO \"user\" (\"handle\", \"password\", \"activated\") VALUES "
             )
             .expect("failure writing");
         }
@@ -80,9 +87,10 @@ fn fake_users(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut F
         let user = User {
             handle: user_handles[i].clone(),
             password: password.clone(),
+            activated: true
         };
 
-        write!(fd, "('{}', '{}')", user.handle, user.password).expect("error writing an entity");
+        write!(fd, "('{}', '{}', {})", user.handle, user.password, if user.activated {"true"} else {"false"}).expect("error writing an entity");
 
         if (i + 1) % batch == 0 {
             write!(fd, ";\n").expect("failure writing");
