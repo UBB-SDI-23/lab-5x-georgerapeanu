@@ -4,6 +4,7 @@ import { UserProfile } from 'src/app/model/UserProfile';
 import { ActivatedRoute, Router } from '@angular/router';
 import UserReviewCountDTO from 'src/app/dto/UserReviewCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 
 @Component({
   selector: 'app-users-overview',
@@ -15,9 +16,10 @@ export class UsersOverviewComponent extends AbstractPageContainerComponent {
   constructor(
     private userService: UserService,
     router: Router,
-    activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute,
+    userPreferencesService: UserPreferencesService
   ) {
-    super(router, activatedRoute);
+    super(router, activatedRoute, userPreferencesService);
   }
 
   override pageUpdate(): void {

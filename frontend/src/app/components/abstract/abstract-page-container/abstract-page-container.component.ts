@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 
 @Component({
   selector: 'app-abstract-page-container',
   templateUrl: './abstract-page-container.component.html',
   styleUrls: ['./abstract-page-container.component.css']
 })
-export abstract class AbstractPageContainerComponent implements OnInit {
+export class AbstractPageContainerComponent implements OnInit {
   pageSize: number = 10;
   pageNumber: number = 0;
   totalPages: number = 0;
@@ -15,12 +16,17 @@ export abstract class AbstractPageContainerComponent implements OnInit {
 
   constructor(
     protected router:Router,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected userPreferenceService: UserPreferencesService
   ){
     
   }
 
   ngOnInit(): void {
+    let preference = this.userPreferenceService.getPageSizePreferences();
+    if(preference != null) {
+      this.pageSize = preference;
+    }
     this.activatedRoute.queryParams
       .subscribe(
         params => {
@@ -41,7 +47,9 @@ export abstract class AbstractPageContainerComponent implements OnInit {
       );
   }
 
-  abstract pageUpdate(): void;
+  public pageUpdate(): void {
+    ;
+  }
 
   public setPageSize(pageSize: number): void {
     this.router.navigate(

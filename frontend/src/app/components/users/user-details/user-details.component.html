@@ -22,6 +22,13 @@
             
         </ul>
 
+        <h2 class="text-2xl py-5">User preferences:</h2>
+        <select [(ngModel)]="pageSize" (ngModelChange)="setPageSizePreference(this.pageSize)" name="pageSizePreference" [value]="pageSizePreference" class="text-center border-slate-400 bg-white border-2">
+            <option value="4">4</option>
+            <option value="7">7</option>
+            <option value="10">10</option>
+        </select>
+        
         <h2 class="text-2xl py-5">User Reviews:</h2>
 
         <a [routerLink]="['/reviews', 'create']" [queryParams]="{'user_handle': user?.handle}"  class="flex text-gray-600 font-semibold px-2 my-2 gap-2">

@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
 import { UserCreatedCountDTO } from 'src/app/dto/UserCreatedCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
+import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-user-details',
@@ -17,15 +19,18 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   userCreatedCount: UserCreatedCountDTO | null = null;
   reviews: Review[] = [];
   userHandle: string = "";
+  pageSizePreference = 10;
 
   constructor(
     private route: ActivatedRoute, 
     private userService: UserService, 
     private location: Location,
     router: Router,
-    activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute,
+    private userPreferencesService: UserPreferencesService,
+    private loginService: LoginService
   ) {
-    super(router, activatedRoute);
+    super(router, activatedRoute, userPreferencesService);
   }
 
   override ngOnInit(): void {
@@ -44,7 +49,6 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   }
 
   override pageUpdate(): void {
-    
     this.userService.getAllReviewsForUser(this.userHandle, this.pageNumber, this.pageSize).subscribe(result => {
       this.reviews = result.content;
       this.totalPages = result.totalPages;
@@ -55,5 +59,13 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
 
   goBack(): void {
     this.location.back();
+  }
+
+  setPageSizePreference(size: number) : void {
+    if(this.loginService.getAuthToken() != null) {
+      this.userPreferencesService.setPageSizePreference(size);
+    } else {
+      alert("you are not logged in");
+    }
   }
 }
