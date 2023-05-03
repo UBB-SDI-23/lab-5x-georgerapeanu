@@ -6,6 +6,7 @@ import com.example.app.dto.model.ProductDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.service.IManufacturerService;
 import com.example.app.service.IProductService;
+import com.example.app.util.JWTUtils;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @Validated
@@ -82,8 +84,25 @@ public class ManufacturerController {
     }
 
     @PostMapping(path="/manufacturers", produces = "application/json")
-    public ResponseEntity<Map<String, String> > createManufacturer(@Valid @RequestBody ManufacturerDTO manufacturerDTO ) {
+    public ResponseEntity<Map<String, String> > createManufacturer(
+            @Valid @RequestBody ManufacturerDTO manufacturerDTO,
+            @RequestHeader("Authorization")
+            String authHeader
+    ) {
         Map<String, String> response = new HashMap<>();
+        String user_handle = "";
+        try {
+            user_handle = JWTUtils.getUserHandleFromAuthHeader(authHeader);
+        } catch (AppException e) {
+            response.put("error", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!Objects.equals(user_handle, manufacturerDTO.getUserHandle())) {
+            response.put("error", "token does not match with user");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
         try {
             manufacturerService.createManufacturer(manufacturerDTO);
             response.put("message", "Manufacturer created");
