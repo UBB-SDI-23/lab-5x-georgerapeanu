@@ -47,6 +47,7 @@ services:
       - spring.datasource.name=postgres=${DATABASE_PLATFORM}
       - spring.sql.init.platform=${DATABASE_PLATFORM}
       - spring.datasource.url=${DATABASE_DRIVER}://database:5432/main
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       - ./target/${APP_NAME}.war:/usr/local/tomcat/webapps/ROOT.war
 
