@@ -4,83 +4,49 @@ import { Product } from 'src/app/model/Product';
 import { ProductService } from 'src/app/services/product.service';
 import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
+import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
 })
-export class ProductDetailsComponent {
+export class ProductDetailsComponent extends AbstractPageContainerComponent {
   product: Product | null = null;
-  pageSize: number = 10;
-  pageNumber: number = 0;
-  totalPages: number = 0;
-  currentPage: number = this.pageNumber;
-  currentSize: number = this.pageSize;
   reviews: Review[] = [];
+  productId: number = 0;
 
   constructor(
     private route: ActivatedRoute, 
     private productService: ProductService, 
     private location: Location,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+    router: Router,
+    activatedRoute: ActivatedRoute
+  ) {
+    super(router, activatedRoute);
+  }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     let productIdString: string | null = this.route.snapshot.paramMap.get('id');
     if(productIdString == null) {
       return;
     }
-    let productId = parseInt(productIdString);
+    this.productId = parseInt(productIdString);
 
-    this.activatedRoute.queryParams
-    .subscribe(
-      params => {
-        if('pageSize' in params) {
-          this.pageSize = parseInt(params['pageSize']);
-        }
-        if('pageNumber' in params) {
-          this.pageNumber = parseInt(params['pageNumber']);
-        }
-        if(this.pageSize < 4) {
-          this.pageSize = 4;
-        }
-        if(this.pageSize > 10) {
-          this.pageSize = 10;
-        }
-        this.productService.getAllReviewsForProduct(productId, this.pageNumber, this.pageSize).subscribe(result => {
-          this.reviews = result.content;
-          this.totalPages = result.totalPages;
-          this.currentPage = this.pageNumber;
-          this.currentSize = this.pageSize;
-        });
-      }
-    );
-
-    this.productService.getProductById(productId).subscribe(result => {
+    this.productService.getProductById(this.productId).subscribe(result => {
       this.product = result;
     });
+
+    super.ngOnInit();
   }
 
-  setPageNumber(pageNumber: number): void {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.activatedRoute,
-        queryParams: {'pageSize': this.pageSize, 'pageNumber': pageNumber}
-      }
-    )
-  }
-
-  setPageSize(pageSize: number): void {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.activatedRoute,
-        queryParams: {'pageSize': pageSize, 'pageNumber': this.pageNumber}
-      }
-    )
+  pageUpdate() {
+    this.productService.getAllReviewsForProduct(this.productId, this.pageNumber, this.pageSize).subscribe(result => {
+      this.reviews = result.content;
+      this.totalPages = result.totalPages;
+      this.currentPage = this.pageNumber;
+      this.currentSize = this.pageSize;
+    });
   }
 
   goBack(): void {
