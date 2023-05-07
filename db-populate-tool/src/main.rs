@@ -1,7 +1,7 @@
-use pwhash::bcrypt;
 use chrono::offset::Utc;
 use chrono::DateTime;
 use fake::Fake;
+use pwhash::bcrypt;
 use std::fs::File;
 use std::io::Write;
 use std::time::{Duration, SystemTime};
@@ -15,7 +15,8 @@ const REVIEW_COUNT: usize = 10000000;
 struct User {
     pub handle: String,
     pub password: String,
-    pub activated: bool
+    pub activated: bool,
+    pub role: String,
 }
 
 struct UserProfile {
@@ -51,6 +52,17 @@ struct Review {
     pub user_handle: String,
 }
 
+#[derive(Clone)]
+struct Role {
+    pub name: String,
+    pub read_all: bool,
+    pub update_all: bool,
+    pub delete_all: bool,
+    pub read_own: bool,
+    pub update_own: bool,
+    pub delete_own: bool,
+}
+
 fn generate_user_handles(total: usize) -> Vec<String> {
     let mut answer: Vec<String> = vec![];
     for i in 0..total {
@@ -61,25 +73,89 @@ fn generate_user_handles(total: usize) -> Vec<String> {
     return answer;
 }
 
+fn fake_roles(fd: &mut File) {
+    let roles = vec![
+        Role {
+            name: "visitor".to_string(),
+            read_all: true,
+            update_all: false,
+            delete_all: false,
+            read_own: true,
+            update_own: false,
+            delete_own: false,
+        },
+        Role {
+            name: "regular".to_string(),
+            read_all: true,
+            update_all: false,
+            delete_all: false,
+            read_own: true,
+            update_own: true,
+            delete_own: true,
+        },
+        Role {
+            name: "moderator".to_string(),
+            read_all: true,
+            update_all: true,
+            delete_all: false,
+            read_own: true,
+            update_own: true,
+            delete_own: true,
+        },
+        Role {
+            name: "admin".to_string(),
+            read_all: true,
+            update_all: true,
+            delete_all: true,
+            read_own: true,
+            update_own: true,
+            delete_own: true,
+        },
+    ];
+    write!(fd, "INSERT INTO \"role\" (\"name\", \"read_all\", \"update_all\", \"delete_all\", \"read_own\", \"update_own\", \"delete_own\") VALUES \n")
+        .expect("failure writing");
+    for i in 0..roles.len() {
+        let role = roles[i].clone();
+        write!(
+            fd,
+            "('{}', {}, {}, {}, {}, {}, {})",
+            role.name,
+            role.read_all,
+            role.update_all,
+            role.delete_all,
+            role.read_own,
+            role.update_own,
+            role.delete_own
+        )
+        .expect("failure writing");
+        if i + 1 < roles.len() {
+            write!(fd, ",\n").expect("failure writing");
+        } else {
+            write!(fd, ";\n").expect("failure writing");
+        }
+    }
+    println!("Faked roles");
+}
+
 fn fake_users(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut File) {
     assert!(total % batch == 0);
     assert!(total == user_handles.len());
 
-    let password =
-        bcrypt::hash_with(
-            bcrypt::BcryptSetup {
-                variant: Some(bcrypt::BcryptVariant::V2a),
-                ..Default::default()
-            },
-            "password" 
-        ).expect("failed encrypting password");
+    let password = bcrypt::hash_with(
+        bcrypt::BcryptSetup {
+            variant: Some(bcrypt::BcryptVariant::V2a),
+            ..Default::default()
+        },
+        "password",
+    )
+    .expect("failed encrypting password");
 
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked users {}/{}", i, total);
             write!(
                 fd,
-                "INSERT INTO \"user\" (\"handle\", \"password\", \"activated\") VALUES "
+                "INSERT INTO \"user\" (\"handle\", \"password\", \"activated\", \"role\") VALUES \n"
             )
             .expect("failure writing");
         }
@@ -87,10 +163,19 @@ fn fake_users(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut F
         let user = User {
             handle: user_handles[i].clone(),
             password: password.clone(),
-            activated: true
+            activated: true,
+            role: "regular".to_string(),
         };
 
-        write!(fd, "('{}', '{}', {})", user.handle, user.password, if user.activated {"true"} else {"false"}).expect("error writing an entity");
+        write!(
+            fd,
+            "('{}', '{}', {}, '{}')",
+            user.handle,
+            user.password,
+            if user.activated { "true" } else { "false" },
+            user.role
+        )
+        .expect("error writing an entity");
 
         if (i + 1) % batch == 0 {
             write!(fd, ";\n").expect("failure writing");
@@ -107,7 +192,7 @@ fn fake_user_profiles(total: usize, batch: usize, user_handles: &Vec<String>, fd
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked user profiles {}/{}", i, total);
-            write!(fd, "INSERT INTO \"user_profile\" (\"birthday\", \"email\", \"handle\", \"name\", \"registered_at\") VALUES ").expect("failure writing");
+            write!(fd, "INSERT INTO \"user_profile\" (\"birthday\", \"email\", \"handle\", \"name\", \"registered_at\") VALUES \n").expect("failure writing");
         }
 
         let user_profile = UserProfile {
@@ -158,7 +243,7 @@ fn fake_manufacturers(total: usize, batch: usize, user_handles: &Vec<String>, fd
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked manufacturers {}/{}", i, total);
-            write!(fd, "INSERT INTO \"manufacturer\" (\"description\", \"name\", \"register_date\", \"user_handle\") VALUES ").expect("failure writing");
+            write!(fd, "INSERT INTO \"manufacturer\" (\"description\", \"name\", \"register_date\", \"user_handle\") VALUES \n").expect("failure writing");
         }
 
         let manufacturer = Manufacturer {
@@ -203,7 +288,7 @@ fn fake_products(total: usize, batch: usize, fd: &mut File) {
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked products {}/{}", i, total);
-            write!(fd, "INSERT INTO \"product\" (\"description\", \"name\", \"price\", \"publish_date\", \"weight\", \"manufacturer_id\", \"color\") VALUES ").expect("failure writing");
+            write!(fd, "INSERT INTO \"product\" (\"description\", \"name\", \"price\", \"publish_date\", \"weight\", \"manufacturer_id\", \"color\") VALUES \n").expect("failure writing");
         }
 
         let name: String = (&vec![
@@ -274,7 +359,7 @@ fn fake_reviews(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut
     for i in 0..total {
         if i % batch == 0 {
             println!("Faked reviews {}/{}", i, total);
-            write!(fd, "INSERT INTO \"review\" (\"comment\", \"posted_date\", \"score\", \"product_id\", \"user_handle\") VALUES ").expect("failure writing");
+            write!(fd, "INSERT INTO \"review\" (\"comment\", \"posted_date\", \"score\", \"product_id\", \"user_handle\") VALUES \n").expect("failure writing");
         }
 
         let review = Review {
@@ -317,6 +402,7 @@ fn fake_reviews(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut
 fn main() {
     let mut file = File::create("./schema.sql").expect("failure creating file");
 
+    writeln!(file, "TRUNCATE TABLE \"role\" CASCADE;").expect("failure writing");
     writeln!(file, "TRUNCATE TABLE \"review\" RESTART IDENTITY CASCADE;").expect("failure writing");
     writeln!(
         file,
@@ -334,6 +420,7 @@ fn main() {
 
     let user_handles = generate_user_handles(USER_COUNT);
 
+    fake_roles(&mut file);
     fake_users(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_user_profiles(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_manufacturers(MANUFACTURER_COUNT, BATCH_SIZE, &user_handles, &mut file);
