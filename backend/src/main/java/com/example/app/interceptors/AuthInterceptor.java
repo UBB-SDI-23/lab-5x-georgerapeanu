@@ -24,6 +24,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String authToken = request.getHeader("Authorization");
         if(authToken == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setHeader("Access-Control-Allow-Origin", "*");
             return false;
         }
         try {
@@ -32,6 +33,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             request.setAttribute("user", user);
         } catch(AppException exception) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setHeader("Access-Control-Allow-Origin", "*");
             return false;
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
