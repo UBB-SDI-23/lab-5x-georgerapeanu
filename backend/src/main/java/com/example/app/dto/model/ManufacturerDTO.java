@@ -18,7 +18,6 @@ public class ManufacturerDTO {
     @Getter
     @Setter
     private Integer id;
-    @NotBlank
     @Getter
     @Setter
     @NotBlank
@@ -29,10 +28,10 @@ public class ManufacturerDTO {
     private String description;
     @Getter
     @Setter
+    @NotBlank
     private Date registerDate;
     @Getter
     @Setter
-    @NotBlank
     private String userHandle;
 
     public static ManufacturerDTO fromManufacturer(Manufacturer manufacturer){

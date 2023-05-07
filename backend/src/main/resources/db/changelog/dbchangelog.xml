@@ -237,4 +237,23 @@
     <changeSet id="1680067598540-2" author="georgerapeanu">
         <tagDatabase tag="lab8-add-activated-to-user"/>
     </changeSet>
+    <changeSet id="1680067598541-1" author="georgerapeanu">
+        <createTable tableName="role">
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="read_all" type="boolean" defaultValueNumeric="false"/>
+            <column name="update_all" type="boolean" defaultValueNumeric="false"/>
+            <column name="delete_all" type="boolean" defaultValueNumeric="false"/>
+            <column name="read_own" type="boolean" defaultValueNumeric="false"/>
+            <column name="update_own" type="boolean" defaultValueNumeric="false"/>
+            <column name="delete_own" type="boolean" defaultValueNumeric="false"/>
+        </createTable>
+        <addPrimaryKey tableName="role" columnNames="name"/>
+        <addColumn tableName="user">
+            <column name="role" type="VARCHAR(255)"/>
+        </addColumn>
+        <addForeignKeyConstraint constraintName="FK_USER_ROLE" baseTableName="user" referencedTableName="role" baseColumnNames="role" referencedColumnNames="name"/>
+    </changeSet>
+    <changeSet id="1680067598541-2" author="georgerapeanu">
+        <tagDatabase tag="lab9-add-roles-table"/>
+    </changeSet>
 </databaseChangeLog>
