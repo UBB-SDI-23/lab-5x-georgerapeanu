@@ -89,6 +89,7 @@ public class UserController {
         Map<String, String> response = new HashMap<>();
         if(!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(user.getHandle(), handle))) {
             response.put("error", "Unauthorized to delete resource");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
         userProfileService.deleteUserProfileWithId(handle);
         response.put("message", "User profile deleted");
@@ -138,7 +139,7 @@ public class UserController {
             String handle,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(user.getHandle(), handle))) {
+        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(userProfileService.getUserCreatedCount(handle), HttpStatus.OK);

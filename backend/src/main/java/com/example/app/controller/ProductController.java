@@ -147,7 +147,7 @@ public class ProductController {
             }
 
             productService.updateProductWithId(id, productDTO);
-            response.put("message", "Review updated");
+            response.put("message", "Product updated");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
             response.put("error", e.getMessage());

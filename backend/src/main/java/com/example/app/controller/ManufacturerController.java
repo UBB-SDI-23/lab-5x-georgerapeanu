@@ -138,8 +138,8 @@ public class ManufacturerController {
     ) {
         Map<String, String> response = new HashMap<>();
         try {
-            manufacturerDTO = manufacturerService.getManufacturerById(id);
-            if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+            ManufacturerDTO oldManufacturerDTO = manufacturerService.getManufacturerById(id);
+            if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(oldManufacturerDTO.getUserHandle(), user.getHandle()))) {
                 response.put("error", "Unauthorized to update resource");
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }

@@ -4,7 +4,6 @@ import com.example.app.exceptions.AppException;
 import com.example.app.model.User;
 import com.example.app.service.ILoginService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
