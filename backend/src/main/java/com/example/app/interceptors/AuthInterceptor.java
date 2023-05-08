@@ -20,7 +20,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(Objects.equals(request.getMethod(), "OPTIONS")) {
             return HandlerInterceptor.super.preHandle(request, response, handler);
         }
-        System.out.println("Went here");
         String authToken = request.getHeader("Authorization");
         if(authToken == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);

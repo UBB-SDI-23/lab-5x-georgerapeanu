@@ -37,6 +37,7 @@ public class LoginService implements ILoginService{
         if(userRepository.findById(user.getHandle()).isPresent()) {
             throw new AppException("User with such username already exists");
         }
+        user.setRole("visitor");
         userRepository.save(user);
         return JWTUtils.getRegisterToken(user.getHandle());
     }
@@ -66,6 +67,7 @@ public class LoginService implements ILoginService{
         if(user.isEmpty()){
             throw new AppException("User not found");
         }
+        user.get().setRole("regular");
         UserProfile userProfile = new UserProfile(
                 "name",
                 decodedJWT.getClaim("user_handle").asString(),

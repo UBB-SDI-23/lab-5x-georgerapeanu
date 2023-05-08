@@ -47,7 +47,6 @@ public class Product {
     @Getter
     @Setter
     List<Review> reviews;
-
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id", nullable = false)
     @Getter
