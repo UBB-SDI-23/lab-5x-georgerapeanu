@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode
+@ToString
 public class User {
     @Id
     @Getter
@@ -28,10 +29,22 @@ public class User {
     private boolean activated;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @ToString.Exclude
     List<Review> reviews;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY, mappedBy="user")
     UserProfile userProfile;
+
+
+    @Getter
+    @Setter
+    private String role;
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="role", insertable = false, updatable = false)
+    Role userRole;
 }

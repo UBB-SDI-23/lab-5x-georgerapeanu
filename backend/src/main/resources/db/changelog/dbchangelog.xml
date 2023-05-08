@@ -256,4 +256,12 @@
     <changeSet id="1680067598541-2" author="georgerapeanu">
         <tagDatabase tag="lab9-add-roles-table"/>
     </changeSet>
+    <changeSet id="1680067598542-1" author="georgerapeanu">
+        <addColumn tableName="role">
+            <column name="create" type="boolean" defaultValueNumeric="false"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1680067598542-2" author="georgerapeanu">
+        <tagDatabase tag="lab9-add-create-right"/>
+    </changeSet>
 </databaseChangeLog>

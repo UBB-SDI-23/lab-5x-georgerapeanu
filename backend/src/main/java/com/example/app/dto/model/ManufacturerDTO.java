@@ -28,7 +28,6 @@ public class ManufacturerDTO {
     private String description;
     @Getter
     @Setter
-    @NotBlank
     private Date registerDate;
     @Getter
     @Setter

@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.exceptions.AppException;
+import com.example.app.model.User;
 import com.example.app.service.IReviewService;
 import com.example.app.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class ReviewController {
     @GetMapping(path="/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<ReviewDTO> getReview(
             @RequestParam("user_handle") String userHandle,
-            @RequestParam("product_id") Integer productId
+            @RequestParam("product_id") Integer productId,
+            @RequestAttribute("user") User user
     ) {
+        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), userHandle))) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         try {
             return new ResponseEntity<>(reviewService.getReview(userHandle, productId), HttpStatus.OK);
         } catch (AppException e) {
@@ -35,24 +40,18 @@ public class ReviewController {
     @PostMapping(path="/reviews", produces = "application/json")
     public ResponseEntity<Map<String, String>> createReview(
             @RequestBody ReviewDTO reviewDTO,
-            @RequestHeader("Authorization")
-            String authHeader
+            @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        String user_handle = "";
-        try {
-            user_handle = JWTUtils.getUserHandleFromAuthHeader(authHeader);
-        } catch (AppException e) {
-            response.put("error", e.getMessage());
+
+        if(!user.getUserRole().getCreate()) {
+            response.put("error", "Not authorized to create resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
 
-        if(!Objects.equals(user_handle, reviewDTO.getUserHandle())) {
-            response.put("error", "token does not match with user");
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-        }
         try {
             reviewService.createReview(reviewDTO);
+            reviewDTO.setUserHandle(user.getHandle());
             response.put("message", "Review created");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
@@ -64,9 +63,14 @@ public class ReviewController {
     public ResponseEntity<Map<String, String>> updateReview(
             @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId,
-            @RequestBody ReviewDTO reviewDTO
+            @RequestBody ReviewDTO reviewDTO,
+            @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
+        if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(userHandle, user.getHandle()))) {
+            response.put("error", "Unauthorized to update resource");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
         try {
             reviewService.updateReview(userHandle, productId, reviewDTO);
             response.put("message", "Review updated");
@@ -77,9 +81,18 @@ public class ReviewController {
         }
     }
     @DeleteMapping(path="/reviews", produces = "application/json")
-    public void deleteReview(
+    public ResponseEntity<Map<String ,String>> deleteReview(
             @RequestParam("user_handle") String userHandle,
-            @RequestParam("product_id") Integer productId) {
+            @RequestParam("product_id") Integer productId,
+            @RequestAttribute("user") User user
+    ) {
+        Map<String, String> response = new HashMap<>();
+        if(!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(userHandle, user.getHandle()))) {
+            response.put("error", "Unauthorized to update resource");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
         reviewService.deleteReview(userHandle, productId);
+        response.put("message", "Review deleted");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
