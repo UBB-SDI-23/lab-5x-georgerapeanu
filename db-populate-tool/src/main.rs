@@ -61,6 +61,7 @@ struct Role {
     pub read_own: bool,
     pub update_own: bool,
     pub delete_own: bool,
+    pub create: bool
 }
 
 fn generate_user_handles(total: usize) -> Vec<String> {
@@ -83,6 +84,7 @@ fn fake_roles(fd: &mut File) {
             read_own: true,
             update_own: false,
             delete_own: false,
+            create: false
         },
         Role {
             name: "regular".to_string(),
@@ -92,6 +94,7 @@ fn fake_roles(fd: &mut File) {
             read_own: true,
             update_own: true,
             delete_own: true,
+            create: true
         },
         Role {
             name: "moderator".to_string(),
@@ -101,6 +104,7 @@ fn fake_roles(fd: &mut File) {
             read_own: true,
             update_own: true,
             delete_own: true,
+            create: true
         },
         Role {
             name: "admin".to_string(),
@@ -110,22 +114,24 @@ fn fake_roles(fd: &mut File) {
             read_own: true,
             update_own: true,
             delete_own: true,
+            create: true
         },
     ];
-    write!(fd, "INSERT INTO \"role\" (\"name\", \"read_all\", \"update_all\", \"delete_all\", \"read_own\", \"update_own\", \"delete_own\") VALUES \n")
+    write!(fd, "INSERT INTO \"role\" (\"name\", \"read_all\", \"update_all\", \"delete_all\", \"read_own\", \"update_own\", \"delete_own\", \"create\") VALUES \n")
         .expect("failure writing");
     for i in 0..roles.len() {
         let role = roles[i].clone();
         write!(
             fd,
-            "('{}', {}, {}, {}, {}, {}, {})",
+            "('{}', {}, {}, {}, {}, {}, {}, {})",
             role.name,
             role.read_all,
             role.update_all,
             role.delete_all,
             role.read_own,
             role.update_own,
-            role.delete_own
+            role.delete_own,
+            role.create
         )
         .expect("failure writing");
         if i + 1 < roles.len() {
@@ -399,6 +405,29 @@ fn fake_reviews(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut
     }
 }
 
+fn generate_meta_users(fd: &mut File) {
+    let password = bcrypt::hash_with(
+        bcrypt::BcryptSetup {
+            variant: Some(bcrypt::BcryptVariant::V2a),
+            ..Default::default()
+        },
+        "password",
+    )
+    .expect("failed encrypting password");
+
+    writeln!(fd, "INSERT INTO \"user\" VALUES ('admin', '{}', true, 'admin');", password).expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user\" VALUES ('moderator', '{}', true, 'moderator');", password).expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user\" VALUES ('regular', '{}', true, 'regular');", password).expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user\" VALUES ('visitor', '{}', true, 'visitor');", password).expect("Failure writing");
+    
+    writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'admin', 'admin', '2023-02-03');").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'moderator', 'moderator', '2023-02-03');").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'regular', 'regular', '2023-02-03');").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'visitor', 'visitor', '2023-02-03');").expect("Failure writing");
+
+    println!("Generated metausers");
+}
+
 fn main() {
     let mut file = File::create("./schema.sql").expect("failure creating file");
 
@@ -421,6 +450,7 @@ fn main() {
     let user_handles = generate_user_handles(USER_COUNT);
 
     fake_roles(&mut file);
+    generate_meta_users(& mut file);
     fake_users(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_user_profiles(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_manufacturers(MANUFACTURER_COUNT, BATCH_SIZE, &user_handles, &mut file);
