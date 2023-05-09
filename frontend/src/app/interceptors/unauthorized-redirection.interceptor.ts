@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, filter, map, of } from 'rxjs';
+import { catchError, filter, map, of, throwError } from 'rxjs';
 import {
   HttpRequest,
   HttpHandler,
@@ -20,17 +20,15 @@ export class UnauthorizedRedirectionInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log("entering");
     return next.handle(request).pipe(
       catchError(err => {
-        console.log(err);
         if(err instanceof HttpErrorResponse) {
           if(err.status == HttpStatusCode.Unauthorized) {
             console.log(err);
             this.router.navigate(["/unauthorized"]);
           }
         }
-        return of(err);
+        return throwError(() => err);
       })
     );
   }

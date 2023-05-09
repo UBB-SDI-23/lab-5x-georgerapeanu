@@ -3,11 +3,14 @@ package com.example.app.controller;
 import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.ReviewDTO;
+import com.example.app.dto.model.RoleDTO;
 import com.example.app.dto.model.UserProfileDTO;
 import com.example.app.exceptions.AppException;
+import com.example.app.model.Role;
 import com.example.app.model.User;
 import com.example.app.service.IReviewService;
 import com.example.app.service.IUserProfileService;
+import com.example.app.service.IUserService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,10 @@ import java.util.Objects;
 @CrossOrigin(origins = "*")
 @Validated
 public class UserController {
+
+    @Autowired
+    private IUserService userService;
+
     @Autowired
     private IUserProfileService userProfileService;
 
@@ -144,4 +151,20 @@ public class UserController {
         }
         return new ResponseEntity<>(userProfileService.getUserCreatedCount(handle), HttpStatus.OK);
     }
+
+    @GetMapping(path="/users/{handle}/role")
+    public @ResponseBody ResponseEntity<RoleDTO> getUserRole(
+            @PathVariable("handle") String handle,
+            @RequestAttribute("user") User user
+    ) {
+        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            return new ResponseEntity<>(RoleDTO.fromRole(userService.getUserByHandle(handle).getUserRole()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

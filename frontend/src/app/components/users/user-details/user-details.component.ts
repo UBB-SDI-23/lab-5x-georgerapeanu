@@ -8,6 +8,7 @@ import { UserCreatedCountDTO } from 'src/app/dto/UserCreatedCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 import { LoginService } from 'src/app/services/login.service';
+import { Role } from 'src/app/model/Role';
 
 @Component({
   selector: 'app-user-details',
@@ -20,6 +21,7 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   reviews: Review[] = [];
   userHandle: string = "";
   pageSizePreference = 10;
+  role: Role | null = null;
 
   constructor(
     private route: ActivatedRoute, 
@@ -45,6 +47,9 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     this.userService.getUserById(this.userHandle).subscribe(result => {
       this.user = result;
     });
+    this.userService.getUserRole(this.userHandle).subscribe(result => {
+      this.role = result;
+    })
     super.ngOnInit();
   }
 
