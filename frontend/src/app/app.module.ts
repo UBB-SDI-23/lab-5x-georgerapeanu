@@ -43,6 +43,8 @@ import { LoginComponent } from './components/login/login/login.component';
 import { LogoutComponent } from './components/login/logout/logout.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AbstractPageContainerComponent } from './components/abstract/abstract-page-container/abstract-page-container.component';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { UnauthorizedRedirectionInterceptor } from './interceptors/unauthorized-redirection.interceptor';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,8 @@ import { AbstractPageContainerComponent } from './components/abstract/abstract-p
     RegisterComponent,
     RegisterConfirmComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +95,8 @@ import { AbstractPageContainerComponent } from './components/abstract/abstract-p
     AppRoutingModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: UnauthorizedRedirectionInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
