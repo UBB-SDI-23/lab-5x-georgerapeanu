@@ -6,6 +6,8 @@ import { ProductScoreDTO } from 'src/app/dto/ProductScoreDTO';
 import { ProductScoreWithUserHandleDTO } from 'src/app/dto/ProductScoreWithUserHandleDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { LoginService } from 'src/app/services/login.service';
+import { UserService } from 'src/app/services/user-service';
 
 @Component({
   selector: 'app-products-overview',
@@ -19,9 +21,11 @@ export class ProductsOverviewComponent extends AbstractPageContainerComponent{
     private productService: ProductService,
     router: Router,
     activatedRoute: ActivatedRoute,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    userService: UserService,
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {

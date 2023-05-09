@@ -17,7 +17,7 @@
 
     <h2 class="text-2xl py-5">Product Reviews:</h2>
 
-    <a [routerLink]="['/reviews', 'create']" [queryParams]="{'product_id': product?.id}"  class="flex text-gray-600 font-semibold px-2 my-2 gap-2">
+    <a *ngIf="role?.create" [routerLink]="['/reviews', 'create']" [queryParams]="{'product_id': product?.id}"  class="flex text-gray-600 font-semibold px-2 my-2 gap-2">
         <svg class="mt-1" width="16px" height="16px" viewBox="0 -0.5 9 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                 <g id="Dribbble-Light-Preview" transform="translate(-345.000000, -206.000000)" fill="#00008f">
@@ -38,10 +38,10 @@
     </app-pagination>
     
     <div class="flex gap-9 my-4">
-        <a [routerLink]="['edit']" class="text-blue-600 font-semibold text-sm uppercase">
+        <a *ngIf="role?.update_all || (role?.update_own && loggedInHandle == manufacturer?.userHandle)" [routerLink]="['edit']" class="text-blue-600 font-semibold text-sm uppercase">
             Edit
         </a>
-        <a [routerLink]="['delete']" class="text-blue-600 font-semibold text-sm uppercase">
+        <a *ngIf="role?.delete_all || (role?.delete_own && loggedInHandle == manufacturer?.userHandle)" [routerLink]="['delete']" class="text-blue-600 font-semibold text-sm uppercase">
             Delete
         </a>
     </div>

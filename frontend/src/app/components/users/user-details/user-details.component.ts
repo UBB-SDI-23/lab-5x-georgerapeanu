@@ -21,18 +21,18 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   reviews: Review[] = [];
   userHandle: string = "";
   pageSizePreference = 10;
-  role: Role | null = null;
+  userRole: Role | null = null;
 
   constructor(
     private route: ActivatedRoute, 
-    private userService: UserService, 
+    userService: UserService, 
     private location: Location,
     router: Router,
     activatedRoute: ActivatedRoute,
     private userPreferencesService: UserPreferencesService,
-    private loginService: LoginService
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {
@@ -48,7 +48,7 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
       this.user = result;
     });
     this.userService.getUserRole(this.userHandle).subscribe(result => {
-      this.role = result;
+      this.userRole = result;
     })
     super.ngOnInit();
   }

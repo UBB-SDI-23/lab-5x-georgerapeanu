@@ -4,6 +4,8 @@ import { ProductScoreDTO } from 'src/app/dto/ProductScoreDTO';
 import { ProductService } from 'src/app/services/product.service';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { UserService } from 'src/app/services/user-service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-products-score-statistic',
@@ -18,9 +20,11 @@ export class ProductsScoreStatisticComponent extends AbstractPageContainerCompon
     private productService: ProductService,
     activatedRoute: ActivatedRoute,
     router: Router,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    userService: UserService,
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import UserReviewCountDTO from 'src/app/dto/UserReviewCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-users-overview',
@@ -14,12 +15,13 @@ import { UserPreferencesService } from 'src/app/services/user-preferences.servic
 export class UsersOverviewComponent extends AbstractPageContainerComponent {
   userReviewCounts: UserReviewCountDTO[] = [];
   constructor(
-    private userService: UserService,
+    userService: UserService,
     router: Router,
     activatedRoute: ActivatedRoute,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override pageUpdate(): void {

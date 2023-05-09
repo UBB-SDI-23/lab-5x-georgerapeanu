@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import jwt_decode from 'jwt-decode';
 import { UserPreferencesService } from './user-preferences.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,7 +43,7 @@ export class LoginService {
 
   setAuthToken(token: string) {
     let {exp, user_handle} = jwt_decode(token) as {exp: number, user_handle: string};
-    this.cookieService.set("auth-token", token, {expires: new Date(exp * 1000), path:"*"});
+    this.cookieService.set("auth-token", token, {expires: new Date(exp * 1000), path:"/"});
     this.user_handle_subject.next(user_handle);
     if(exp * 1000 <= Date.now()) {
       this.deleteAuthToken();
@@ -55,7 +56,7 @@ export class LoginService {
 
   deleteAuthToken() {
     this.user_handle_subject.next(null);
-    this.cookieService.delete("auth-token");
+    this.cookieService.delete("auth-token", "/");
   }
 
   getUserHandleObservable(): Observable<string | null> {
