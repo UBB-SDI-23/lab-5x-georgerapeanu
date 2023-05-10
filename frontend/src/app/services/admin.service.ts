@@ -21,4 +21,8 @@ export class AdminService {
   recreateDatabase() : Observable<any> {
     return this.http.post(environment.apiURL + "/admin/recreate", null);
   }
+
+  changeRole(user_handle: String, role: String) : Observable<any> {
+    return this.http.post(environment.apiURL + "/admin/change-role?" + "user_handle=" + user_handle + "&role=" + role, null);
+  }
 }

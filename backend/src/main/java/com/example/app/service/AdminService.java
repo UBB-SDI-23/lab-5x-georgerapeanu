@@ -1,5 +1,7 @@
 package com.example.app.service;
 
+import com.example.app.exceptions.AppException;
+import com.example.app.model.User;
 import com.example.app.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,12 +15,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
 public class AdminService implements IAdminService{
     @Autowired
     private Environment env;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void dropAll() {
@@ -67,5 +72,15 @@ public class AdminService implements IAdminService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void changeRole(String user_handle, String role) throws AppException {
+        Optional<User> userOptional = userRepository.findById(user_handle);
+        if(userOptional.isEmpty()) {
+            throw new AppException("User doesn't exist");
+        }
+        userOptional.get().setRole(role);
+        userRepository.save(userOptional.get());
     }
 }
