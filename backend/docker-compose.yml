@@ -48,8 +48,10 @@ services:
       - spring.sql.init.platform=${DATABASE_PLATFORM}
       - spring.datasource.url=${DATABASE_DRIVER}://database:5432/main
       - JWT_SECRET=${JWT_SECRET}
+      - sql_script.full_path=/schema1m.sql
     volumes:
       - ./target/${APP_NAME}.war:/usr/local/tomcat/webapps/ROOT.war
+      - ${SQL_SCRIPT_FULL_PATH}:/schema1m.sql
 
   nginx:
     image: "nginx:1.24.0"

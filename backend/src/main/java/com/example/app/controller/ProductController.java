@@ -6,6 +6,8 @@ import com.example.app.dto.model.ProductDTO;
 import com.example.app.dto.ProductScoreDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.exceptions.AppException;
+import com.example.app.model.User;
+import com.example.app.service.IManufacturerService;
 import com.example.app.service.IProductService;
 import com.example.app.service.IReviewService;
 import com.example.app.util.JWTUtils;
@@ -37,56 +39,81 @@ public class ProductController {
     private IProductService productService;
     @Autowired
     private IReviewService reviewService;
+    @Autowired
+    private IManufacturerService manufacturerService;
 
     @GetMapping(path="/products")
-    public @ResponseBody Page<ProductDTO> getProducts(
+    public @ResponseBody ResponseEntity<Page<ProductDTO>> getProducts(
             @RequestParam
             Integer pageNumber,
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("User") User user
     ){
-        return productService.getAllProducts( pageNumber, pageSize);
+        if(!user.getUserRole().getRead_all()){
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(productService.getAllProducts( pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Integer id) {
+    public @ResponseBody ResponseEntity<ProductDTO> getProduct(
+            @PathVariable("id") Integer id,
+            @RequestAttribute("user") User user
+        ) {
         ProductDTO productDTO = productService.getProductById(id);
         if(productDTO == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
+            try {
+                ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(productDTO.getManufacturerId());
+                if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+                    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+                }
+            } catch (AppException e) {
+                throw new RuntimeException(e);
+            }
+
             return new ResponseEntity<>(productDTO, HttpStatus.OK);
         }
     }
 
     @GetMapping(path="/products/{id}/manufacturer", produces = "application/json")
-    public @ResponseBody ResponseEntity<ManufacturerDTO> getProductManufacturer(@PathVariable("id") Integer id) {
+    public @ResponseBody ResponseEntity<ManufacturerDTO> getProductManufacturer(
+            @PathVariable("id") Integer id,
+            @RequestAttribute("user") User user
+    ) {
         ManufacturerDTO manufacturerDTO = productService.getManufacturerByProductId(id);
         if(manufacturerDTO == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
+            if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+             return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
         }
     }
 
     @PostMapping(path="/products", produces = "application/json")
     public ResponseEntity<Map<String, String>> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
-            @RequestHeader("Authorization")
-            String authHeader
+            @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        String user_handle = "";
-        try {
-            user_handle = JWTUtils.getUserHandleFromAuthHeader(authHeader);
-        } catch (AppException e) {
-            response.put("error", e.getMessage());
+
+        if(!user.getUserRole().getCreate()) {
+            response.put("message", "Unauthorized to create resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
 
         try {
-            productService.createProduct(productDTO, user_handle);
+            ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(productDTO.getManufacturerId());
+            if(!Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle())) {
+                throw new AppException("Manufacturer doesn't match user");
+            }
+            productService.createProduct(productDTO);
             response.put("message", "Product created");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
@@ -96,11 +123,31 @@ public class ProductController {
     }
 
     @PatchMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<Map<String, String>> updateProduct(@PathVariable("id") Integer id, @Valid @RequestBody ProductDTO productDTO ) {
+    public @ResponseBody ResponseEntity<Map<String, String>> updateProduct(
+            @PathVariable("id") Integer id,
+            @Valid @RequestBody ProductDTO productDTO,
+            @RequestAttribute("user") User user
+    ) {
         Map<String, String> response = new HashMap<>();
         try {
+            ProductDTO oldProductDTO = productService.getProductById(id);
+            if(oldProductDTO == null) {
+                throw new AppException("No product with such id exists");
+            }
+            if(!user.getUserRole().getUpdate_all()) {
+                ManufacturerDTO oldManufacturerDTO = manufacturerService.getManufacturerById(oldProductDTO.getManufacturerId());
+                ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(productDTO.getManufacturerId());
+                if(!Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle())) {
+                    throw new AppException("Manufacturer doesn't match user");
+                }
+                if(!Objects.equals(oldManufacturerDTO.getUserHandle(), manufacturerDTO.getUserHandle())){
+                    response.put("error", "Unauthorized to transfer resource between users");
+                    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+                }
+            }
+
             productService.updateProductWithId(id, productDTO);
-            response.put("message", "Review updated");
+            response.put("message", "Product updated");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AppException e) {
             response.put("error", e.getMessage());
@@ -109,33 +156,57 @@ public class ProductController {
     }
 
     @DeleteMapping(path="/products/{id}", produces = "application/json")
-    public @ResponseBody void deleteProduct(@PathVariable("id") Integer id) {
+    public @ResponseBody ResponseEntity<Map<String, String>> deleteProduct(
+            @PathVariable("id") Integer id,
+            @RequestAttribute("user") User user
+    ) {
+        Map<String, String> response = new HashMap<>();
+        ProductDTO productDTO = productService.getProductById(id);
+        try {
+            ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(productDTO.getManufacturerId());
+            if(!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+                response.put("error", "Unauthorized to delete resource");
+                return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (AppException e) {
+            throw new RuntimeException(e);
+        }
         productService.deleteProductWithId(id);
+        response.put("message", "Product deleted");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(path="/products/weight-filter", produces = "application/json")
-    public @ResponseBody Page<ProductDTO> getAllProductsWithWeightBiggerThan(
+    public @ResponseBody ResponseEntity<Page<ProductDTO>> getAllProductsWithWeightBiggerThan(
             @RequestParam Integer weight,
             @RequestParam
             Integer pageNumber,
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("user") User user
     ) {
-        return productService.getAllProductsWithWeightBiggerThan(weight, pageNumber, pageSize);
+        if(!user.getUserRole().getRead_all()) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(productService.getAllProductsWithWeightBiggerThan(weight, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
-    public @ResponseBody Page<ProductScoreDTO> getAllProductsSortedByReviews(
+    public @ResponseBody ResponseEntity<Page<ProductScoreDTO>> getAllProductsSortedByReviews(
             @RequestParam
             Integer pageNumber,
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("user") User user
     ){
-        return productService.getProductsSortedByScore(pageNumber, pageSize);
+        if(!user.getUserRole().getRead_all()) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(productService.getProductsSortedByScore(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")
@@ -146,9 +217,21 @@ public class ProductController {
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("user") User user
     ) {
         try {
+            ProductDTO productDTO = productService.getProductById(id);
+            if(productDTO == null) {
+                throw new AppException("Product with such id not found");
+            }
+            ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerById(productDTO.getManufacturerId());
+            if(manufacturerDTO == null) {
+                throw new RuntimeException("Manufacturer is empty");
+            }
+            if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), manufacturerDTO.getUserHandle()))) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity<>(reviewService.getReviewsForProduct(id, pageNumber, pageSize), HttpStatus.OK);
         } catch (AppException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -156,28 +239,36 @@ public class ProductController {
     }
 
     @GetMapping(path="/product-scores")
-    public @ResponseBody Page<ProductScoreDTO> getProductScoresPage(
+    public @ResponseBody ResponseEntity<Page<ProductScoreDTO>> getProductScoresPage(
             @RequestParam Integer weight,
             @RequestParam
             Integer pageNumber,
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("user") User user
     ){
-        return productService.getProductScoresPage(weight, pageNumber, pageSize);
+        if(!user.getUserRole().getRead_all()) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(productService.getProductScoresPage(weight, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping(path="/product-scores-with-users")
-    public @ResponseBody Page<ProductScoreWithUserHandleDTO> getProductScoresWithUsersPage(
+    public @ResponseBody ResponseEntity<Page<ProductScoreWithUserHandleDTO>> getProductScoresWithUsersPage(
             @RequestParam Integer weight,
             @RequestParam
             Integer pageNumber,
             @RequestParam
             @Min(value=4, message = "pageSize should be at least 4")
             @Max(value=10, message = "pageSize should be at most 10")
-            Integer pageSize
+            Integer pageSize,
+            @RequestAttribute("user") User user
     ){
-        return productService.getProductScoresPageWithUsers(weight, pageNumber, pageSize);
+        if(!user.getUserRole().getRead_all()) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(productService.getProductScoresPageWithUsers(weight, pageNumber, pageSize), HttpStatus.OK);
     }
 }

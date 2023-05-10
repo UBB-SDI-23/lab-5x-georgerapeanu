@@ -6,6 +6,10 @@ import { Location } from '@angular/common';
 import { Review } from 'src/app/model/Review';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { UserService } from 'src/app/services/user-service';
+import { LoginService } from 'src/app/services/login.service';
+import { ManufacturerService } from 'src/app/services/manufacturer.service';
+import { Manufacturer } from 'src/app/model/Manufacturer';
 
 @Component({
   selector: 'app-product-details',
@@ -16,6 +20,7 @@ export class ProductDetailsComponent extends AbstractPageContainerComponent {
   product: Product | null = null;
   reviews: Review[] = [];
   productId: number = 0;
+  manufacturer: Manufacturer | null = null;
 
   constructor(
     private route: ActivatedRoute, 
@@ -23,9 +28,12 @@ export class ProductDetailsComponent extends AbstractPageContainerComponent {
     private location: Location,
     router: Router,
     activatedRoute: ActivatedRoute,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    userService: UserService,
+    loginService: LoginService,
+    private manufactuererService: ManufacturerService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {
@@ -37,6 +45,9 @@ export class ProductDetailsComponent extends AbstractPageContainerComponent {
 
     this.productService.getProductById(this.productId).subscribe(result => {
       this.product = result;
+      this.manufactuererService.getManufacturerById(this.product.manufacturerId).subscribe(manufacturer => {
+        this.manufacturer = manufacturer;
+      });
     });
 
     super.ngOnInit();

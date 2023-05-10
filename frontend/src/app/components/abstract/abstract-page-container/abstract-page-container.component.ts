@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { Role } from 'src/app/model/Role';
+import { UserService } from 'src/app/services/user-service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-abstract-page-container',
@@ -13,13 +16,24 @@ export class AbstractPageContainerComponent implements OnInit {
   totalPages: number = 0;
   currentPage: number = this.pageNumber;
   currentSize: number = this.pageSize;
+  protected role: Role | null = null;
+  protected loggedInHandle: string = "visitor";
 
   constructor(
     protected router:Router,
     protected activatedRoute: ActivatedRoute,
-    protected userPreferenceService: UserPreferencesService
+    protected userPreferenceService: UserPreferencesService,
+    protected userService: UserService,
+    protected loginService: LoginService
   ){
-    
+    loginService.getUserHandleObservable().subscribe({
+      next: (handle) => {
+        this.loggedInHandle = handle || "visitor";
+        userService.getUserRole(handle || "visitor").subscribe(role => {
+          this.role = role;
+        });
+      }
+    })
   }
 
   ngOnInit(): void {

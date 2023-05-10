@@ -8,6 +8,8 @@ import { UserCreatedCountDTO } from 'src/app/dto/UserCreatedCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 import { LoginService } from 'src/app/services/login.service';
+import { Role } from 'src/app/model/Role';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-user-details',
@@ -20,17 +22,19 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   reviews: Review[] = [];
   userHandle: string = "";
   pageSizePreference = 10;
+  userRole: Role | null = null;
 
   constructor(
     private route: ActivatedRoute, 
-    private userService: UserService, 
+    userService: UserService, 
     private location: Location,
     router: Router,
     activatedRoute: ActivatedRoute,
     private userPreferencesService: UserPreferencesService,
-    private loginService: LoginService
+    loginService: LoginService,
+    private adminService: AdminService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {
@@ -44,6 +48,9 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     });
     this.userService.getUserById(this.userHandle).subscribe(result => {
       this.user = result;
+    });
+    this.userService.getUserRole(this.userHandle).subscribe(result => {
+      this.userRole = result;
     });
     super.ngOnInit();
   }
@@ -67,5 +74,19 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     } else {
       alert("you are not logged in");
     }
+  }
+
+  changeRole(event: any) {
+    let newRole: string = event.target.value;
+    this.adminService.changeRole(this.userHandle, newRole).subscribe({
+      next: (value) => {
+        this.userService.getUserRole(this.userHandle).subscribe(result => {
+          this.userRole = result;
+        });
+      },
+      error: (value) => {
+        alert(value);
+      }
+    });
   }
 }

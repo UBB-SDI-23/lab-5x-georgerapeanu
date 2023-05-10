@@ -22,10 +22,10 @@
     </app-pagination>
         
     <div class="flex gap-9 my-4">
-        <a [routerLink]="['edit']" class="text-blue-600 font-semibold text-sm uppercase">
+        <a *ngIf="this.role?.update_all || (this.role?.update_own && manufacturer?.userHandle == this.loggedInHandle)" [routerLink]="['edit']" class="text-blue-600 font-semibold text-sm uppercase">
             Edit
         </a>
-        <a [routerLink]="['delete']" class="text-blue-600 font-semibold text-sm uppercase">
+        <a *ngIf="this.role?.update_all || (this.role?.delete_own && manufacturer?.userHandle == this.loggedInHandle)"  [routerLink]="['delete']" class="text-blue-600 font-semibold text-sm uppercase">
             Delete
         </a>
     </div>
