@@ -17,4 +17,8 @@ export class AdminService {
   dropDatabase() : Observable<any> {
     return this.http.post(environment.apiURL + "/admin/drop-all", null);
   }
+
+  recreateDatabase() : Observable<any> {
+    return this.http.post(environment.apiURL + "/admin/recreate", null);
+  }
 }

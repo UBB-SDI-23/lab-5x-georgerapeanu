@@ -35,4 +35,18 @@ public class AdminController {
         response.put("message", "dropped");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PostMapping("/admin/recreate")
+    public ResponseEntity<Map<String, String>> recreate(
+            @RequestAttribute("user") User user
+    ) {
+        Map<String, String> response = new HashMap<>();
+        if(!Objects.equals(user.getUserRole().getName(), "admin")) {
+            response.put("error", "Unauthorized for this endpoint");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+        adminService.repopulateDb();
+        response.put("message", "dropped");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

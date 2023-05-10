@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IAdminService {
     public void dropAll();
+    public void repopulateDb();
 }

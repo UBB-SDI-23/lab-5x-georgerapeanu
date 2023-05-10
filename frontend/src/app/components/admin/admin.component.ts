@@ -13,7 +13,13 @@ export class AdminComponent {
 
   dropDatabase() {
     this.adminService.dropDatabase().subscribe(() => {
-      alert("Database is being dropped");
+      alert("Database has been dropped");
     });
+  }
+
+  recreateDatabase() {
+    this.adminService.recreateDatabase().subscribe(() => {
+      alert("Database has been recreated");
+    }); 
   }
 }
