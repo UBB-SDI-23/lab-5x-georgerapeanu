@@ -7,7 +7,6 @@ import { User } from '../model/User';
 import { RegisterConfirmResponseDTO } from '../dto/RegisterConfirmResponseDTO';
 import { CookieService } from 'ngx-cookie-service';
 import jwt_decode from 'jwt-decode';
-import { UserPreferencesService } from './user-preferences.service';
 
 
 @Injectable({
@@ -20,8 +19,7 @@ export class LoginService {
 
   constructor(
     private http: HttpClient, 
-    private cookieService: CookieService,
-    private userPreferenceService: UserPreferencesService) { 
+    private cookieService: CookieService) { 
     let token = this.getAuthToken();
     if(token != null) {
       this.setAuthToken(token);
@@ -37,7 +35,6 @@ export class LoginService {
   }
 
   login(user: User): Observable<TokenResponseDTO> {
-    this.userPreferenceService.clearAll();
     return this.http.post<TokenResponseDTO>(environment.apiURL + "/login", user);
   }
 

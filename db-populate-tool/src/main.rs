@@ -27,6 +27,11 @@ struct UserProfile {
     pub registered_at: String,
 }
 
+struct UserPreference {
+    pub handle: String,
+    pub page_size: usize
+}
+
 struct Manufacturer {
     pub description: String,
     pub name: String,
@@ -243,6 +248,37 @@ fn fake_user_profiles(total: usize, batch: usize, user_handles: &Vec<String>, fd
     }
 }
 
+fn fake_user_preferences(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut File) {
+    assert!(total % batch == 0);
+    assert!(total == user_handles.len());
+
+    for i in 0..total {
+        if i % batch == 0 {
+            println!("Faked user profiles {}/{}", i, total);
+            write!(fd, "INSERT INTO \"user_preference\" (\"handle\", \"page_size\") VALUES \n").expect("failure writing");
+        }
+
+        let user_preference = UserPreference{
+            handle: user_handles[i].clone(),
+            page_size: 10
+        };
+
+        write!(
+            fd,
+            "\n('{}', {})",
+            user_preference.handle, 
+            user_preference.page_size
+        )
+        .expect("failure writing");
+
+        if (i + 1) % batch == 0 {
+            write!(fd, ";\n").expect("failure writing");
+        } else {
+            write!(fd, ",\n").expect("failure writing");
+        }
+    }
+}
+
 fn fake_manufacturers(total: usize, batch: usize, user_handles: &Vec<String>, fd: &mut File) {
     assert!(total % batch == 0);
 
@@ -425,6 +461,11 @@ fn generate_meta_users(fd: &mut File) {
     writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'regular', 'regular', '2023-02-03');").expect("Failure writing");
     writeln!(fd, "INSERT INTO \"user_profile\" VALUES ('2003-02-03', 'email', 'visitor', 'visitor', '2023-02-03');").expect("Failure writing");
 
+    writeln!(fd, "INSERT INTO \"user_preference\" VALUES ('admin', 10);").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_preference\" VALUES ('moderator', 10);").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_preference\" VALUES ('regular', 10);").expect("Failure writing");
+    writeln!(fd, "INSERT INTO \"user_preference\" VALUES ('visitor', 10);").expect("Failure writing");
+    
     println!("Generated metausers");
 }
 
@@ -439,6 +480,7 @@ fn main() {
     )
     .expect("failure writing");
     writeln!(file, "TRUNCATE TABLE \"user\" RESTART IDENTITY CASCADE;").expect("failure writing");
+    writeln!(file, "TRUNCATE TABLE \"user_preference\" CASCADE;").expect("failure writing");
     writeln!(file, "TRUNCATE TABLE \"product\" RESTART IDENTITY CASCADE;")
         .expect("failure writing");
     writeln!(
@@ -453,6 +495,7 @@ fn main() {
     generate_meta_users(& mut file);
     fake_users(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_user_profiles(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
+    fake_user_preferences(USER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_manufacturers(MANUFACTURER_COUNT, BATCH_SIZE, &user_handles, &mut file);
     fake_products(PRODUCT_COUNT, BATCH_SIZE, &mut file);
     fake_reviews(REVIEW_COUNT, BATCH_SIZE, &user_handles, &mut file);

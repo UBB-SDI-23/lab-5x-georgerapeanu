@@ -264,4 +264,15 @@
     <changeSet id="1680067598542-2" author="georgerapeanu">
         <tagDatabase tag="lab9-add-create-right"/>
     </changeSet>
+    <changeSet  id="1680067598543-1" author="georgerapeanu">
+        <createTable tableName="user_preference">
+            <column name="handle" type="VARCHAR(255)"/>
+            <column name="page_size" type="numeric" defaultValueNumeric="10"/>
+        </createTable>
+        <addPrimaryKey tableName="user_preference" columnNames="handle"/>
+        <addForeignKeyConstraint constraintName="FK_USER_PREFERENCE_USER" baseTableName="user_preference" baseColumnNames="handle" referencedTableName="user" referencedColumnNames="handle"/>
+    </changeSet>
+    <changeSet  id="1680067598543-2" author="georgerapeanu">
+        <tagDatabase tag="lab9-change"/>
+    </changeSet>
 </databaseChangeLog>

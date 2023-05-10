@@ -47,4 +47,9 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="role", insertable = false, updatable = false)
     Role userRole;
+
+    @Getter
+    @Setter
+    @OneToOne(mappedBy="user", fetch=FetchType.LAZY)
+    UserPreference userPreference;
 }
