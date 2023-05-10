@@ -45,6 +45,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AbstractPageContainerComponent } from './components/abstract/abstract-page-container/abstract-page-container.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UnauthorizedRedirectionInterceptor } from './interceptors/unauthorized-redirection.interceptor';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { UnauthorizedRedirectionInterceptor } from './interceptors/unauthorized-
     RegisterConfirmComponent,
     LoginComponent,
     LogoutComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

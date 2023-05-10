@@ -4,8 +4,9 @@
     <a routerLink="users">Users</a>
     <a [routerLink]="['manufacturers']">Manufacturers</a>
     <a [routerLink]="['products']">Products</a>
-    <a [routerLink]="['products', 'sorted-by-score']">Products score statistic</a>
-    <a [routerLink]="['manufacturers', 'sorted-by-products']">Manufacturers product count statistic</a>
+    <a [routerLink]="['products', 'sorted-by-score']">Products by score</a>
+    <a [routerLink]="['manufacturers', 'sorted-by-products']">Manufacturers by products</a>
+    <a *ngIf="role?.name=='admin'" [routerLink]="['admin']">admin</a>
   </nav>
   <app-login-status class="w-96"/>
 </div>
