@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerProductCountDTO } from 'src/app/dto/ManufacturerProductCountDTO';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { UserService } from 'src/app/services/user-service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-users-overview',
@@ -17,9 +19,11 @@ export class ManufacturersOverviewComponent extends AbstractPageContainerCompone
     private manufacturerService: ManufacturerService,
     router: Router,
     activatedRoute: ActivatedRoute,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    userService: UserService,
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override pageUpdate(): void {

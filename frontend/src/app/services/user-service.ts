@@ -7,6 +7,7 @@ import { GenericPage } from '../model/GenericPage';
 import { Review } from '../model/Review';
 import UserReviewCountDTO from '../dto/UserReviewCountDTO';
 import { UserCreatedCountDTO } from '../dto/UserCreatedCountDTO';
+import { Role } from '../model/Role';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,9 @@ export class UserService {
 
   getUserCreatedCount(userHandle: string): Observable<UserCreatedCountDTO> {
     return this.http.get<UserCreatedCountDTO>(environment.apiURL + "/user-created-count" + "/" + userHandle);
+  }
+
+  getUserRole(userHandle: string): Observable<Role> {
+    return this.http.get<Role>(environment.apiURL + "/users" + "/" + userHandle + "/role");
   }
 }

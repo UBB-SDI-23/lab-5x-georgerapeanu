@@ -55,6 +55,7 @@ public class UserProfileProfileService implements IUserProfileService {
 
     @Override
     public void deleteUserProfileWithId(String handle) {
+        userProfileRepository.deleteById(handle);
         userRepository.deleteById(handle);
     }
 

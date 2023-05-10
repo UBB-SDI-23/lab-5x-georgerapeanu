@@ -6,6 +6,8 @@ import { ManufacturerService } from 'src/app/services/manufacturer.service';
 import { Location } from '@angular/common';
 import { AbstractPageContainerComponent } from '../../abstract/abstract-page-container/abstract-page-container.component';
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
+import { UserService } from 'src/app/services/user-service';
+import { LoginService } from 'src/app/services/login.service';
 
 
 @Component({
@@ -25,9 +27,11 @@ export class ManufacturerDetailsComponent extends AbstractPageContainerComponent
     private location: Location,
     router: Router,
     activatedRoute: ActivatedRoute,
-    userPreferencesService: UserPreferencesService
+    userPreferencesService: UserPreferencesService,
+    userService: UserService,
+    loginService: LoginService
   ) {
-    super(router, activatedRoute, userPreferencesService);
+    super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
 
   override ngOnInit(): void {

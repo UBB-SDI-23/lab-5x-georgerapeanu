@@ -44,13 +44,10 @@ public class ProductService implements  IProductService{
         return ProductDTO.fromProduct(product);
     }
 
-    public void createProduct(ProductDTO productDTO, String user_handle) throws AppException {
+    public void createProduct(ProductDTO productDTO) throws AppException {
         Optional<Manufacturer> manufacturer = manufacturerRepository.findById(productDTO.getManufacturerId());
         if(manufacturer.isEmpty()) {
             throw new AppException("Manufacturer not found");
-        }
-        if(!Objects.equals(manufacturer.get().getUser().getHandle(), user_handle)) {
-            throw new AppException("token does not match with user");
         }
 
         productRepository.save(ProductDTO.toProduct(productDTO, manufacturer.get()));

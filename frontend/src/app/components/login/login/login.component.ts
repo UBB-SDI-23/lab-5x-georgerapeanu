@@ -42,10 +42,14 @@ export class LoginComponent {
       let user = this.loginForm.value as User;
       this.loginService.login(user).subscribe({
         next: (value) => {
+          console.log("im here");
           this.loginService.setAuthToken(value.token || "");
           this.goBack();
         },
-        error: (error) => {this.serverResponse = error.error}
+        error: (error) => {
+          console.log("im here2");
+          this.serverResponse = error.error;
+        }
       });
     }
   }
