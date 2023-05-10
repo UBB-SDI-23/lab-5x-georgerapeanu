@@ -26,6 +26,7 @@ import { RegisterConfirmComponent } from './components/login/register-confirm/re
 import { LoginComponent } from './components/login/login/login.component';
 import { LogoutComponent } from './components/login/logout/logout.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 const routes: Routes = [
   {
@@ -131,6 +132,10 @@ const routes: Routes = [
   {
     path: 'unauthorized',
     component: UnauthorizedComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
   }
 ];
 

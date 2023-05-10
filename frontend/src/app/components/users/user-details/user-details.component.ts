@@ -9,6 +9,7 @@ import { AbstractPageContainerComponent } from '../../abstract/abstract-page-con
 import { UserPreferencesService } from 'src/app/services/user-preferences.service';
 import { LoginService } from 'src/app/services/login.service';
 import { Role } from 'src/app/model/Role';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-user-details',
@@ -30,7 +31,8 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     router: Router,
     activatedRoute: ActivatedRoute,
     private userPreferencesService: UserPreferencesService,
-    loginService: LoginService
+    loginService: LoginService,
+    private adminService: AdminService
   ) {
     super(router, activatedRoute, userPreferencesService, userService, loginService);
   }
@@ -49,7 +51,7 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     });
     this.userService.getUserRole(this.userHandle).subscribe(result => {
       this.userRole = result;
-    })
+    });
     super.ngOnInit();
   }
 
@@ -72,5 +74,19 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
     } else {
       alert("you are not logged in");
     }
+  }
+
+  changeRole(event: any) {
+    let newRole: string = event.target.value;
+    this.adminService.changeRole(this.userHandle, newRole).subscribe({
+      next: (value) => {
+        this.userService.getUserRole(this.userHandle).subscribe(result => {
+          this.userRole = result;
+        });
+      },
+      error: (value) => {
+        alert(value);
+      }
+    });
   }
 }

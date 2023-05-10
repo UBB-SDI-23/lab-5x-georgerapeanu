@@ -12,7 +12,16 @@
             <li class="my-2">Email: {{user?.email}}</li>
             <li class="my-2">Date of birth: {{user?.birthday}}</li>
             <li class="my-2">Registered at: {{user?.registeredAt}}</li>
-            <li class="my-2">Role: {{userRole?.name}}</li>
+            <li *ngIf="role?.name != 'admin'" class="my-2">Role: {{userRole?.name}}</li>
+            <li *ngIf="role?.name == 'admin'" class="my-2">
+                Role: 
+                <select (change)="changeRole($event)">
+                    <option [selected]="userRole?.name=='admin'" value="admin">admin</option>
+                    <option [selected]="userRole?.name=='moderator'" value="moderator">moderator</option>
+                    <option [selected]="userRole?.name=='regular'" value="regular">regular</option>
+                    <option [selected]="userRole?.name=='visitor'" value="visitor">visitor</option>
+                </select>
+            </li>
         </ul>
 
         <h3 class="text-xl pt-5">User added:</h3>
