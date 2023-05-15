@@ -69,11 +69,7 @@ export class UserDetailsComponent extends AbstractPageContainerComponent{
   }
 
   setPageSizePreference(size: number) : void {
-    if(this.loginService.getAuthToken() != null) {
-      this.userPreferencesService.setPageSizePreference(size);
-    } else {
-      alert("you are not logged in");
-    }
+    this.userPreferencesService.savePreference({handle: this.userHandle, page_size: size});
   }
 
   changeRole(event: any) {

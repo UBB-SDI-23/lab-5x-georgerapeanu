@@ -37,28 +37,27 @@ export class AbstractPageContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let preference = this.userPreferenceService.getPageSizePreferences();
-    if(preference != null) {
-      this.pageSize = preference;
-    }
-    this.activatedRoute.queryParams
-      .subscribe(
-        params => {
-          if('pageSize' in params) {
-            this.pageSize = parseInt(params['pageSize']);
+    this.userPreferenceService.getPreference(this.loggedInHandle).subscribe(userPreference => {
+      this.pageSize = userPreference.page_size;
+      this.activatedRoute.queryParams
+        .subscribe(
+          params => {
+            if('pageSize' in params) {
+              this.pageSize = parseInt(params['pageSize']);
+            }
+            if('pageNumber' in params) {
+              this.pageNumber = parseInt(params['pageNumber']);
+            }
+            if(this.pageSize < 4) {
+              this.pageSize = 4;
+            }
+            if(this.pageSize > 10) {
+              this.pageSize = 10;
+            }
+            this.pageUpdate();
           }
-          if('pageNumber' in params) {
-            this.pageNumber = parseInt(params['pageNumber']);
-          }
-          if(this.pageSize < 4) {
-            this.pageSize = 4;
-          }
-          if(this.pageSize > 10) {
-            this.pageSize = 10;
-          }
-          this.pageUpdate();
-        }
-      );
+        );
+    });
   }
 
   public pageUpdate(): void {

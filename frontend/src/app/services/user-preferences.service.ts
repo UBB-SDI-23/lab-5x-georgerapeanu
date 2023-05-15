@@ -1,27 +1,29 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from './login.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { UserPreference } from '../model/UserPreference';
+import { Observable } from 'rxjs';
+import { flatMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserPreferencesService {
 
-  constructor(private cookieService: CookieService) { 
+  constructor(
+    private loginService: LoginService,
+    private httpClient: HttpClient
+    ) { 
 
   }
 
-  setPageSizePreference(pageSize: number) {
-    this.cookieService.set("page-size", pageSize.toString());
+  savePreference(preference: UserPreference) {
+    this.httpClient.post(environment.apiURL + "/users/" + preference.handle + "/preference", preference).subscribe({});
   }
 
-  getPageSizePreferences(): number | null {
-    if(!this.cookieService.check("page-size")){
-      return null;
-    }
-    return parseInt(this.cookieService.get("page-size"));
-  }
-
-  clearAll() {
-    this.cookieService.delete("page-size");
+  getPreference(handle: string): Observable<UserPreference> {
+    return this.httpClient.get<UserPreference>(environment.apiURL + "/users/" + handle + "/preference");
   }
 }

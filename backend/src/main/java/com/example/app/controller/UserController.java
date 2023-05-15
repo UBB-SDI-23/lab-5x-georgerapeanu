@@ -4,10 +4,12 @@ import com.example.app.dto.UserCreatedCountDTO;
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.ReviewDTO;
 import com.example.app.dto.model.RoleDTO;
+import com.example.app.dto.model.UserPreferenceDTO;
 import com.example.app.dto.model.UserProfileDTO;
 import com.example.app.exceptions.AppException;
 import com.example.app.model.Role;
 import com.example.app.model.User;
+import com.example.app.model.UserPreference;
 import com.example.app.service.IReviewService;
 import com.example.app.service.IUserProfileService;
 import com.example.app.service.IUserService;
@@ -167,4 +169,38 @@ public class UserController {
         }
     }
 
+    @GetMapping(path="/users/{handle}/preference")
+    public @ResponseBody ResponseEntity<UserPreferenceDTO> getUserPreference(
+            @PathVariable("handle") String handle,
+            @RequestAttribute("user") User user
+    ) {
+        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            return new ResponseEntity<>(UserPreferenceDTO.fromUserPreference(userService.getUserByHandle(handle).getUserPreference()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path="/users/{handle}/preference")
+    public @ResponseBody ResponseEntity<Map<String, String>> setUserPreference(
+            @PathVariable("handle") String handle,
+            @RequestAttribute("user") User user,
+            @RequestBody UserPreferenceDTO userPreferenceDTO
+    ) {
+        Map<String, String> response = new HashMap<>();
+        if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(handle, user.getHandle()))) {
+            response.put("error", "Unauthorized to update resource");
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            userService.setUserPreference(handle, UserPreferenceDTO.toUserPreference(userPreferenceDTO, userService.getUserByHandle(handle)));
+            response.put("message", "updated preference");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

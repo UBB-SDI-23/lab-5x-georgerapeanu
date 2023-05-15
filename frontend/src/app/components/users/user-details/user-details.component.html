@@ -33,11 +33,14 @@
         </ul>
 
         <h2 class="text-2xl py-5">User preferences:</h2>
-        <select [(ngModel)]="pageSize" (ngModelChange)="setPageSizePreference(this.pageSize)" name="pageSizePreference" [value]="pageSizePreference" class="text-center border-slate-400 bg-white border-2">
+        <select *ngIf="role?.update_all || (role?.update_own && loggedInHandle==userHandle)" [(ngModel)]="pageSizePreference" (ngModelChange)="setPageSizePreference(this.pageSizePreference)" name="pageSizePreference" [value]="pageSizePreference" class="text-center border-slate-400 bg-white border-2">
             <option value="4">4</option>
             <option value="7">7</option>
             <option value="10">10</option>
         </select>
+        <div *ngIf="!(role?.update_all || (role?.update_own && loggedInHandle==userHandle))">
+            Page size: {{pageSize}}
+        </div>
         
         <h2 class="text-2xl py-5">User Reviews:</h2>
 

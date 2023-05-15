@@ -243,4 +243,50 @@ You will need to:
 The following points are available as bonuses:
 - +0.5: setup a Kubernetes Cluster on your Cloud Provider (for example: https://cloud.google.com/kubernetes-engine) and use your app with it. Use JMeter with the Ultimate Thread Group plugin and show how Kubernetes scales resources to accomodate requests from JMeter. Correlate the JMeter graphs with the Kubernetes graphs.
 - +0.5: make your frontend responsive. It should seamlessly adapt to any screen size, with no scrollbars and with proper component sizes and layout.
+
+----
+
+## Lab 11 assignment
+
+**Points**: 0.5, +0.3 bonus
+
+**Deadline**: Week 12
+
+**Last chance deadline and penalties**: Week 14, -0.2 points / week delayed
+
+You will need to:
+- Make one or more graphs containing stress test (spike test) results: it should be clear from your graph(s) how the number of users affects the CPU usage and the request response times. Use JMeter. Start with few users: `~2` constant ones and `~10` for the spikes and gradually move up until you hit `100%` CPU usage. You should make requests to all the (public) endpoints of your API. You only need to do `GET` requests.
+- Implement a chat page on your web app using websockets. Every visitor should be able to see messages from all other visitors. Let your visitors choose a nickname. You do not need persistence for the messages. You can either store them in memory or discard them after sending them to all the currently connected clients.
+
+For the bonus:
+- The best performing app in each lab receives the bonus. This is available only on week 12 and only if there are at least 2 people with this lab accepted.
+
+----
+
+## Lab 12 assignment
+
+**Points**: 0.5
+
+**Deadline**: Week 13
+
+**Last change deadline and penalties**: Week 14, -0.3 points / week delayed
+
+You will need to:
+- Come up with a reasonable way to integrate a machine learning model into your application. It can be trained on any data (your application's data or an external data set) and there should be a functionality in your application that makes use of your model's predictions. You can use any model you want. You will be graded based on how realistic your choices of training data and functionality are.
+
+----
+
+## Lab 13 assignment
+
+**Points**: 0.5
+
+**Deadline**: Week 14
+
+**Last change deadline and penalties**: Week 14
+
+You will need to:
+- Make your application as user friendly as possible: any unclear features or names will result in a lower grade.
+- Make your code as readable and efficient as possible: any "code smells" will result in a lower grade.
+- Write documentation for how to get your app running. Also mention any tech stack choices you made, any tradeoffs and anything else that might be relevant. Anything relevant that is missing from the documentation will result in a lower grade.
+- Aim for production-quality levels of UX, code quality and documentation clarity.
 
