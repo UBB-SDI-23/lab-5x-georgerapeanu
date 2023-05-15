@@ -6,7 +6,7 @@ for i in ./src/environments/*.tmpl;do
 done; 
 
 if [ -z $IS_PRODUCTION_BRANCH ] ; then
-  ng build --configuration=production;
-else 
   ng build --configuration=development;
+else 
+  ng build --configuration=production;
 fi
