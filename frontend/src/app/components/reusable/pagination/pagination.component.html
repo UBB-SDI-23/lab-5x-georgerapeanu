@@ -16,7 +16,7 @@
     <button (click)="setPageNumber(this.pageNumber + 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
       >
     </button>
-    <button (click)="setPageNumber(this.totalPages - 1)" class="h-8 w-8 rounded-full justify-center items-center flex">
+    <button (click)="setPageNumber(this.totalPages - 1)" class="lastPageButton h-8 w-8 rounded-full justify-center items-center flex">
       >>
     </button>
     <input type="text" class="h-8 w-8 border-2 border-slate-400 text-center" [(ngModel)]="pageNumber" (keydow-n.enter)="setPageNumber(pageNumber)">
