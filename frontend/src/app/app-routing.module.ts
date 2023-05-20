@@ -27,6 +27,7 @@ import { LoginComponent } from './components/login/login/login.component';
 import { LogoutComponent } from './components/login/logout/logout.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -136,6 +137,10 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent
+  },
+  {
+    path: 'chat',
+    component: ChatComponent
   }
 ];
 
