@@ -46,6 +46,7 @@ import { AbstractPageContainerComponent } from './components/abstract/abstract-p
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UnauthorizedRedirectionInterceptor } from './interceptors/unauthorized-redirection.interceptor';
 import { AdminComponent } from './components/admin/admin.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { AdminComponent } from './components/admin/admin.component';
     LoginComponent,
     LogoutComponent,
     UnauthorizedComponent,
-    AdminComponent
+    AdminComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
