@@ -4,6 +4,7 @@ import {Stomp, CompatClient} from '@stomp/stompjs';
 import { BehaviorSubject, Observable, filter, first, switchMap } from 'rxjs';
 import { MessageDTO } from '../dto/MessageDTO';
 import * as SockJS from 'sockjs-client';
+import { HttpClient } from '@angular/common/http';
 
 enum SocketClientState{
   ATTEMPTING,
@@ -16,7 +17,9 @@ enum SocketClientState{
 export class ChatService implements OnDestroy {
   private client: CompatClient;
   private state: BehaviorSubject<SocketClientState>;
-  constructor() {
+  constructor(
+    private httpClient: HttpClient
+      ) {
     this.state = new BehaviorSubject<SocketClientState>(SocketClientState.ATTEMPTING);
     this.client = Stomp.over(new SockJS(environment.apiURL + '/stomp'));
     this.client.connect({}, () => {
@@ -48,8 +51,14 @@ export class ChatService implements OnDestroy {
   }
 
   sendMessage(messageDTO: MessageDTO): void {
+    console.log(environment.apiURL + "/store-messages");
+    this.httpClient.post(environment.apiURL + "/store-messages", messageDTO).subscribe();
     this.connect().pipe(first()).subscribe(client => {
       client.send("/messages/chat", {}, JSON.stringify(messageDTO));
     });
+  }
+
+  getPreviousMessages() : Observable<MessageDTO[]> {
+    return this.httpClient.get<MessageDTO[]>(environment.apiURL + "/restore-messages");
   }
 }

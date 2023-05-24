@@ -23,6 +23,11 @@ export class ChatComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.chatService.getPreviousMessages().subscribe({
+      next: (messages) => {
+        this.messages = messages.reverse();
+      }
+    });
     this.chatService.onMessageObservable().subscribe({
       next: (messageDTO) => {
         this.messages.unshift(messageDTO);
