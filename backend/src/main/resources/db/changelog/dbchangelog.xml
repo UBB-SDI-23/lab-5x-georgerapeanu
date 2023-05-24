@@ -275,4 +275,23 @@
     <changeSet  id="1680067598543-2" author="georgerapeanu">
         <tagDatabase tag="lab9-change"/>
     </changeSet>
+    <changeSet  id="1680067598544-1" author="georgerapeanu">
+        <createTable tableName="message">
+            <column name="id" type="numeric"/>
+            <column name="user_handle" type="VARCHAR(255)"/>
+            <column name="nickname" type="VARCHAR(255)"/>
+            <column name="message" type="VARCHAR(255)"/>
+        </createTable>
+        <addPrimaryKey tableName="message" columnNames="id"/>
+        <addForeignKeyConstraint constraintName="FK_MESSAGE_USER" baseTableName="message" baseColumnNames="user_handle" referencedTableName="user" referencedColumnNames="handle"/>
+    </changeSet>
+    <changeSet  id="1680067598544-2" author="georgerapeanu">
+        <tagDatabase tag="lab11-change"/>
+    </changeSet>
+    <changeSet  id="1680067598545-1" author="georgerapeanu">
+        <addAutoIncrement tableName="message" columnName="id"/>
+    </changeSet>
+    <changeSet  id="1680067598545-2" author="georgerapeanu">
+        <tagDatabase tag="lab11-change-2"/>
+    </changeSet>
 </databaseChangeLog>
