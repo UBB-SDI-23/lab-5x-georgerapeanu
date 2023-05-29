@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findAllByUserHandleOrderById(String user_handle);
+    List<Message> findFirst4ByOrderByIdDesc();
 }
