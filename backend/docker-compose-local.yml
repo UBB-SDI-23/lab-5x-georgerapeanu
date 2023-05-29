@@ -31,6 +31,11 @@ services:
       - LIQUIBASE_COMMAND_TAG=${TARGET_TAG}
     command:
       - update-to-tag
+  ai:
+    build: ../ai-microservice/
+    ports:
+      - "5000:5000"
+
 volumes:
   sdi-postgres:
     external: true
