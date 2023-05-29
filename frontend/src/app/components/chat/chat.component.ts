@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit{
     }
   );
   messages: MessageDTO[] = [];
+  summary: String | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +34,12 @@ export class ChatComponent implements OnInit{
         this.messages.unshift(messageDTO);
       }
     })
+
+    this.chatService.getSummary().subscribe({
+      next: summary => {
+        this.summary = summary;
+      }
+    });
   }
 
   onSubmit() {
