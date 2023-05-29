@@ -61,4 +61,8 @@ export class ChatService implements OnDestroy {
   getPreviousMessages() : Observable<MessageDTO[]> {
     return this.httpClient.get<MessageDTO[]>(environment.apiURL + "/restore-messages");
   }
+
+  getSummary(): Observable<string> {
+    return this.httpClient.get(environment.apiURL + "/chat-recent-summary", {responseType: 'text'});
+  }
 }
