@@ -2,8 +2,6 @@ version: "3.9"
 services:
   database:
     image: "postgres:15.2"
-    ports:
-      - "5432:5432"
     volumes:
       - sdi-postgres:/var/lib/postgresql/data
     environment:
@@ -31,13 +29,15 @@ services:
       - LIQUIBASE_COMMAND_TAG=${TARGET_TAG}
     command:
       - update-to-tag
+  ai:
+    build: ../ai-microservice/
   web:
     image: "tomcat:11.0"
-    ports:
-      - "8080:8080"
     depends_on:
       liquibase:
         condition: service_completed_successfully
+      ai:
+        condition: service_started
     env_file:
       - .env
     environment:
@@ -49,6 +49,7 @@ services:
       - spring.datasource.url=${DATABASE_DRIVER}://database:5432/main
       - JWT_SECRET=${JWT_SECRET}
       - sql_script.full_path=/schema1m.sql
+      - ai_url=http://ai:5000
     volumes:
       - ./target/${APP_NAME}.war:/usr/local/tomcat/webapps/ROOT.war
       - ${SQL_SCRIPT_FULL_PATH}:/schema1m.sql
