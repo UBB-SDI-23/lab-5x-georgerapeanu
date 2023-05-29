@@ -16,4 +16,4 @@ mkdir target;
 ./mvnw -B package -DskipTests=true --file pom.xml 
 mv target/sdi-latest.war target/sdi.war
 
-docker-compose up -d
+docker-compose up -d -f docker-compose-dev.yml
