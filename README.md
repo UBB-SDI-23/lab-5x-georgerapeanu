@@ -1,6 +1,33 @@
+This is a web application, with it's backend in Java Spring Boot, and frontend in Angular. Liquibase is used for migrations.
+It also utilizes a microservice for ai suggestions, written in python.
+For database population, a tool written in rust was utilized.
+Everything is run using docker compose, and is behind an nginx container.
+The intended host for this application is a linux virtual machine running an ubuntu distribution. The run and install shell scripts assume that is the case.
+However, any vm that supports docker should be able to host the application.
+A github action is utilized for the production deployment, which packages the application in a war file, which is later run in a tomcat container.
+
+These are the steps needed to run the application in production mode:
+1. Clone the repository on a virtual machine
+2. go into the backend folder. Run `install_script.sh`. A restart is required for some changes to take effect
+3. A dns is needed in order to utilize https. Register the ip of the host under any dns. Ports 80 and 443 should be exposed to inbound traffic
+4. Generate certificates for https. Place the certificate(or a symlink to it) in the backend folder under the name `sdi.crt`. Similarly, do the same for key, with the name `sdi.key`
+5. In case you want to populate the database with some starting records, you can utilize the `populate-db-tool` by running `cargo run -r`. This will produce a `schema.sql` file. Some sort of schema should be utilized, because the app expects some users to be present(the `admin`, `moderator`, `regular` and `visitor` users)
+6. Environment variable should be set. See `.env-example` for what those are. A brief explanation of these would be:
+    - `APP_NAME`: The name of the application. Should be identical to the name of the `war` file, without the extension
+    - `APP_VERSION`: deprecated
+    - `DATABASE_USERNAME`: the username of the database
+    - `DATABASE_PASSWORD`: the password of the database
+    - `DATABASE_PLATFORM`: the platform for the database(currenty only postgres is supported)
+    - `DATABASE_DRIVE`: the jdbc driver that supports the database
+    - `JWT_SECRET`: the secret string used for signing tokens
+    - `SQL_SCRIPT_FULL_PATH`: the full path to the sql script that can be run to populate databse records
+ 7. (Optional) To populate the database faster, before starting, you can feed the schema.sql file through psql to the docker container with the database.
+ 8. `docker-compose up`. This sets up the backend
+ 9. For the frontend, netlify deployment could be used. For build commands, tell netlify to use `deploy.sh` from the frontend directory. The `base directory` should be set to `frontend`. The publish directory should be set to `frontend/dist/frontend`
+ 10. The following environment variables should be set for the frontend: `MANUAL_API_URL` should contain the url to the api. It can differ from branch to branch.
+
 Site can be checked out at https://main--lab-5x-georgerapeanu.netlify.app.
-In order to work, you need to disable protection of the site(uses HTTP to talk to backend).
-The backend is not running 100% of the time.
+The backend will not run 100% of the time(in fact, after july 2023 it will probably be stopped forever), so the site may be more or less functional.
 
 
 # Lab 1 assignment
