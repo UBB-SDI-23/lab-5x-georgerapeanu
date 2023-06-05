@@ -11,7 +11,6 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -20,9 +19,16 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ManufacturerRepositoryImpl implements IManufacturerRepository {
+
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * Retrieves a page of manufacturers sorted by the number of products they have.
+     *
+     * @param pageable the page request parameters
+     * @return a page of ManufacturerProductCountDTO objects representing manufacturers and their product counts
+     */
     @Override
     public Page<ManufacturerProductCountDTO> getManufacturersSortedByProductCount(Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -34,7 +40,6 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 .groupBy(manufacturer)
                 .orderBy(cb.desc(cb.count(manufacturerProductJoin)));
         TypedQuery<Object[]> typedQuery = em.createQuery(cq);
-
 
         List<ManufacturerProductCountDTO> results = typedQuery
                 .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
@@ -55,13 +60,19 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
         return new PageImpl<>(results, pageable, total);
     }
 
+    /**
+     * Retrieves a list of ManufacturerProductCountDTO objects representing the product counts for the given list of manufacturers.
+     *
+     * @param manufacturerDTOS the list of ManufacturerDTO objects
+     * @return a list of ManufacturerProductCountDTO objects representing the product counts for the manufacturers
+     */
     @Override
     public List<ManufacturerProductCountDTO> getManufacturerProductCountsFromList(List<ManufacturerDTO> manufacturerDTOS) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> cq = cb.createQuery(Tuple.class);
         Root<Product> product = cq.from(Product.class);
         CriteriaBuilder.In<Integer> inClause = cb.in(product.get("manufacturer").get("id"));
-        for(ManufacturerDTO manufacturerDTO: manufacturerDTOS) {
+        for (ManufacturerDTO manufacturerDTO : manufacturerDTOS) {
             inClause.value(manufacturerDTO.getId());
         }
         cq
@@ -75,7 +86,7 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 .map(manufacturerDTO -> {
                     Integer count = typedQueryResult.stream()
                             .filter(row -> row.get("id").equals(manufacturerDTO.getId()))
-                            .map(row -> (Long)row.get("count"))
+                            .map(row -> (Long) row.get("count"))
                             .map(Long::intValue)
                             .findFirst()
                             .orElse(0);
@@ -84,6 +95,12 @@ public class ManufacturerRepositoryImpl implements IManufacturerRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the number of manufacturers associated with the specified user handle.
+     *
+     * @param userHandle the user handle
+     * @return the number of manufacturers
+     */
     @Override
     public Integer getManufacturerCountForUserHandle(String userHandle) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
