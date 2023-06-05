@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller class for handling manufacturer-related operations.
+ */
 @RestController
 @Validated
 @CrossOrigin(origins = "*")
@@ -33,49 +36,77 @@ public class ManufacturerController {
     @Autowired
     private IProductService productService;
 
-    @GetMapping(path="/manufacturers")
-    public @ResponseBody ResponseEntity<Page<ManufacturerDTO>> getManufacturers(
+    /**
+     * Retrieves a page of manufacturers.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a response entity containing a page of manufacturers if the user is authorized, or an unauthorized status if not authorized
+     */
+    @GetMapping(path = "/manufacturers")
+    public @ResponseBody
+    ResponseEntity<Page<ManufacturerDTO>> getManufacturers(
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageSize should be at least 4")
-            @Max(value=10, message = "pageSize should be at most 10")
+            @Min(value = 4, message = "pageSize should be at least 4")
+            @Max(value = 10, message = "pageSize should be at most 10")
             Integer pageSize,
             @RequestAttribute("user")
             User user
-    ){
-        if(!user.getUserRole().getRead_all()) {
+    ) {
+        if (!user.getUserRole().getRead_all()) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(manufacturerService.getAllManufacturers(pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping(path="/manufacturers/sorted-by-products")
-    public @ResponseBody ResponseEntity<Page<ManufacturerProductCountDTO>> getManufacturersSortedByProducts(
+    /**
+     * Retrieves a page of manufacturers sorted by the number of products they have.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a response entity containing a page of manufacturers sorted by product count if the user is authorized, or an unauthorized status if not authorized
+     */
+    @GetMapping(path = "/manufacturers/sorted-by-products")
+    public @ResponseBody
+    ResponseEntity<Page<ManufacturerProductCountDTO>> getManufacturersSortedByProducts(
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageSize should be at least 4")
-            @Max(value=10, message = "pageSize should be at most 10")
+            @Min(value = 4, message = "pageSize should be at least 4")
+            @Max(value = 10, message = "pageSize should be at most 10")
             Integer pageSize,
             @RequestAttribute("user")
             User user
-    ){
-        if(!user.getUserRole().getRead_all()) {
+    ) {
+        if (!user.getUserRole().getRead_all()) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(manufacturerService.getManufacturersSortedByProducts(pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<ManufacturerDTO> getManufacturer(
-            @PathVariable("id") Integer id,
-            @RequestAttribute("user") User user
+    /**
+     * Retrieves a specific manufacturer by ID.
+     *
+     * @param id   the manufacturer ID
+     * @param user the user making the request
+     * @return a response entity containing the manufacturer if found and the user is authorized, or a not found status if the manufacturer is not found, or an unauthorized status if not authorized
+     */
+    @GetMapping(path = "/manufacturers/{id}", produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<ManufacturerDTO> getManufacturer(
+            @PathVariable("id")
+            Integer id,
+            @RequestAttribute("user")
+            User user
     ) {
         ManufacturerDTO manufacturerDTO = null;
         try {
             manufacturerDTO = manufacturerService.getManufacturerById(id);
-            if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+            if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(manufacturerDTO, HttpStatus.OK);
@@ -84,21 +115,33 @@ public class ManufacturerController {
         }
     }
 
-    @GetMapping(path="/manufacturers/{id}/products", produces = "application/json")
-    public @ResponseBody ResponseEntity<Page<ProductDTO>> getManufacturerProducts(
-            @PathVariable("id") Integer id,
+    /**
+     * Retrieves a page of products for a specific manufacturer.
+     *
+     * @param id         the manufacturer ID
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a response entity containing a page of products if the manufacturer is found and the user is authorized, or a bad request status if the manufacturer is not found, or an unauthorized status if not authorized
+     */
+    @GetMapping(path = "/manufacturers/{id}/products", produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Page<ProductDTO>> getManufacturerProducts(
+            @PathVariable("id")
+            Integer id,
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageSize should be at least 4")
-            @Max(value=10, message = "pageSize should be at most 10")
+            @Min(value = 4, message = "pageSize should be at least 4")
+            @Max(value = 10, message = "pageSize should be at most 10")
             Integer pageSize,
-            @RequestAttribute("user") User user
+            @RequestAttribute("user")
+            User user
     ) {
         ManufacturerDTO manufacturerDTO = null;
         try {
             manufacturerDTO = manufacturerService.getManufacturerById(id);
-            if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
+            if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle()))) {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(productService.getProductsByManufacturerId(id, pageNumber, pageSize), HttpStatus.OK);
@@ -107,14 +150,23 @@ public class ManufacturerController {
         }
     }
 
-    @PostMapping(path="/manufacturers", produces = "application/json")
-    public ResponseEntity<Map<String, String> > createManufacturer(
-            @Valid @RequestBody ManufacturerDTO manufacturerDTO,
-            @RequestAttribute("user") User user
+    /**
+     * Creates a new manufacturer.
+     *
+     * @param manufacturerDTO the manufacturer to create
+     * @param user            the user making the request
+     * @return a response entity with a success message if the manufacturer is created and the user is authorized, or an error message if the user is not authorized
+     */
+    @PostMapping(path = "/manufacturers", produces = "application/json")
+    public ResponseEntity<Map<String, String>> createManufacturer(
+            @Valid @RequestBody
+            ManufacturerDTO manufacturerDTO,
+            @RequestAttribute("user")
+            User user
     ) {
         Map<String, String> response = new HashMap<>();
 
-        if(!user.getUserRole().getCreate()) {
+        if (!user.getUserRole().getCreate()) {
             response.put("error", "Unauthorized to create resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
@@ -130,20 +182,32 @@ public class ManufacturerController {
         }
     }
 
-    @PatchMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<Map<String, String>> updateManufacturer(
-            @PathVariable("id") Integer id,
-            @Valid @RequestBody ManufacturerDTO manufacturerDTO,
-            @RequestAttribute("user") User user
+    /**
+     * Updates a manufacturer.
+     *
+     * @param id              the manufacturer ID
+     * @param manufacturerDTO the updated manufacturer details
+     * @param user            the user making the request
+     * @return a response entity with a success message if the manufacturer is updated and the user is authorized, or an error message if the user is not authorized or the manufacturer is not found
+     */
+    @PatchMapping(path = "/manufacturers/{id}", produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Map<String, String>> updateManufacturer(
+            @PathVariable("id")
+            Integer id,
+            @Valid @RequestBody
+            ManufacturerDTO manufacturerDTO,
+            @RequestAttribute("user")
+            User user
     ) {
         Map<String, String> response = new HashMap<>();
         try {
             ManufacturerDTO oldManufacturerDTO = manufacturerService.getManufacturerById(id);
-            if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(oldManufacturerDTO.getUserHandle(), user.getHandle()))) {
+            if (!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(oldManufacturerDTO.getUserHandle(), user.getHandle()))) {
                 response.put("error", "Unauthorized to update resource");
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
-            if(!user.getUserRole().getUpdate_all() && !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle())) {
+            if (!user.getUserRole().getUpdate_all() && !Objects.equals(manufacturerDTO.getUserHandle(), user.getHandle())) {
                 response.put("error", "Unauthorized to transfer resource between users");
                 return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
             }
@@ -156,10 +220,20 @@ public class ManufacturerController {
         }
     }
 
-    @DeleteMapping(path="/manufacturers/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<Map<String, String>> deleteManufacturer(
-            @PathVariable("id") Integer id,
-            @RequestAttribute("user") User user
+    /**
+     * Deletes a manufacturer.
+     *
+     * @param id   the manufacturer ID
+     * @param user the user making the request
+     * @return a response entity with a success message if the manufacturer is deleted and the user is authorized, or an error message if the user is not authorized or the manufacturer is not found
+     */
+    @DeleteMapping(path = "/manufacturers/{id}", produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Map<String, String>> deleteManufacturer(
+            @PathVariable("id")
+            Integer id,
+            @RequestAttribute("user")
+            User user
     ) {
         Map<String, String> response = new HashMap<>();
         try {
@@ -176,33 +250,27 @@ public class ManufacturerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @PostMapping(path="/manufacturers/{id}/products", produces = "application/json")
-//    public void moveProductsToManufacturers(
-//            @PathVariable("id") Integer id,
-//            @Valid @RequestBody List<Integer> product_ids
-//    ) {
-//        product_ids.forEach(product_id -> {
-//            ProductDTO productDTO = productService.getProductById(product_id);
-//            productDTO.setManufacturerId(id);
-//            try {
-//                productService.updateProductWithId(product_id, productDTO);
-//            } catch (AppException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//    }
-
-    @GetMapping(path="/manufacturer-product-counts")
-    public @ResponseBody ResponseEntity<Page<ManufacturerProductCountDTO>> getManufacturerProductCountsPage(
+    /**
+     * Retrieves a page of manufacturer product counts.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a response entity containing a page of manufacturer product counts if the user is authorized, or an unauthorized status if not authorized
+     */
+    @GetMapping(path = "/manufacturer-product-counts")
+    public @ResponseBody
+    ResponseEntity<Page<ManufacturerProductCountDTO>> getManufacturerProductCountsPage(
             @RequestParam
             Integer pageNumber,
             @RequestParam
-            @Min(value=4, message = "pageSize should be at least 4")
-            @Max(value=10, message = "pageSize should be at most 10")
+            @Min(value = 4, message = "pageSize should be at least 4")
+            @Max(value = 10, message = "pageSize should be at most 10")
             Integer pageSize,
-            @RequestAttribute("user") User user
-    ){
-        if(!user.getUserRole().getRead_all()) {
+            @RequestAttribute("user")
+            User user
+    ) {
+        if (!user.getUserRole().getRead_all()) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(manufacturerService.getManufacturerProductCountsPage(pageNumber, pageSize), HttpStatus.OK);

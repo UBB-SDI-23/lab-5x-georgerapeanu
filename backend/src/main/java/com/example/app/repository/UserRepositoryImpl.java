@@ -1,6 +1,5 @@
 package com.example.app.repository;
 
-
 import com.example.app.dto.UserReviewCountDTO;
 import com.example.app.dto.model.UserDTO;
 import com.example.app.dto.model.UserProfileDTO;
@@ -15,9 +14,17 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserRepositoryImpl implements IUserRepository{
+public class UserRepositoryImpl implements IUserRepository {
+
     @PersistenceContext
     EntityManager em;
+
+    /**
+     * Retrieves the review counts for the given list of user profiles.
+     *
+     * @param userProfiles the list of user profiles
+     * @return the list of user review counts
+     */
     public List<UserReviewCountDTO> getUserReviewCountFromList(List<UserProfileDTO> userProfiles) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tuple> user_review_count_cq = cb.createQuery(Tuple.class);
@@ -39,7 +46,7 @@ public class UserRepositoryImpl implements IUserRepository{
                             .filter(row -> row.get("handle").equals(user.getHandle()))
                             .findFirst()
                             .map(row -> (Long)row.get("count"))
-                            .map(value -> value.intValue())
+                            .map(Long::intValue)
                             .orElse(0);
                     return new UserReviewCountDTO(user, count);
                 }).collect(Collectors.toList());

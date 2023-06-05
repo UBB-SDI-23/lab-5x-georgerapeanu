@@ -21,8 +21,14 @@ public class AdminController {
     @Autowired
     IAdminService adminService;
 
+    /**
+     * Handles the "drop-all" endpoint to drop all data from the database.
+     *
+     * @param user the authenticated user making the request
+     * @return a ResponseEntity with a success message or error message if the user is unauthorized
+     */
     @PostMapping("/admin/drop-all")
-    public ResponseEntity<Map<String, String>> drop_all(
+    public ResponseEntity<Map<String, String>> dropAll(
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
@@ -35,6 +41,12 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Handles the "recreate" endpoint to recreate the database with sample data.
+     *
+     * @param user the authenticated user making the request
+     * @return a ResponseEntity with a success message or error message if the user is unauthorized
+     */
     @PostMapping("/admin/recreate")
     public ResponseEntity<Map<String, String>> recreate(
             @RequestAttribute("user") User user
@@ -45,10 +57,18 @@ public class AdminController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
         adminService.repopulateDb();
-        response.put("message", "dropped");
+        response.put("message", "recreated");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Handles the "change-role" endpoint to change the role of a user.
+     *
+     * @param user        the authenticated user making the request
+     * @param user_handle the handle of the user whose role should be changed
+     * @param role        the new role for the user
+     * @return a ResponseEntity with a success message or error message if the user is unauthorized or if the role change fails
+     */
     @PostMapping("/admin/change-role")
     public ResponseEntity<Map<String, String>> changeRole(
             @RequestAttribute("user") User user,

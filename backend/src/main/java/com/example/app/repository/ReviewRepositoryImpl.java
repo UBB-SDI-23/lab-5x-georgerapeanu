@@ -8,10 +8,17 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
-public class ReviewRepositoryImpl implements IReviewRepository{
+public class ReviewRepositoryImpl implements IReviewRepository {
+
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * Retrieves the number of reviews associated with the specified user handle.
+     *
+     * @param userHandle the user handle
+     * @return the number of reviews
+     */
     @Override
     public Integer getReviewCountForUserHandle(String userHandle) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

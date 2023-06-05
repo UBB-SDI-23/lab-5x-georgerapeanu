@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Represents a user entity.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller class that handles HTTP requests related to user management.
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @Validated
@@ -42,7 +45,16 @@ public class UserController {
     @Autowired
     private IReviewService reviewService;
 
-    @GetMapping(path="/users")
+    /**
+     * Retrieves a page of user profiles.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the authenticated user
+     * @return a response entity containing the page of user profiles if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/users")
     public @ResponseBody ResponseEntity<Page<UserProfileDTO>> getUsers(
             @RequestParam
             Integer pageNumber,
@@ -51,37 +63,53 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize,
             @RequestAttribute("user") User user
-    ){
-        if(!user.getUserRole().getRead_all()) {
+    ) {
+        if (!user.getUserRole().getRead_all()) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(userProfileService.getAllUserProfiles(pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping(path="/users/{id}", produces = "application/json")
+    /**
+     * Retrieves a user profile by handle.
+     *
+     * @param handle the handle of the user
+     * @param user   the authenticated user
+     * @return a response entity containing the user profile if found,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/users/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<UserProfileDTO> getUser(
             @PathVariable("id") String handle,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         UserProfileDTO userProfileDTO = userProfileService.getUserProfileById(handle);
-        if(userProfileDTO == null){
+        if (userProfileDTO == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
         }
     }
 
-    @PatchMapping(path="/users/{id}", produces = "application/json")
+    /**
+     * Updates a user profile.
+     *
+     * @param handle         the handle of the user
+     * @param userProfileDTO the updated user profile DTO
+     * @param user           the authenticated user
+     * @return a response entity indicating the status of the user profile update
+     */
+    @PatchMapping(path = "/users/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<Map<String, String>> updateUser(
             @PathVariable("id") String handle,
             @Valid @RequestBody UserProfileDTO userProfileDTO,
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(user.getHandle(), handle))) {
+        if (!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(user.getHandle(), handle))) {
             response.put("error", "Unauthorized to update resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
@@ -90,13 +118,20 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping(path="/users/{id}", produces = "application/json")
+    /**
+     * Deletes a user profile.
+     *
+     * @param handle the handle of the user
+     * @param user   the authenticated user
+     * @return a response entity indicating the status of the user profile deletion
+     */
+    @DeleteMapping(path = "/users/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<Map<String, String>> deleteUser(
             @PathVariable("id") String handle,
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        if(!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(user.getHandle(), handle))) {
+        if (!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(user.getHandle(), handle))) {
             response.put("error", "Unauthorized to delete resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
@@ -105,7 +140,17 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(path="/users/{id}/reviews", produces = "application/json")
+    /**
+     * Retrieves a page of reviews for a user.
+     *
+     * @param handle     the handle of the user
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the authenticated user
+     * @return a response entity containing the page of reviews if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/users/{id}/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<Page<ReviewDTO>> getReviews(
             @PathVariable("id") String handle,
             @RequestParam
@@ -116,7 +161,7 @@ public class UserController {
             Integer pageSize,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         try {
@@ -126,7 +171,16 @@ public class UserController {
         }
     }
 
-    @GetMapping(path="/user-review-counts")
+    /**
+     * Retrieves a page of user review counts.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the authenticated user
+     * @return a response entity containing the page of user review counts if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/user-review-counts")
     public @ResponseBody ResponseEntity<Page<UserReviewCountDTO>> getUsersReviewCountPage(
             @RequestParam
             Integer pageNumber,
@@ -135,31 +189,46 @@ public class UserController {
             @Max(value=10, message = "pageSize should be at most 10")
             Integer pageSize,
             @RequestAttribute("user") User user
-    ){
-        if(!user.getUserRole().getRead_all()) {
+    ) {
+        if (!user.getUserRole().getRead_all()) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(userProfileService.getUserReviewCountPage(pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping(path="/user-created-count/{handle}", produces = "application/json")
+    /**
+     * Retrieves the user created count for a given user.
+     *
+     * @param handle the handle of the user
+     * @param user   the authenticated user
+     * @return a response entity containing the user created count if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/user-created-count/{handle}", produces = "application/json")
     public @ResponseBody ResponseEntity<UserCreatedCountDTO> getUserCreatedCount(
-            @PathVariable("handle")
-            String handle,
+            @PathVariable("handle") String handle,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), handle))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(userProfileService.getUserCreatedCount(handle), HttpStatus.OK);
     }
 
-    @GetMapping(path="/users/{handle}/role")
+    /**
+     * Retrieves the role of a user.
+     *
+     * @param handle the handle of the user
+     * @param user   the authenticated user
+     * @return a response entity containing the user role if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/users/{handle}/role")
     public @ResponseBody ResponseEntity<RoleDTO> getUserRole(
             @PathVariable("handle") String handle,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         try {
@@ -169,12 +238,20 @@ public class UserController {
         }
     }
 
-    @GetMapping(path="/users/{handle}/preference")
+    /**
+     * Retrieves the preference of a user.
+     *
+     * @param handle the handle of the user
+     * @param user   the authenticated user
+     * @return a response entity containing the user preference if successful,
+     *         or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/users/{handle}/preference")
     public @ResponseBody ResponseEntity<UserPreferenceDTO> getUserPreference(
             @PathVariable("handle") String handle,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(handle, user.getHandle()))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         try {
@@ -184,7 +261,15 @@ public class UserController {
         }
     }
 
-    @PostMapping(path="/users/{handle}/preference")
+    /**
+     * Sets the preference of a user.
+     *
+     * @param handle            the handle of the user
+     * @param user              the authenticated user
+     * @param userPreferenceDTO the user preference DTO
+     * @return a response entity indicating the status of the preference update
+     */
+    @PostMapping(path = "/users/{handle}/preference")
     public @ResponseBody ResponseEntity<Map<String, String>> setUserPreference(
             @PathVariable("handle") String handle,
             @RequestAttribute("user") User user,

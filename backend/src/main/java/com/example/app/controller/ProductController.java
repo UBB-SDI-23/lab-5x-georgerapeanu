@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller class for managing products.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @RestController
@@ -42,6 +45,14 @@ public class ProductController {
     @Autowired
     private IManufacturerService manufacturerService;
 
+    /**
+     * Retrieves a paginated list of products.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the paginated list of products
+     */
     @GetMapping(path="/products")
     public @ResponseBody ResponseEntity<Page<ProductDTO>> getProducts(
             @RequestParam
@@ -58,6 +69,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts( pageNumber, pageSize), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a product by its ID.
+     *
+     * @param id   the product ID
+     * @param user the user making the request
+     * @return a ResponseEntity containing the product
+     */
     @GetMapping(path="/products/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<ProductDTO> getProduct(
             @PathVariable("id") Integer id,
@@ -80,6 +98,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * Retrieves the manufacturer of a product.
+     *
+     * @param id   the product ID
+     * @param user the user making the request
+     * @return a ResponseEntity containing the manufacturer
+     */
     @GetMapping(path="/products/{id}/manufacturer", produces = "application/json")
     public @ResponseBody ResponseEntity<ManufacturerDTO> getProductManufacturer(
             @PathVariable("id") Integer id,
@@ -96,6 +121,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * Creates a new product.
+     *
+     * @param productDTO the product to create
+     * @param user       the user making the request
+     * @return a ResponseEntity indicating the result of the operation
+     */
     @PostMapping(path="/products", produces = "application/json")
     public ResponseEntity<Map<String, String>> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -122,6 +154,14 @@ public class ProductController {
         }
     }
 
+    /**
+     * Updates an existing product.
+     *
+     * @param id         the ID of the product to update
+     * @param productDTO the updated product data
+     * @param user       the user making the request
+     * @return a ResponseEntity indicating the result of the operation
+     */
     @PatchMapping(path="/products/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<Map<String, String>> updateProduct(
             @PathVariable("id") Integer id,
@@ -155,6 +195,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * Deletes a product.
+     *
+     * @param id   the ID of the product to delete
+     * @param user the user making the request
+     * @return a ResponseEntity indicating the result of the operation
+     */
     @DeleteMapping(path="/products/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<Map<String, String>> deleteProduct(
             @PathVariable("id") Integer id,
@@ -176,6 +223,15 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all products with weight bigger than the specified value.
+     *
+     * @param weight     the minimum weight value
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the list of products
+     */
     @GetMapping(path="/products/weight-filter", produces = "application/json")
     public @ResponseBody ResponseEntity<Page<ProductDTO>> getAllProductsWithWeightBiggerThan(
             @RequestParam Integer weight,
@@ -193,6 +249,14 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProductsWithWeightBiggerThan(weight, pageNumber, pageSize), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves all products sorted by reviews.
+     *
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the list of products with their scores
+     */
     @GetMapping(path="/products/sorted-by-reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<Page<ProductScoreDTO>> getAllProductsSortedByReviews(
             @RequestParam
@@ -209,6 +273,15 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductsSortedByScore(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves the reviews for a product.
+     *
+     * @param id         the ID of the product
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the list of reviews
+     */
     @GetMapping(path="/products/{id}/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<Page<ReviewDTO>> getReviews(
             @PathVariable("id") Integer id,
@@ -238,6 +311,15 @@ public class ProductController {
         }
     }
 
+    /**
+     * Retrieves a page of product scores.
+     *
+     * @param weight     the minimum weight value
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the page of product scores
+     */
     @GetMapping(path="/product-scores")
     public @ResponseBody ResponseEntity<Page<ProductScoreDTO>> getProductScoresPage(
             @RequestParam Integer weight,
@@ -255,6 +337,15 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductScoresPage(weight, pageNumber, pageSize), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a page of product scores with associated user handles.
+     *
+     * @param weight     the minimum weight value
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @param user       the user making the request
+     * @return a ResponseEntity containing the page of product scores with user handles
+     */
     @GetMapping(path="/product-scores-with-users")
     public @ResponseBody ResponseEntity<Page<ProductScoreWithUserHandleDTO>> getProductScoresWithUsersPage(
             @RequestParam Integer weight,

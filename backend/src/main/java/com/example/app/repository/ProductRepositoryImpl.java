@@ -17,10 +17,17 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductRepositoryImpl implements IProductRepository{
+public class ProductRepositoryImpl implements IProductRepository {
+
     @PersistenceContext
     private EntityManager em;
 
+    /**
+     * Retrieves a page of products sorted by the average score of their reviews.
+     *
+     * @param pageable the page request parameters
+     * @return a page of ProductScoreDTO objects representing products and their average scores
+     */
     @Override
     public Page<ProductScoreDTO> getProductsSortedByAverageScore(Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -62,6 +69,12 @@ public class ProductRepositoryImpl implements IProductRepository{
         return new PageImpl<>(results, pageable, total);
     }
 
+    /**
+     * Retrieves the scores for a list of products.
+     *
+     * @param productDTOs the list of ProductDTO objects
+     * @return a list of ProductScoreDTO objects representing the scores for the products
+     */
     @Override
     public List<ProductScoreDTO> getProductScoresFromList(List<ProductDTO> productDTOs) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -69,9 +82,8 @@ public class ProductRepositoryImpl implements IProductRepository{
         CriteriaQuery<Tuple> review_scores_cq = cb.createQuery(Tuple.class);
         Root<Review> review = review_scores_cq.from(Review.class);
         CriteriaBuilder.In<Integer> inClause = cb.in(review.get("product").get("id"));
-        for(ProductDTO productDTO: productDTOs) {
+        for (ProductDTO productDTO : productDTOs) {
             inClause.value(productDTO.getId());
-            System.out.println(productDTO.getId());
         }
         review_scores_cq
                 .multiselect(review.get("product").get("id").alias("product_id"), cb.avg(cb.coalesce(review.get("score"), 0)).alias("score"))
@@ -91,6 +103,12 @@ public class ProductRepositoryImpl implements IProductRepository{
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the number of products associated with the specified user handle.
+     *
+     * @param userHandle the user handle
+     * @return the number of products
+     */
     @Override
     public Integer getProductCountForUserHandle(String userHandle) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -19,21 +19,36 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * The review service implementation.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Service
-public class ReviewService implements  IReviewService{
+public class ReviewService implements IReviewService {
+
     @Autowired
     ReviewRepository reviewRepository;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     ProductRepository productRepository;
 
+    /**
+     * Retrieves reviews for a user with pagination.
+     *
+     * @param handle     the user handle
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @return a Page object containing the list of ReviewDTOs
+     * @throws AppException if no user with the specified handle is found
+     */
     @Override
     public Page<ReviewDTO> getReviewsForUser(String handle, Integer pageNumber, Integer pageSize) throws AppException {
         Optional<User> user = userRepository.findById(handle);
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             throw new AppException("No such user exists");
         }
         return reviewRepository
@@ -41,10 +56,19 @@ public class ReviewService implements  IReviewService{
                 .map(ReviewDTO::fromReview);
     }
 
+    /**
+     * Retrieves reviews for a product with pagination.
+     *
+     * @param id          the product ID
+     * @param pageNumber the page number
+     * @param pageSize   the page size
+     * @return a Page object containing the list of ReviewDTOs
+     * @throws AppException if no product with the specified ID is found
+     */
     @Override
     public Page<ReviewDTO> getReviewsForProduct(Integer id, Integer pageNumber, Integer pageSize) throws AppException {
         Optional<Product> product = productRepository.findById(id);
-        if(product.isEmpty()){
+        if (product.isEmpty()) {
             throw new AppException("No such product exists");
         }
         return reviewRepository
@@ -52,36 +76,58 @@ public class ReviewService implements  IReviewService{
                 .map(ReviewDTO::fromReview);
     }
 
+    /**
+     * Retrieves a review by user handle and product ID.
+     *
+     * @param handle    the user handle
+     * @param productId the product ID
+     * @return the ReviewDTO object
+     * @throws AppException if no review with the specified user handle and product ID is found
+     */
     @Override
     public ReviewDTO getReview(String handle, Integer productId) throws AppException {
         Optional<Review> review = reviewRepository.findById(new ReviewId(handle, productId));
-        if(review.isEmpty()) {
-            throw  new AppException("No such review exists");
+        if (review.isEmpty()) {
+            throw new AppException("No such review exists");
         }
         return ReviewDTO.fromReview(review.get());
     }
 
+    /**
+     * Creates a new review.
+     *
+     * @param reviewDTO the ReviewDTO object containing the review details
+     * @throws AppException if no user with the specified handle or no product with the specified ID is found
+     */
     @Override
     public void createReview(ReviewDTO reviewDTO) throws AppException {
         User user = userRepository.findById(reviewDTO.getUserHandle()).orElse(null);
-        if(user == null) {
+        if (user == null) {
             throw new AppException("No such user exists");
         }
         Product product = productRepository.findById(reviewDTO.getProductId()).orElse(null);
-        if(product == null) {
+        if (product == null) {
             throw new AppException("No such product exists");
         }
         reviewRepository.save(ReviewDTO.toReview(reviewDTO, user, product));
     }
 
+    /**
+     * Updates an existing review.
+     *
+     * @param handle    the user handle
+     * @param productId the product ID
+     * @param reviewDTO the ReviewDTO object containing the updated review details
+     * @throws AppException if no user with the specified handle or no product with the specified ID is found
+     */
     @Override
     public void updateReview(String handle, Integer productId, ReviewDTO reviewDTO) throws AppException {
         User user = userRepository.findById(handle).orElse(null);
-        if(user == null) {
+        if (user == null) {
             throw new AppException("No such user exists");
         }
         Product product = productRepository.findById(productId).orElse(null);
-        if(product == null) {
+        if (product == null) {
             throw new AppException("No such product exists");
         }
         Review review = ReviewDTO.toReview(reviewDTO, user, product);
@@ -89,9 +135,14 @@ public class ReviewService implements  IReviewService{
         reviewRepository.save(review);
     }
 
+    /**
+     * Deletes a review.
+     *
+     * @param handle    the user handle
+     * @param productId the product ID
+     */
     @Override
     public void deleteReview(String handle, Integer productId) {
         reviewRepository.deleteById(new ReviewId(handle, productId));
     }
-
 }

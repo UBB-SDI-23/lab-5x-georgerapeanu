@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+/**
+ * Represents a message entity.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

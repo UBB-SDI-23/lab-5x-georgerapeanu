@@ -7,12 +7,18 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class ProductScoreDTO{
+public class ProductScoreDTO {
+    /**
+     * The ProductDTO object representing the product.
+     */
     @Getter
     @Setter
     private ProductDTO productDTO;
+
+    /**
+     * The score associated with the product.
+     */
     @Getter
     @Setter
     private Double score;
-
 }

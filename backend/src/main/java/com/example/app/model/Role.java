@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Represents a role entity.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
