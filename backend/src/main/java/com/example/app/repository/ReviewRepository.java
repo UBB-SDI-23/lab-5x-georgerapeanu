@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository interface for managing reviews.
+ */
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, ReviewId>, JpaSpecificationExecutor<Review>, IReviewRepository {
     Page<Review> findAllByUser(User user, PageRequest pageable);

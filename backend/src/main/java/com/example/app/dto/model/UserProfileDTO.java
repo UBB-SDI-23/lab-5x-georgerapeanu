@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.sql.Date;
 
+/**
+ * Data Transfer Object for UserProfile.
+ */
 @EqualsAndHashCode
 @ToString
 @NoArgsConstructor
@@ -27,6 +30,13 @@ public class UserProfileDTO {
     @Getter
     @Setter
     private Date registeredAt;
+
+    /**
+     * Converts UserProfile to UserProfileDTO object.
+     *
+     * @param userProfile The UserProfile object to convert.
+     * @return The converted UserProfileDTO object.
+     */
     public static UserProfileDTO fromUserProfile(UserProfile userProfile) {
         return new UserProfileDTO(
                 userProfile.getName(),
@@ -37,6 +47,12 @@ public class UserProfileDTO {
         );
     }
 
+    /**
+     * Converts UserProfileDTO to UserProfile object.
+     *
+     * @param userProfileDTO The UserProfileDTO object to convert.
+     * @return The converted UserProfile object.
+     */
     public static UserProfile toUserProfile(UserProfileDTO userProfileDTO) {
         UserProfile userProfile = new UserProfile();
         userProfile.setName(userProfileDTO.getName());

@@ -12,6 +12,9 @@ import lombok.Setter;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Represents a product entity.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

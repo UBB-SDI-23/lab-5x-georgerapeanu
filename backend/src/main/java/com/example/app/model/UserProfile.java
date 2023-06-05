@@ -13,6 +13,9 @@ import lombok.Setter;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Represents a user profile entity.
+ */
 @Entity
 @Table(name="user_profile")
 @NoArgsConstructor

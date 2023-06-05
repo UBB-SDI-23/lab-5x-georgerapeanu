@@ -3,6 +3,9 @@ package com.example.app.dto.model;
 import com.example.app.model.Role;
 import lombok.*;
 
+/**
+ * Data Transfer Object for Role.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -33,19 +36,31 @@ public class RoleDTO {
     @Setter
     private Boolean create;
 
+    /**
+     * Converts a RoleDTO object to a Role object.
+     *
+     * @param roleDTO The RoleDTO object to convert.
+     * @return The converted Role object.
+     */
     public static Role toRole(RoleDTO roleDTO) {
         return new Role(
-          roleDTO.getName(),
-          roleDTO.getRead_all(),
-          roleDTO.getUpdate_all(),
-          roleDTO.getDelete_all(),
-          roleDTO.getRead_own(),
-          roleDTO.getUpdate_own(),
-          roleDTO.getDelete_own(),
-          roleDTO.getCreate()
+                roleDTO.getName(),
+                roleDTO.getRead_all(),
+                roleDTO.getUpdate_all(),
+                roleDTO.getDelete_all(),
+                roleDTO.getRead_own(),
+                roleDTO.getUpdate_own(),
+                roleDTO.getDelete_own(),
+                roleDTO.getCreate()
         );
     }
 
+    /**
+     * Converts a Role object to a RoleDTO object.
+     *
+     * @param role The Role object to convert.
+     * @return The converted RoleDTO object.
+     */
     public static RoleDTO fromRole(Role role) {
         return new RoleDTO(
                 role.getName(),
