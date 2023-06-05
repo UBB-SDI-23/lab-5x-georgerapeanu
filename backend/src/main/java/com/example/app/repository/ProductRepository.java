@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing products.
+ */
 @Repository
 public interface ProductRepository
         extends

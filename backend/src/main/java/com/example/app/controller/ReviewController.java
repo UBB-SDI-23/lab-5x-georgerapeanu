@@ -15,20 +15,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller class that handles HTTP requests related to reviews.
+ */
 @Validated
 @RestController
 @CrossOrigin(origins = "*")
 public class ReviewController {
+
     @Autowired
     IReviewService reviewService;
 
-    @GetMapping(path="/reviews", produces = "application/json")
+    /**
+     * Retrieves a review based on the user handle and product ID.
+     *
+     * @param userHandle the handle of the user
+     * @param productId  the ID of the product
+     * @param user       the authenticated user
+     * @return the review DTO if found, or an error response with the appropriate HTTP status
+     */
+    @GetMapping(path = "/reviews", produces = "application/json")
     public @ResponseBody ResponseEntity<ReviewDTO> getReview(
             @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId,
             @RequestAttribute("user") User user
     ) {
-        if(!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), userHandle))) {
+        if (!user.getUserRole().getRead_all() && (!user.getUserRole().getRead_own() || !Objects.equals(user.getHandle(), userHandle))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         try {
@@ -37,14 +49,22 @@ public class ReviewController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(path="/reviews", produces = "application/json")
+
+    /**
+     * Creates a new review.
+     *
+     * @param reviewDTO the review DTO containing the review details
+     * @param user      the authenticated user
+     * @return a response indicating the status of the review creation
+     */
+    @PostMapping(path = "/reviews", produces = "application/json")
     public ResponseEntity<Map<String, String>> createReview(
             @RequestBody ReviewDTO reviewDTO,
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
 
-        if(!user.getUserRole().getCreate()) {
+        if (!user.getUserRole().getCreate()) {
             response.put("error", "Not authorized to create resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
@@ -59,7 +79,17 @@ public class ReviewController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
-    @PatchMapping(path="/reviews", produces = "application/json")
+
+    /**
+     * Updates an existing review.
+     *
+     * @param userHandle the handle of the user who owns the review
+     * @param productId  the ID of the product associated with the review
+     * @param reviewDTO  the updated review DTO
+     * @param user       the authenticated user
+     * @return a response indicating the status of the review update
+     */
+    @PatchMapping(path = "/reviews", produces = "application/json")
     public ResponseEntity<Map<String, String>> updateReview(
             @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId,
@@ -67,7 +97,7 @@ public class ReviewController {
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        if(!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(userHandle, user.getHandle()))) {
+        if (!user.getUserRole().getUpdate_all() && (!user.getUserRole().getUpdate_own() || !Objects.equals(userHandle, user.getHandle()))) {
             response.put("error", "Unauthorized to update resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
@@ -80,14 +110,23 @@ public class ReviewController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping(path="/reviews", produces = "application/json")
-    public ResponseEntity<Map<String ,String>> deleteReview(
+
+    /**
+     * Deletes a review.
+     *
+     * @param userHandle the handle of the user who owns the review
+     * @param productId  the ID of the product associated with the review
+     * @param user       the authenticated user
+     * @return a response indicating the status of the review deletion
+     */
+    @DeleteMapping(path = "/reviews", produces = "application/json")
+    public ResponseEntity<Map<String, String>> deleteReview(
             @RequestParam("user_handle") String userHandle,
             @RequestParam("product_id") Integer productId,
             @RequestAttribute("user") User user
     ) {
         Map<String, String> response = new HashMap<>();
-        if(!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(userHandle, user.getHandle()))) {
+        if (!user.getUserRole().getDelete_all() && (!user.getUserRole().getDelete_own() || !Objects.equals(userHandle, user.getHandle()))) {
             response.put("error", "Unauthorized to update resource");
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }

@@ -20,6 +20,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controller class for handling chat-related operations.
+ */
 @RestController
 @CrossOrigin(origins = "*")
 public class ChatController {
@@ -30,6 +33,12 @@ public class ChatController {
     @Autowired
     private Environment env;
 
+    /**
+     * Handles the incoming chat messages.
+     *
+     * @param chatMessageDTO the chat message DTO
+     * @return the processed chat message DTO
+     */
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public ChatMessageDTO message(
@@ -38,11 +47,17 @@ public class ChatController {
         return chatMessageDTO;
     }
 
+    /**
+     * Restores the chat messages for the current user.
+     *
+     * @param user the authenticated user
+     * @return a list of chat message DTOs
+     */
     @GetMapping("/restore-messages")
-    public List<ChatMessageDTO> restore_messages(
+    public List<ChatMessageDTO> restoreMessages(
             @RequestAttribute("user") User user
     ) {
-        if(user == null) {
+        if (user == null) {
             return new ArrayList<>();
         }
         return messageRepository.findAllByUserHandleOrderById(user.getHandle())
@@ -52,12 +67,18 @@ public class ChatController {
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * Stores a chat message for the current user.
+     *
+     * @param user        the authenticated user
+     * @param messageDTO  the chat message DTO to be stored
+     */
     @PostMapping("/store-messages")
-    public void store_messages(
+    public void storeMessages(
             @RequestAttribute("user") User user,
             @RequestBody ChatMessageDTO messageDTO
     ) {
-        if(user == null) {
+        if (user == null) {
             return;
         }
         Message message = new Message();
@@ -68,8 +89,13 @@ public class ChatController {
         messageRepository.save(message);
     }
 
-    @GetMapping(path="/chat-recent-summary", produces="text/plain")
-    public String get_recent_summary() {
+    /**
+     * Retrieves a summary of recent chat messages using an AI service.
+     *
+     * @return a summary of recent chat messages or "Unavailable" if the service is unavailable
+     */
+    @GetMapping(path = "/chat-recent-summary", produces = "text/plain")
+    public String getRecentSummary() {
         String ai_url = env.getRequiredProperty("ai_url");
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();

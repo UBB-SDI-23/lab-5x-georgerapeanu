@@ -2,6 +2,9 @@ package com.example.app.dto.model;
 
 import lombok.*;
 
+/**
+ * Data Transfer Object for User.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode

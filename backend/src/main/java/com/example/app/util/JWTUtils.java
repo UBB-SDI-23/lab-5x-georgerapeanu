@@ -11,11 +11,21 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Date;
 
+/**
+ * Utility class for JWT operations.
+ */
 public class JWTUtils {
-    public static DecodedJWT decodeRegisterToken(String token) throws AppException{
+
+    /**
+     * Decodes and verifies the registration token.
+     *
+     * @param token the registration token to decode
+     * @return the decoded JWT
+     * @throws AppException if the token is invalid
+     */
+    public static DecodedJWT decodeRegisterToken(String token) throws AppException {
         Algorithm algorithm = Algorithm.HMAC256(JWTSecretManager.getSecret());
-        JWTVerifier verifier = JWT
-                .require(algorithm)
+        JWTVerifier verifier = JWT.require(algorithm)
                 .withSubject("register-code")
                 .build();
         DecodedJWT decodedJWT = null;
@@ -27,14 +37,20 @@ public class JWTUtils {
         return decodedJWT;
     }
 
-    public static String getUserHandleFromAuthHeader(String header) throws AppException{
-        if(!header.startsWith("Bearer ")) {
+    /**
+     * Extracts the user handle from the authorization header.
+     *
+     * @param header the authorization header
+     * @return the user handle extracted from the header
+     * @throws AppException if the token is invalid
+     */
+    public static String getUserHandleFromAuthHeader(String header) throws AppException {
+        if (!header.startsWith("Bearer ")) {
             throw new AppException("Invalid token");
         }
         String token = header.substring(new String("Bearer ").length());
         Algorithm algorithm = Algorithm.HMAC256(JWTSecretManager.getSecret());
-        JWTVerifier verifier = JWT
-                .require(algorithm)
+        JWTVerifier verifier = JWT.require(algorithm)
                 .withSubject("auth")
                 .build();
         DecodedJWT decodedJWT = null;
@@ -46,6 +62,12 @@ public class JWTUtils {
         return decodedJWT.getClaim("user_handle").asString();
     }
 
+    /**
+     * Generates a registration token for the specified user handle.
+     *
+     * @param user_handle the user handle
+     * @return the registration token
+     */
     public static String getRegisterToken(String user_handle) {
         Algorithm algorithm = Algorithm.HMAC256(JWTSecretManager.getSecret());
         return JWT.create()
@@ -56,6 +78,12 @@ public class JWTUtils {
                 .sign(algorithm);
     }
 
+    /**
+     * Generates a login token for the specified user handle.
+     *
+     * @param user_handle the user handle
+     * @return the login token
+     */
     public static String getLoginToken(String user_handle) {
         Algorithm algorithm = Algorithm.HMAC256(JWTSecretManager.getSecret());
         return JWT.create()

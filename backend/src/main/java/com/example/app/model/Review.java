@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.sql.Date;
 
+/**
+ * Represents a review entity.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

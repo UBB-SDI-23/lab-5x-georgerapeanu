@@ -7,6 +7,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
+/**
+ * Represents a UserPreference entity.
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

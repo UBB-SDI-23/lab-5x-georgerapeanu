@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Controller class for handling login and registration operations.
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @Validated
@@ -21,6 +24,12 @@ public class LoginController {
     @Autowired
     ILoginService loginService;
 
+    /**
+     * Registers a new user.
+     *
+     * @param user the user to be registered
+     * @return a response entity with a token if registration is successful, or an error message if registration fails
+     */
     @PostMapping("/register")
     ResponseEntity<Map<String, String>> register(@RequestBody @Valid User user) {
         Map<String, String> response = new HashMap<>();
@@ -34,6 +43,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Activates a user account using the activation token.
+     *
+     * @param token the activation token
+     * @return a response entity with a success message if activation is successful, or an error message if activation fails
+     */
     @PostMapping("/register/{code}")
     ResponseEntity<Map<String, String>> activate(
             @PathVariable("code") String token
@@ -49,6 +64,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Authenticates a user and generates an authentication token.
+     *
+     * @param user the user credentials for authentication
+     * @return a response entity with a token if authentication is successful, or an error message if authentication fails
+     */
     @PostMapping("/login")
     ResponseEntity<Map<String, String>> login(@RequestBody @Valid User user) {
         Map<String, String> response = new HashMap<>();
